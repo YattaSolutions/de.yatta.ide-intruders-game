@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Clumsy_Bird
+Bundle-SymbolicName: de.yatta.softwarevendor.vendorgame;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.ui,
+ com.yattasolutions.platform.marketplace.client;bundle-version="2.0.4",
+ de.yatta.platform.marketplace.licensing.client;bundle-version="2.0.4",
+ org.eclipse.osgi.services;bundle-version="3.10.200"
+Automatic-Module-Name: Clumsy.Bird
+Bundle-RequiredExecutionEnvironment: JavaSE-11
