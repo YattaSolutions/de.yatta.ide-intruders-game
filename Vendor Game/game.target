@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+<target name="Running Platform">
+	<locations>
+		<location path="${eclipse_home}" type="Profile"/>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="http://cdn.yatta.de/update/marketplace/sandbox/2.0.4.beta"/>
+			<unit id="com.yattasolutions.platform.marketplace.client.feature.feature.group" version="2.0.4.202201272118"/>
+			<unit id="de.yatta.platform.browser.feature.feature.group" version="2.0.4.202201272118"/>
+			<unit id="de.yatta.platform.marketplace.licensing.client.feature.feature.group" version="2.0.4.202201272118"/>
+		</location>
+	</locations>
+	<environment>
+		<arch>x86_64</arch>
+		<os>win32</os>
+		<ws>win32</ws>
+		<nl>de_DE</nl>
+	</environment>
+</target>
