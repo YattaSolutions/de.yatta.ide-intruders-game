@@ -1,1 +1,7 @@
-# de.yatta.softwarevendor
+# SoftwareVendor Tools
+
+Demo applications for https://sandbox.platform.yatta.de/
+
+Profile: https://www.yatta.de/profiles/hub/YkxZ
+
+Update Site: https://cdn.yatta.de/update/softwarevendor
