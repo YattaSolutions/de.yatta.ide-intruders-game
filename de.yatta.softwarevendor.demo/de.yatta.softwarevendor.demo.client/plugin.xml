@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="de.yatta.softwarevendor.demo.commands.category"
+            name="Lotto Numbers">
+      </category>
+      <command
+            categoryId="de.yatta.softwarevendor.demo.commands.category"
+            name="Lotto Numbers"
+            id="de.yatta.softwarevendor.demo.commands.lottoNumbers">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.yatta.softwarevendor.demo.client.handlers.DemoHandler"
+            commandId="de.yatta.softwarevendor.demo.commands.lottoNumbers">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.yatta.softwarevendor.demo.commands.lottoNumbers"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="de.yatta.softwarevendor.demo.menus.lottoNumbers"
+               label="Play Lotto"
+               mnemonic="M">
+            <command
+                  commandId="de.yatta.softwarevendor.demo.commands.lottoNumbers"
+                  id="de.yatta.softwarevendor.demo.menus.lottoNumbers"
+                  mnemonic="S">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="de.yatta.softwarevendor.demo.toolbars.lottoNumbers">
+            <command
+                  commandId="de.yatta.softwarevendor.demo.commands.lottoNumbers"
+                  icon="icons/sample.png"
+                  id="de.yatta.softwarevendor.demo.toolbars.lottoNumbers"
+                  label="Play Lotto"
+                  mode="FORCE_TEXT"
+                  tooltip="Click to play">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+
+</plugin>
