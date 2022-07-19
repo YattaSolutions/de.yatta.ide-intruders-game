@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.yatta.softwarevendor.demo</groupId>
 	<artifactId>de.yatta.softwarevendor.demo.parent</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 
@@ -69,7 +69,7 @@
 							<artifact>
 								<groupId>de.yatta.softwarevendor.demo</groupId>
 								<artifactId>de.yatta.softwarevendor.demo.client</artifactId>
-								<version>1.0.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 								<classifier>softwarevendor-target</classifier>
 							</artifact>
 						</target>
