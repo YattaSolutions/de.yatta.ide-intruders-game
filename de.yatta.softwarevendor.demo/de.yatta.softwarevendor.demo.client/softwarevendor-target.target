@@ -7,10 +7,10 @@
 		....
 		<!-- add the following new entries -->
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<repository location="http://cdn.yatta.de/update/marketplace/sandbox/2.0.4"/>
-			<unit id="com.yattasolutions.platform.marketplace.client.feature.feature.group" version="2.0.4.202201131824"/>
-			<unit id="de.yatta.platform.browser.feature.feature.group" version="2.0.4.202201131824"/>
-			<unit id="de.yatta.platform.marketplace.licensing.client.feature.feature.group" version="2.0.4.202201131824"/>
+			<repository location="http://cdn.yatta.de/stage/update/marketplace"/>
+         <unit id="com.yattasolutions.platform.marketplace.client.feature.feature.group" version="2.0.6.202206150751"/>
+         <unit id="de.yatta.platform.browser.feature.feature.group" version="2.0.6.202206150751"/>
+         <unit id="de.yatta.platform.marketplace.licensing.client.feature.feature.group" version="2.0.6.202206150751"/>
 		</location>
 	</locations>
 </target>
