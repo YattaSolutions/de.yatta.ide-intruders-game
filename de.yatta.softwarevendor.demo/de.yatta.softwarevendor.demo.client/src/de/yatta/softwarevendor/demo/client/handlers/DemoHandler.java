@@ -98,6 +98,6 @@ public class DemoHandler extends AbstractHandler
 
    private String lottoNumbers()
    {
-      return 1 + new Random().nextInt(98) + ", ";
+      return 1 + new Random().nextInt(48) + ", ";
    }
 }
