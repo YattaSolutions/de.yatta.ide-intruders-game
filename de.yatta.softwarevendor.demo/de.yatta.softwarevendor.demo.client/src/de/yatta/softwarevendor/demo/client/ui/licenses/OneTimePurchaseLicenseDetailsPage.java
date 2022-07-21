@@ -1,4 +1,4 @@
-package de.yatta.softwarevendor.demo.client.ui;
+package de.yatta.softwarevendor.demo.client.ui.licenses;
 
 public class OneTimePurchaseLicenseDetailsPage extends SoftwareVendorLicenseDetailsPage {
 
