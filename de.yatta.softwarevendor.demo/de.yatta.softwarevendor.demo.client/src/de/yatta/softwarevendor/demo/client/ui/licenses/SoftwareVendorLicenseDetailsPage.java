@@ -1,4 +1,4 @@
-package de.yatta.softwarevendor.demo.client.ui;
+package de.yatta.softwarevendor.demo.client.ui.licenses;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
