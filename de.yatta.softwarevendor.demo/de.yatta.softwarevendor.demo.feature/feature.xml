@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.yatta.softwarevendor.demo.feature"
-      label="SovtwareVendor Tool"
-      version="1.0.0.qualifier"
+      label="SoftwareVendor Tool"
+      version="1.1.0.qualifier"
       provider-name="Yatta">
 
    <description url="https://sandbox.platform.yatta.de/">
