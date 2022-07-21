@@ -1,6 +1,8 @@
 package de.yatta.softwarevendor.demo.client.ui.licenses;
 
-public class SubscriptionLicenseDetailsPage extends SoftwareVendorLicenseDetailsPage {
+import de.yatta.platform.marketplace.licensing.client.ui.preferences.LicenseDetailsPage;
+
+public class SubscriptionLicenseDetailsPage extends LicenseDetailsPage {
 
 	@Override
 	protected String getSolutionId() {
