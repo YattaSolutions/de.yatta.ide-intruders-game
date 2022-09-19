@@ -1,6 +1,7 @@
 package de.yatta.softwarevendor.demo.client.handlers;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -37,7 +38,6 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		LicenseResponse fetchLicense = fetchLicense(SOLUTION_ID);
 		MarketplaceClientPlugin plugin = MarketplaceClientPlugin.getDefault();
 		plugin.registerEventHandler(this, MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT);
 		plugin.registerEventHandler(this, MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT);
@@ -59,7 +59,7 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
 			openedGame = true;
 		}
 		String emailAdress = AccountManager.get().getEmail().get();
-		fetchLicense = fetchLicenseStatus(2000);
+		final LicenseResponse fetchLicense = fetchLicenseStatus(2000);
 
 		if (fetchLicense.getValidity().equals(Validity.UNLICENSED)) {
 			MessageDialog.openInformation(window.getShell(), game.toString(), "Hi " + emailAdress
@@ -78,8 +78,7 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
 	}
 
 	private void openBrowserUrl(String url) {
-		if (isCheckoutTabOpened())
-			closeCheckoutTab();
+		closeCheckoutTab();
 		MarketplaceClientPlugin.getDefault().getSolutionIdToRequest().put("de.softwarevendor.demo.url", url);
 		MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), null);
 		MarketplaceClientPlugin.getDefault().getSolutionIdToRequest().put("de.softwarevendor.demo.url", null);
@@ -94,7 +93,7 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
 
 			System.out.println(AccountManager.get().getEmail().get());
 
-			if (fetchLicense.getValidity().equals(Validity.LICENSED) && isCheckoutTabOpened() && !openedGame) {
+			if (fetchLicense.getValidity().equals(Validity.LICENSED) && findCheckoutTab().isPresent() && !openedGame) {
 				Display.getDefault().syncExec(() -> {
 					MessageDialog.openInformation(window.getShell(), game.toString(),
 							"Successfully subscribed! Lets start " + game.toString());
@@ -113,30 +112,27 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
 		}
 	}
 
-	private LicenseResponse fetchLicenseStatus(long timeoutInMillis) {
-		LicenseResponse fetchLicense = fetchLicense(SOLUTION_ID);
-		timeoutInMillis += System.currentTimeMillis();
-		while (fetchLicense.getValidity().equals(Validity.WAIT) && System.currentTimeMillis() < timeoutInMillis) {
-			fetchLicense = fetchLicense(SOLUTION_ID);
-		}
-		return fetchLicense;
+	private LicenseResponse fetchLicenseStatus(final long timeoutInMillis) {
+		LicenseResponse licenseResponse;
+		final long tryUntil = timeoutInMillis + System.currentTimeMillis();
+		do {
+			licenseResponse = fetchLicense(SOLUTION_ID);
+		} while (licenseResponse.getValidity().equals(Validity.WAIT) && System.currentTimeMillis() <= tryUntil);
+		return licenseResponse;
 	}
 
 	private void closeCheckoutTab() {
-		if (isCheckoutTabOpened()) {
-			IEditorReference checkoutTab = Arrays.stream(window.getActivePage().getEditorReferences())
-					.filter(editor -> editor.getTitle().equals("Commercial Checkout")).findFirst().get();
+		findCheckoutTab().ifPresent(checkoutTab -> {
 			Display.getDefault().syncExec(() -> {
 				window.getActivePage().closeEditor(checkoutTab.getEditor(false), false);
 			});
 			openedGame = false;
-		}
+		});
 	}
 
-	private boolean isCheckoutTabOpened() {
+	private Optional<IEditorReference> findCheckoutTab() {
 		return Arrays.stream(window.getActivePage().getEditorReferences())
-				.filter(editor -> editor.getTitle().equals("Commercial Checkout")).count() >= 1;
-
+				.filter(editor -> "Commercial Checkout".equals(editor.getTitle())).findFirst();
 	}
 
 }
