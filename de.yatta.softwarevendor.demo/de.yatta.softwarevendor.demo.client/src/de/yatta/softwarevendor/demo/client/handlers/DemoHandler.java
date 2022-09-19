@@ -1,103 +1,142 @@
 package de.yatta.softwarevendor.demo.client.handlers;
 
-import java.util.Random;
+import java.util.Arrays;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventHandler;
 
 import com.yattasolutions.platform.marketplace.client.MarketplaceClient;
 import com.yattasolutions.platform.marketplace.client.MarketplaceClientPlugin;
+import com.yattasolutions.platform.marketplace.client.account.AccountManager;
 
 import de.yatta.platform.marketplace.licensing.client.LicenseRequest;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse.Validity;
 import de.yatta.platform.marketplace.licensing.client.LicensingClient;
 
-public class DemoHandler extends AbstractHandler
-{
-   private static final String SOLUTION_ID = "de.softwarevendor.product";
-   private static final String SOLUTION_ID_ONETIMEPURCHASE = "de.softwarevendor.product.onetimepurchase";
-   private static final String VENDOR_KEY = "g5JE78Z0UIiQrHCAMjTR";
+public class DemoHandler extends AbstractHandler implements EventHandler {
 
-   private int checkoutDuration = 1; // Time in minutes how long the checkout token is valid
-   private String version = null; // version string if the request is only valid for a specific version, null
-   // otherwise.;
+	private static final String VENDOR_KEY = "g5JE78Z0UIiQrHCAMjTR";
+	private static final String SOLUTION_ID = "de.softwarevendor.product";
 
-   @Override
-   public Object execute(ExecutionEvent event) throws ExecutionException
-   {
-      IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+	private int checkoutDuration = 1;
+	private Game game = Game.CLUMSY_BIRD;
+	private IWorkbenchWindow window = null;
+	private boolean openedGame = false;
 
-      LicenseResponse fetchLicense = fetchLicense(SOLUTION_ID);
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+		LicenseResponse fetchLicense = fetchLicense(SOLUTION_ID);
+		MarketplaceClientPlugin plugin = MarketplaceClientPlugin.getDefault();
+		plugin.registerEventHandler(this, MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT);
+		plugin.registerEventHandler(this, MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT);
 
-      long timeoutInMillis = System.currentTimeMillis() + 10000; // 1 second timeout
+		IPartListener2 pl = new IPartListener2() {
+			public void partClosed(IWorkbenchPartReference partRef) {
+				if (partRef.getTitle().equals("Commercial Checkout"))
+					openedGame = false;
+			}
 
-      while (fetchLicense.getValidity().equals(Validity.WAIT) && System.currentTimeMillis() < timeoutInMillis)
-      {
-         fetchLicense = fetchLicense(SOLUTION_ID);
-         try
-         {
-            Thread.sleep(500);
-         }
-         catch (InterruptedException e)
-         {
-            e.printStackTrace();
-         }
-      }
+		};
+		window.getActivePage().addPartListener(pl);
 
-      if (fetchLicense.getValidity().equals(Validity.UNLICENSED))
-      {
-         String[] buttons = { "Purchase", "Subscribe", "Cancel" };
-         MessageDialog dialog = new MessageDialog(
-               window.getShell(),
-               "SoftwareVendor Tool", null,
-               "We couldn't detect a valid license, please go ahead and purchase or subscribe for a license.",
-               MessageDialog.INFORMATION, buttons, 2);
-         int buttonIndex = dialog.open();
+		if (!AccountManager.get().isSignedIn()) {
+			MessageDialog.openInformation(window.getShell(), game.toString(),
+					"Hi,\nto play " + game.toString() + " you need to sign in or subscribe for a license.");
+			closeCheckoutTab();
+			MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID);
+			openedGame = true;
+		}
+		String emailAdress = AccountManager.get().getEmail().get();
+		fetchLicense = fetchLicenseStatus(2000);
 
-         if (buttonIndex == 0)
-         {
-            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID_ONETIMEPURCHASE);
-         }
-         else if (buttonIndex == 1)
-         {
-            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID);
-         }
-      }
-      else if (fetchLicense.getValidity().equals(Validity.WAIT))
-      {
+		if (fetchLicense.getValidity().equals(Validity.UNLICENSED)) {
+			MessageDialog.openInformation(window.getShell(), game.toString(), "Hi " + emailAdress
+					+ ",\nYou dont have a license to play " + game.toString() + ". Please subscribe to play.");
+			closeCheckoutTab();
+			MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID);
+		} else if (fetchLicense.getValidity().equals(Validity.LICENSED)) {
+			openBrowserUrl(game.getUrl());
+		}
 
-         MessageDialog.openInformation(window.getShell(), "SoftwareVendor Tool",
-               "There was an error communicating with the licensing server.");
-      }
-      else
-      {
-         MessageDialog.openInformation(window.getShell(), "SoftwareVendor Tool",
-               "The lotto numbers are: " + getLottoNumbers());
-      }
+		return null;
+	}
 
-      return null;
+	private LicenseResponse fetchLicense(String solutionId) {
+		return LicensingClient.get().queryLicense(new LicenseRequest(solutionId, null, checkoutDuration, VENDOR_KEY));
+	}
 
-   }
+	private void openBrowserUrl(String url) {
+		if (isCheckoutTabOpened())
+			closeCheckoutTab();
+		MarketplaceClientPlugin.getDefault().getSolutionIdToRequest().put("de.softwarevendor.demo.url", url);
+		MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), null);
+		MarketplaceClientPlugin.getDefault().getSolutionIdToRequest().put("de.softwarevendor.demo.url", null);
+		openedGame = true;
+	}
 
-   private LicenseResponse fetchLicense(String solutionId)
-   {
+	@Override
+	public void handleEvent(Event event) {
 
-      return LicensingClient.get()
-            .queryLicense(new LicenseRequest(solutionId, version, checkoutDuration, VENDOR_KEY));
-   }
+		if (event.getTopic().equals(MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT)) {
+			LicenseResponse fetchLicense = fetchLicenseStatus(1000);
 
-   private String getLottoNumbers()
-   {
-      return lottoNumbers() + lottoNumbers() + lottoNumbers() + lottoNumbers() + lottoNumbers() + lottoNumbers().replace(", ", "");
-   }
+			System.out.println(AccountManager.get().getEmail().get());
 
-   private String lottoNumbers()
-   {
-      return 1 + new Random().nextInt(48) + ", ";
-   }
+			if (fetchLicense.getValidity().equals(Validity.LICENSED) && isCheckoutTabOpened() && !openedGame) {
+				Display.getDefault().syncExec(() -> {
+					MessageDialog.openInformation(window.getShell(), game.toString(),
+							"Successfully subscribed! Lets start " + game.toString());
+					openBrowserUrl(game.getUrl());
+					String text = window.getWorkbench().getDisplay().getActiveShell().getText();
+					System.out.println(text);
+				});
+			}
+			return;
+		}
+
+		if (event.getTopic().equals(MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT)) {
+			openedGame = false;
+			closeCheckoutTab();
+			return;
+		}
+	}
+
+	private LicenseResponse fetchLicenseStatus(long timeoutInMillis) {
+		LicenseResponse fetchLicense = fetchLicense(SOLUTION_ID);
+		timeoutInMillis += System.currentTimeMillis();
+		while (fetchLicense.getValidity().equals(Validity.WAIT) && System.currentTimeMillis() < timeoutInMillis) {
+			fetchLicense = fetchLicense(SOLUTION_ID);
+		}
+		return fetchLicense;
+	}
+
+	private void closeCheckoutTab() {
+		if (isCheckoutTabOpened()) {
+			IEditorReference checkoutTab = Arrays.stream(window.getActivePage().getEditorReferences())
+					.filter(editor -> editor.getTitle().equals("Commercial Checkout")).findFirst().get();
+			Display.getDefault().syncExec(() -> {
+				window.getActivePage().closeEditor(checkoutTab.getEditor(false), false);
+			});
+			openedGame = false;
+		}
+	}
+
+	private boolean isCheckoutTabOpened() {
+		return Arrays.stream(window.getActivePage().getEditorReferences())
+				.filter(editor -> editor.getTitle().equals("Commercial Checkout")).count() >= 1;
+
+	}
+
 }
