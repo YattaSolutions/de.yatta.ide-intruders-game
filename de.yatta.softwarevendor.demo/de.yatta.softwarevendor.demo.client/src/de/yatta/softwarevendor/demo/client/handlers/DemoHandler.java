@@ -1,5 +1,7 @@
 package de.yatta.softwarevendor.demo.client.handlers;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -12,6 +14,9 @@ import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
@@ -27,6 +32,7 @@ import de.yatta.platform.marketplace.licensing.client.LicensingClient;
 
 public class DemoHandler extends AbstractHandler implements EventHandler {
 
+  private static final String BROWSER_ID = "VENDOR_GAME_BROWSER";
   private static final String SOLUTION_ID = "de.softwarevendor.product";
   private static final String SOLUTION_ID_ONETIMEPURCHASE = "de.softwarevendor.product.onetimepurchase";
   private static final String VENDOR_KEY = "g5JE78Z0UIiQrHCAMjTR";
@@ -95,9 +101,17 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
 
   private void openBrowserUrl(String url) {
     closeCheckoutTab();
-    MarketplaceClientPlugin.getDefault().getSolutionIdToRequest().put("de.softwarevendor.demo.url", url);
-    MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), null);
-    MarketplaceClientPlugin.getDefault().getSolutionIdToRequest().put("de.softwarevendor.demo.url", null);
+    try {
+      IWebBrowser browser = window.getWorkbench().getBrowserSupport().createBrowser(
+          IWorkbenchBrowserSupport.AS_EDITOR,
+          BROWSER_ID,
+          game.toString(),
+          game.toString());
+
+      browser.openURL(new URL(url));
+    } catch (PartInitException | MalformedURLException e) {
+      MessageDialog.openError(window.getShell(), game.toString(), "Game could not be started. Please try again.");
+    }
     openedGame = true;
   }
 
@@ -112,8 +126,6 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
           MessageDialog.openInformation(window.getShell(), game.toString(),
               "Successfully subscribed! Lets start " + game.toString());
           openBrowserUrl(game.getUrl());
-          String text = window.getWorkbench().getDisplay().getActiveShell().getText();
-          System.out.println(text);
         });
       }
       return;
