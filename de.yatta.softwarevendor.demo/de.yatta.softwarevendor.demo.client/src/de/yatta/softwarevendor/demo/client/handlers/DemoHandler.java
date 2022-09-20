@@ -36,12 +36,15 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
   private IWorkbenchWindow window = null;
   private boolean openedGame = false;
 
-  @Override
-  public Object execute(ExecutionEvent event) throws ExecutionException {
-    window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+  public DemoHandler() {
     MarketplaceClientPlugin plugin = MarketplaceClientPlugin.getDefault();
     plugin.registerEventHandler(this, MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT);
     plugin.registerEventHandler(this, MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT);
+  }
+
+  @Override
+  public Object execute(ExecutionEvent event) throws ExecutionException {
+    window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 
     IPartListener2 pl = new IPartListener2() {
       public void partClosed(IWorkbenchPartReference partRef) {
