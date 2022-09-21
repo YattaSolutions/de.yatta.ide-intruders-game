@@ -11,19 +11,17 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import com.yattasolutions.platform.marketplace.client.MarketplaceClient;
 import com.yattasolutions.platform.marketplace.client.MarketplaceClientPlugin;
-import com.yattasolutions.platform.marketplace.client.account.AccountManager;
 
 import de.yatta.platform.marketplace.licensing.client.LicenseRequest;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse;
@@ -40,38 +38,41 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
   private int checkoutDuration = 1; // Time in minutes how long the checkout token is valid
   private Game game = Game.CLUMSY_BIRD;
   private IWorkbenchWindow window = null;
-  private boolean openedGame = false;
+  private boolean startGameAfterLogin;
+  private ServiceRegistration<?> serviceRegistration;
 
   public DemoHandler() {
-    MarketplaceClientPlugin plugin = MarketplaceClientPlugin.getDefault();
-    plugin.registerEventHandler(this, MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT);
-    plugin.registerEventHandler(this, MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT);
+    String[] topics = { MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT, MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT };
+    serviceRegistration = MarketplaceClientPlugin.getDefault().registerEventHandler(this, topics);
+  }
+
+  @Override
+  public void dispose() {
+    super.dispose();
+    serviceRegistration.unregister();
   }
 
   @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
     window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 
-    IPartListener2 pl = new IPartListener2() {
-      public void partClosed(IWorkbenchPartReference partRef) {
-        if (partRef.getTitle().equals("Commercial Checkout"))
-          openedGame = false;
-      }
-
-    };
-    window.getActivePage().addPartListener(pl);
-
-    if (!AccountManager.get().isSignedIn()) {
+    if (MarketplaceClient.get().isAccountLoggedIn()) {
+      checkLicenseAndStartGame();
+    } else {
       MessageDialog.openInformation(window.getShell(), game.toString(),
-          "Hi,\nto play " + game.toString() + " you need to sign in or subscribe for a license.");
+          "Please sign in to play " + game.toString() + ".");
       closeCheckoutTab();
-      MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID);
-      openedGame = true;
-      return null;
-    }
-    final LicenseResponse fetchLicense = fetchLicenseStatus(2000);
 
-    if (fetchLicense.getValidity() == Validity.UNLICENSED) {
+      startGameAfterLogin = true;
+      MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID);
+    }
+    return null;
+  }
+
+  private void checkLicenseAndStartGame() {
+    final LicenseResponse licenseResponse = fetchLicenseStatus(5000);
+
+    if (licenseResponse.getValidity() == Validity.UNLICENSED) {
       String[] buttons = { "Purchase", "Subscribe", "Cancel" };
       MessageDialog dialog = new MessageDialog(window.getShell(), game.toString(), null,
           "We couldn't detect a valid license, please go ahead and purchase or subscribe for a license.",
@@ -85,54 +86,44 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
         closeCheckoutTab();
         MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID);
       }
-    } else if (fetchLicense.getValidity() == Validity.WAIT) {
+    } else if (licenseResponse.getValidity() == Validity.WAIT) {
       MessageDialog.openInformation(window.getShell(), game.toString(),
           "There was an error communicating with the licensing server.");
-    } else if (fetchLicense.getValidity() == Validity.LICENSED) {
-      openBrowserUrl(game.getUrl());
+    } else if (licenseResponse.getValidity() == Validity.LICENSED) {
+      startGame();
     }
-
-    return null;
   }
 
   private LicenseResponse fetchLicense(String solutionId) {
     return LicensingClient.get().queryLicense(new LicenseRequest(solutionId, null, checkoutDuration, VENDOR_KEY));
   }
 
-  private void openBrowserUrl(String url) {
+  private void startGame() {
     closeCheckoutTab();
     try {
+      // @formatter:off
       IWebBrowser browser = window.getWorkbench().getBrowserSupport().createBrowser(
           IWorkbenchBrowserSupport.AS_EDITOR,
           BROWSER_ID,
           game.toString(),
           game.toString());
+      // @formatter:on
 
-      browser.openURL(new URL(url));
+      browser.openURL(new URL(game.getUrl()));
     } catch (PartInitException | MalformedURLException e) {
       MessageDialog.openError(window.getShell(), game.toString(), "Game could not be started. Please try again.");
     }
-    openedGame = true;
   }
 
   @Override
   public void handleEvent(Event event) {
-
-    if (MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT.equals(event.getTopic())) {
-      LicenseResponse licenseResponse = fetchLicenseStatus(1000);
-
-      if (licenseResponse.getValidity() == Validity.LICENSED && findCheckoutTab().isPresent() && !openedGame) {
-        Display.getDefault().syncExec(() -> {
-          MessageDialog.openInformation(window.getShell(), game.toString(),
-              "Successfully subscribed! Lets start " + game.toString());
-          openBrowserUrl(game.getUrl());
-        });
-      }
+    if (MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT.equals(event.getTopic()) && startGameAfterLogin) {
+      Display.getDefault().syncExec(() -> checkLicenseAndStartGame());
+      startGameAfterLogin = false;
       return;
     }
 
     if (MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT.equals(event.getTopic())) {
-      openedGame = false;
       closeCheckoutTab();
       return;
     }
@@ -157,7 +148,6 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
       Display.getDefault().syncExec(() -> {
         window.getActivePage().closeEditor(checkoutTab.getEditor(false), false);
       });
-      openedGame = false;
     });
   }
 
