@@ -2,15 +2,12 @@ package de.yatta.softwarevendor.demo.client.handlers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Optional;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.browser.IWebBrowser;
@@ -40,6 +37,7 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
   private IWorkbenchWindow window = null;
   private boolean startGameAfterLogin;
   private ServiceRegistration<?> serviceRegistration;
+  private IWebBrowser browser;
 
   public DemoHandler() {
     String[] topics = { MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT, MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT };
@@ -61,8 +59,6 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
     } else {
       MessageDialog.openInformation(window.getShell(), game.toString(),
           "Please sign in to play " + game.toString() + ".");
-      closeCheckoutTab();
-
       startGameAfterLogin = true;
       MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID);
     }
@@ -80,10 +76,8 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
       int buttonIndex = dialog.open();
 
       if (buttonIndex == 0) {
-        closeCheckoutTab();
         MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID_ONETIMEPURCHASE);
       } else if (buttonIndex == 1) {
-        closeCheckoutTab();
         MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID);
       }
     } else if (licenseResponse.getValidity() == Validity.WAIT) {
@@ -99,10 +93,9 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
   }
 
   private void startGame() {
-    closeCheckoutTab();
     try {
       // @formatter:off
-      IWebBrowser browser = window.getWorkbench().getBrowserSupport().createBrowser(
+      browser = window.getWorkbench().getBrowserSupport().createBrowser(
           IWorkbenchBrowserSupport.AS_EDITOR,
           BROWSER_ID,
           game.toString(),
@@ -123,8 +116,9 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
       return;
     }
 
-    if (MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT.equals(event.getTopic())) {
-      closeCheckoutTab();
+    if (MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT.equals(event.getTopic()) && browser != null) {
+      browser.close();
+      browser = null;
       return;
     }
   }
@@ -141,19 +135,6 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
       licenseResponse = fetchLicense(SOLUTION_ID);
     }
     return licenseResponse;
-  }
-
-  private void closeCheckoutTab() {
-    findCheckoutTab().ifPresent(checkoutTab -> {
-      Display.getDefault().syncExec(() -> {
-        window.getActivePage().closeEditor(checkoutTab.getEditor(false), false);
-      });
-    });
-  }
-
-  private Optional<IEditorReference> findCheckoutTab() {
-    return Arrays.stream(window.getActivePage().getEditorReferences())
-        .filter(editor -> "Commercial Checkout".equals(editor.getTitle())).findFirst();
   }
 
 }
