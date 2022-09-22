@@ -8,10 +8,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.browser.IWebBrowser;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
@@ -24,10 +23,11 @@ import de.yatta.platform.marketplace.licensing.client.LicenseRequest;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse.Validity;
 import de.yatta.platform.marketplace.licensing.client.LicensingClient;
+import de.yatta.softwarevendor.demo.client.ui.BrowserWrapper;
+import de.yatta.softwarevendor.demo.client.ui.BrowserWrapperInput;
 
 public class DemoHandler extends AbstractHandler implements EventHandler {
 
-  private static final String BROWSER_ID = "VENDOR_GAME_BROWSER";
   private static final String SOLUTION_ID = "de.softwarevendor.product";
   private static final String SOLUTION_ID_ONETIMEPURCHASE = "de.softwarevendor.product.onetimepurchase";
   private static final String VENDOR_KEY = "g5JE78Z0UIiQrHCAMjTR";
@@ -37,7 +37,7 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
   private IWorkbenchWindow window = null;
   private boolean startGameAfterLogin;
   private ServiceRegistration<?> serviceRegistration;
-  private IWebBrowser browser;
+  private IEditorPart gameEditor;
 
   public DemoHandler() {
     String[] topics = { MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT, MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT };
@@ -94,15 +94,9 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
 
   private void startGame() {
     try {
-      // @formatter:off
-      browser = window.getWorkbench().getBrowserSupport().createBrowser(
-          IWorkbenchBrowserSupport.AS_EDITOR,
-          BROWSER_ID,
-          game.toString(),
-          game.toString());
-      // @formatter:on
-
-      browser.openURL(new URL(game.getUrl()));
+      gameEditor = window.getActivePage().openEditor(
+          new BrowserWrapperInput(game.toString(), new URL(game.getUrl())),
+          BrowserWrapper.EDITOR_ID);
     } catch (PartInitException | MalformedURLException e) {
       MessageDialog.openError(window.getShell(), game.toString(), "Game could not be started. Please try again.");
     }
@@ -116,9 +110,9 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
       return;
     }
 
-    if (MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT.equals(event.getTopic()) && browser != null) {
-      browser.close();
-      browser = null;
+    if (MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT.equals(event.getTopic()) && gameEditor != null) {
+      Display.getDefault().syncExec(() -> window.getActivePage().closeEditor(gameEditor, false));
+      gameEditor = null;
       return;
     }
   }

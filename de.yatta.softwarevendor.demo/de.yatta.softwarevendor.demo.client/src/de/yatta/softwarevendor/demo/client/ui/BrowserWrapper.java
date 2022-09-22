@@ -11,6 +11,8 @@ import org.eclipse.ui.part.EditorPart;
 
 public class BrowserWrapper extends EditorPart {
 
+  public static final String EDITOR_ID = "de.yatta.softwarevendor.demo.editors.browserWrapper";
+
   private Browser browser;
 
   @Override

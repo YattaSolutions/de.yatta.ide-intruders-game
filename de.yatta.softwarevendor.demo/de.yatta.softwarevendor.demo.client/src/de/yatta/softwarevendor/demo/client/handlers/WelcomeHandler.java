@@ -11,18 +11,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
+import de.yatta.softwarevendor.demo.client.ui.BrowserWrapper;
 import de.yatta.softwarevendor.demo.client.ui.BrowserWrapperInput;
 
 public class WelcomeHandler extends AbstractHandler {
 
   private static final String BROWSER_TITLE = "Introduction to in-app purchases";
-  private static final String EDITOR_ID = "de.yatta.softwarevendor.demo.editors.browserWrapper";
 
   @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -35,8 +34,7 @@ public class WelcomeHandler extends AbstractHandler {
             URL url = new URL(base, "index.html");
             IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
             IWorkbenchPage page = window.getActivePage();
-            IEditorPart editor = page.openEditor(new BrowserWrapperInput(BROWSER_TITLE, url), EDITOR_ID);
-            window.getShell().addDisposeListener(evt -> page.closeEditor(editor, false));
+            page.openEditor(new BrowserWrapperInput(BROWSER_TITLE, url), BrowserWrapper.EDITOR_ID);
           } catch (PartInitException | IOException e) {
             throw new RuntimeException(e);
           }
