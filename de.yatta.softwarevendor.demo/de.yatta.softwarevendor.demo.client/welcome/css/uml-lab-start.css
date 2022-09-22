@@ -1,0 +1,108 @@
+html{overflow:hidden;overflow-x:hidden;}
+
+body{
+	background: whitesmoke;
+}
+div.logo{
+	padding: 15px;
+}
+div.logo img{
+	float: left;
+	display: inline-block;
+}
+div.logo span{
+	display: inline-block;
+	float: left;
+	font-family: 'PFIsotextProLight', sans-serif;
+	color: #555;
+	font-size: 32px;
+	line-height: 78px;
+	margin-left: 15px;
+	letter-spacing: 2px;
+}
+.container{
+	width: 970px !important;
+}
+.row.header{
+	height: 100px;
+	background: #fff;
+	margin-bottom: 60px;
+}
+div.checkbox{
+	padding-left: 15px;
+}
+div.profilesbox{
+	height: 500px;
+	background: #fa9600;
+	border-radius: 6px;
+	overflow: hidden;
+}
+div.profilesbox a{
+	text-decoration: none;
+	color: #fff;
+}
+div.profilesbox p{
+	color: #fff;
+	padding: 15px;
+}
+div.profilesbox .btn{
+	background: #fff;
+	color: #3c91ff;
+}
+div.changelog{
+	background: #fff;
+	border-radius: 6px;
+	height: 500px;
+}
+div.changelog h3{
+	margin: 0;
+	padding-top: 20px;
+	padding-left: 15px;
+}
+div.changelog ul{
+	list-style: none;
+	padding-left: 10px;
+}
+div.changelog ul li{
+	padding-left: 8px;
+	position: relative;
+}
+div.changelog ul li:before{ 
+	content:"·"; 
+	position: absolute;
+	left: 0;
+	}
+a.more{
+	margin: 23px 15px 0 0;
+}
+.text-left{
+	text-align: left !important;
+}
+.scroll-pane{
+	max-height: 382px;
+}
+.scroll-pane:focus{
+	outline: none;
+}
+.jspVerticalBar{
+    width: 10px;
+    background: none;
+    margin-right: 2px;
+}
+.jspTrack{
+    background: none;
+}
+.jspTrack{
+    background: #fff;
+}
+.jspDrag {
+    background: #fff;
+}
+.jspDrag{
+    background: #888;
+}
+.jspPane{
+	width: 100% !important;
+    padding: 15px !important;
+    padding-right: 20px !important;
+}
