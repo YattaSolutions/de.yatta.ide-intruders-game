@@ -11,7 +11,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -31,8 +33,10 @@ public class WelcomeHandler extends AbstractHandler {
           try {
             URL base = FileLocator.toFileURL(getClass().getResource("/welcome"));
             URL url = new URL(base, "index.html");
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-            page.openEditor(new BrowserWrapperInput(BROWSER_TITLE, url), EDITOR_ID);
+            IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+            IWorkbenchPage page = window.getActivePage();
+            IEditorPart editor = page.openEditor(new BrowserWrapperInput(BROWSER_TITLE, url), EDITOR_ID);
+            window.getShell().addDisposeListener(evt -> page.closeEditor(editor, false));
           } catch (PartInitException | IOException e) {
             throw new RuntimeException(e);
           }
