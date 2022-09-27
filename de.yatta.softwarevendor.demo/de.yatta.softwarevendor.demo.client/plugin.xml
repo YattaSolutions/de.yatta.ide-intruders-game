@@ -103,6 +103,12 @@
             id="de.yatta.softwarevendor.demo.editors.browserWrapper"
             name="Browser Wrapper">
       </editor>
+      <editor
+            class="de.yatta.softwarevendor.demo.client.ui.GameEditor"
+            contributorClass="org.eclipse.ui.part.EditorActionBarContributor"
+            id="de.yatta.softwarevendor.demo.editors.gameEditor"
+            name="Game Editor">
+      </editor>
    </extension>
 
 </plugin>

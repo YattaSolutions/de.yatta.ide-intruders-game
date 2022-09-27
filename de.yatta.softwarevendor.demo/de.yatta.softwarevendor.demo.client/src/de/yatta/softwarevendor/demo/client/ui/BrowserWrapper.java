@@ -43,7 +43,7 @@ public class BrowserWrapper extends EditorPart {
 
   @Override
   public void createPartControl(Composite parent) {
-    browser = new Browser(parent, SWT.NONE);
+    initBrowser(parent);
 
     IEditorInput editorInput = getEditorInput();
     if (editorInput instanceof BrowserWrapperInput) {
@@ -51,6 +51,10 @@ public class BrowserWrapper extends EditorPart {
       browser.setUrl(input.getUrl().toExternalForm());
       setPartName(input.getName());
     }
+  }
+
+  protected void initBrowser(Composite parent) {
+    browser = new Browser(parent, SWT.NONE);
   }
 
   @Override

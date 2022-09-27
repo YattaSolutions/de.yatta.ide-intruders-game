@@ -1,8 +1,5 @@
 package de.yatta.softwarevendor.demo.client.handlers;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -23,8 +20,8 @@ import de.yatta.platform.marketplace.licensing.client.LicenseRequest;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse.Validity;
 import de.yatta.platform.marketplace.licensing.client.LicensingClient;
-import de.yatta.softwarevendor.demo.client.ui.BrowserWrapper;
-import de.yatta.softwarevendor.demo.client.ui.BrowserWrapperInput;
+import de.yatta.softwarevendor.demo.client.ui.GameEditor;
+import de.yatta.softwarevendor.demo.client.ui.GameEditorInput;
 
 public class DemoHandler extends AbstractHandler implements EventHandler {
 
@@ -94,10 +91,8 @@ public class DemoHandler extends AbstractHandler implements EventHandler {
 
   private void startGame() {
     try {
-      gameEditor = window.getActivePage().openEditor(
-          new BrowserWrapperInput(game.toString(), new URL(game.getUrl())),
-          BrowserWrapper.EDITOR_ID);
-    } catch (PartInitException | MalformedURLException e) {
+      gameEditor = window.getActivePage().openEditor(new GameEditorInput(game), GameEditor.EDITOR_ID);
+    } catch (PartInitException e) {
       MessageDialog.openError(window.getShell(), game.toString(), "Game could not be started. Please try again.");
     }
   }
