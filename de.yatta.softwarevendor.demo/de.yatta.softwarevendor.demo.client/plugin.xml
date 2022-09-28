@@ -110,5 +110,11 @@
             name="Game Editor">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="de.yatta.softwarevendor.demo.client.handlers.WelcomePageStartup">
+      </startup>
+   </extension>
 
 </plugin>

@@ -25,6 +25,11 @@ public class WelcomeHandler extends AbstractHandler {
 
   @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
+    showWelcomePage();
+    return null;
+  }
+
+  public static void showWelcomePage() {
     new Job("Show welcome page") {
       @Override
       protected IStatus run(IProgressMonitor monitor) {
@@ -42,7 +47,6 @@ public class WelcomeHandler extends AbstractHandler {
         return Status.OK_STATUS;
       }
     }.schedule();
-    return null;
   }
 
 }
