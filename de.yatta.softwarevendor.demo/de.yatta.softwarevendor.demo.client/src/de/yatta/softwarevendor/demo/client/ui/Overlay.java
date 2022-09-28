@@ -14,12 +14,13 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -41,28 +42,30 @@ public class Overlay {
   public Overlay(Composite parent, IWorkbenchPage page, IEditorPart editor) {
     this.parent = parent;
     overlay = new Shell(parent.getShell(), SWT.NO_TRIM);
-    overlay.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+    overlay.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_TRANSPARENT));
     overlay.setAlpha(500);
     overlay.setLayout(new GridLayout());
 
     contentArea = new Composite(overlay, SWT.NONE);
     contentArea.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true));
-    contentArea.setLayout(new GridLayout());
-    contentArea.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+    GridLayout contentLayout = new GridLayout();
+    contentLayout.marginLeft = 15;
+    contentLayout.marginTop = 12;
+    contentArea.setLayout(contentLayout);
 
     headerLabel = new Label(contentArea, SWT.WRAP);
     FontDescriptor descriptor = FontDescriptor.createFrom(headerLabel.getFont()).setStyle(SWT.BOLD);
     headerLabel.setFont(descriptor.createFont(headerLabel.getDisplay()));
-    headerLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_TRANSPARENT));
     headerLabel.setVisible(false);
 
     descriptionLabel = new Label(contentArea, SWT.WRAP);
-    descriptionLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_TRANSPARENT));
     descriptionLabel.setVisible(false);
 
     buttons = new Composite(contentArea, SWT.NONE);
-    buttons.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_TRANSPARENT));
-    buttons.setLayout(new FillLayout());
+    RowLayout buttonsLayout = new RowLayout();
+    buttonsLayout.center = true;
+    buttonsLayout.spacing = 6;
+    buttons.setLayout(buttonsLayout);
 
     parents = new ArrayList<>();
     Composite c = parent;
@@ -163,6 +166,14 @@ public class Overlay {
     button.addSelectionListener(SelectionListener.widgetSelectedAdapter(consumer));
     button.requestLayout();
     return button;
+  }
+
+  public Link addLink(String text, Consumer<SelectionEvent> consumer) {
+    Link link = new Link(buttons, SWT.NONE);
+    link.setText(text);
+    link.addSelectionListener(SelectionListener.widgetSelectedAdapter(consumer));
+    link.requestLayout();
+    return link;
   }
 
   public boolean isVisible() {

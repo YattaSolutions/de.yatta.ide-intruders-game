@@ -1,8 +1,8 @@
 package de.yatta.softwarevendor.demo.client.ui;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IEditorInput;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
@@ -25,7 +25,7 @@ public class GameEditor extends BrowserWrapper {
 
   private Composite parent;
   private Overlay overlay;
-  private Button signInButton;
+  private Link signInLink;
 
   private ServiceRegistration<?> serviceRegistration;
 
@@ -48,7 +48,7 @@ public class GameEditor extends BrowserWrapper {
 
   @Override
   public void setFocus() {
-    if (overlay != null) {
+    if (overlay != null && overlay.isVisible()) {
       overlay.setFocus();
     } else if (getBrowser() != null) {
       getBrowser().setFocus();
@@ -65,7 +65,7 @@ public class GameEditor extends BrowserWrapper {
     if (!MarketplaceClient.get().isAccountLoggedIn()) {
       showOverlay(true,
           "We couldn't detect a valid license",
-          "To play the game, either sign in with an account with a valid license "
+          "To play the game, either sign in with an account with a valid license"
               + " or purchase or subscribe for a license.");
       return;
     }
@@ -80,25 +80,31 @@ public class GameEditor extends BrowserWrapper {
       MessageDialog.openInformation(getEditorSite().getShell(), getPartName(),
           "There was an error communicating with the licensing server.");
     } else if (licenseResponse.getValidity() == Validity.LICENSED) {
-      overlay.hideOverlay();
+      hideOverlay();
     }
   }
 
-  private void showOverlay(boolean showSignInButton, String headerText, String descriptionText) {
+  private void showOverlay(boolean showSignInLink, String headerText, String descriptionText) {
     if (overlay == null) {
       overlay = new Overlay(parent, getEditorSite().getPage(), this);
       overlay.addButton("Purchase",
           e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID_ONETIMEPURCHASE));
       overlay.addButton("Subscribe",
           e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID));
-      signInButton = overlay.addButton("Sign In",
+      signInLink = overlay.addLink("<a>Sign In</a>",
           e -> MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID));
     }
 
     overlay.setHeaderText(headerText);
     overlay.setDescriptionText(descriptionText);
-    signInButton.setVisible(showSignInButton);
+    signInLink.setVisible(showSignInLink);
     overlay.showOverlay();
+  }
+
+  private void hideOverlay() {
+    if (overlay != null) {
+      overlay.hideOverlay();
+    }
   }
 
   private void afterLoginOrLogout(Event event) {
