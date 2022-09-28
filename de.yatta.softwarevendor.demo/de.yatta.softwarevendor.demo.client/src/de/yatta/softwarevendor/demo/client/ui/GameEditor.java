@@ -4,6 +4,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
 
@@ -81,6 +83,19 @@ public class GameEditor extends BrowserWrapper {
           "There was an error communicating with the licensing server.");
     } else if (licenseResponse.getValidity() == Validity.LICENSED) {
       hideOverlay();
+
+      parent.getDisplay().asyncExec(() -> {
+        IWorkbenchPage page = getEditorSite().getPage();
+        IEditorPart editor = page.getActiveEditor();
+        if ("Commercial Checkout".equals(editor.getTitle())) {
+          page.closeEditor(editor, false);
+          // We are using the same info message here that is shown by the Marketplace when
+          // requesting the checkout page for a solution id that the user is already
+          // subscribed to.
+          MessageDialog.openInformation(getEditorSite().getShell(), getPartName(),
+              "Good news: You're already subscribed.");
+        }
+      });
     }
   }
 
@@ -91,7 +106,7 @@ public class GameEditor extends BrowserWrapper {
           e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID_ONETIMEPURCHASE));
       overlay.addButton("Subscribe",
           e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID));
-      signInLink = overlay.addLink("<a>Sign In</a>",
+      signInLink = overlay.addLink("<a>Sign in</a>",
           e -> MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID));
     }
 
