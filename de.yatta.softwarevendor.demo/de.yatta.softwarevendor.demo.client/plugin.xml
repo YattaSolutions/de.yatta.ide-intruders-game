@@ -16,7 +16,7 @@
       <command
             categoryId="org.eclipse.ui.category.help"
             id="de.yatta.softwarevendor.demo.commands.welcome"
-            name="Introduction to in-app purchases">
+            name="Checkout Demo welcome page">
       </command>
    </extension>
 

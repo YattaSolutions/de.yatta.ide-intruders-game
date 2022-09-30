@@ -29,7 +29,7 @@ import de.yatta.softwarevendor.demo.client.ui.SoftwareVendorPreferencePage;
 
 public class WelcomeHandler extends AbstractHandler {
 
-  private static final String BROWSER_TITLE = "Introduction to in-app purchases";
+  private static final String BROWSER_TITLE = "Checkout Demo";
 
   @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {

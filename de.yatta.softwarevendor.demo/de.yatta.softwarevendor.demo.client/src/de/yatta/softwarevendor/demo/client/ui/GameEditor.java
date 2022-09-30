@@ -123,7 +123,7 @@ public class GameEditor extends BrowserWrapper {
   }
 
   private void afterLoginOrLogout(Event event) {
-    parent.getDisplay().syncExec(() -> checkLicense()); // TODO: close editor after logout!?
+    parent.getDisplay().syncExec(() -> checkLicense());
   }
 
   private LicenseResponse fetchLicenseStatus(final long timeoutInMillis) {
