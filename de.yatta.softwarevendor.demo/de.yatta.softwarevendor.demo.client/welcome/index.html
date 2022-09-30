@@ -1,78 +1,82 @@
 <html>
-  <head>
-	<!-- The spaces below are required to trick the xml parser into using opening and closing tags -->
-    <meta charset="utf-8"> </meta>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"> </meta>
-    <meta name="viewport" content="width=device-width, initial-scale=1"> </meta>
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Vendor Demo Welcome</title>
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet"> </link>
-    
-    <!-- Custom CSS -->
-    <link href="css/bootstrap-reset-yatta.css" rel="stylesheet"> </link>
-    <link href="css/jquery.jscrollpane.css" rel="stylesheet"> </link>
-    <link href="css/uml-lab-start.css" rel="stylesheet"> </link>
+<head>
+  <!-- The spaces below are required to trick the xml parser into using opening and closing tags -->
+  <meta charset="utf-8">
+  </meta>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  </meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  </meta>
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Checkout Demo</title>
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+  <link href="css/main.css" rel="stylesheet">
+  </link>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"> </script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"> </script>
     <![endif]-->
-  </head>
-  <body>
-  	<div class="row header">
-  		<div class="container">
-	  		<div class="logo">
-	  			<img src="img/yatta-solutions-logo.png" alt="" />
-	  			<span class="text-uppercase">Yatta Checkout Demo</span>
-	  		</div>
-  		</div>
-  	</div>
-    <div class="container">
-    	<div class="row">
-			<contentProvider id="fullscreenMenu" class="com.yattasolutions.umllab.intro.MenuContentProvider" pluginId="com.yattasolutions.umllab.intro"></contentProvider>
-			<!--
-    		<div class="col-xs-5 buttons">
-    			<a href="" class="btn btn-lg btn-primary btn-block text-left">From Source Code to UML</a>
-    			<a href="" class="btn btn-lg btn-primary btn-block text-left">Modeling and Code Generation</a>
-    			<a href="" class="btn btn-lg btn-primary btn-block text-left">More Tutorials</a>
-    			<a href="" class="btn btn-lg btn-primary btn-block text-left">Take the UML Lab Tour</a>
-    			<div class="checkbox">
-    			    <label>
-    			      <input type="checkbox"> Show this screen on startup</input>
-    			    </label>
-    			  </div>
-    		</div>
-    		-->
-    		<div class="col-xs-4">
-				<h3 class="text-uppercase">Experience the Yatta Checkout for Eclipse IDE</h3>
-				<div>
-					<p>Use our vendor demo plugin to see how the Yatta Checkout enables 
-					subscriptions and purchases via the Eclipse IDE.</p>
-				</div>
-			</div>
-    	</div>
-        <footer>
-            <input type="checkbox" id="doNotShowWelcomePage"
-                onclick="typeof(doNotShowWelcomePageChecked)=='function' && doNotShowWelcomePageChecked(this.checked)">
-            <label for="doNotShowWelcomePage">Do not show this page on startup</label>
-        </footer>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="header">Getting started with the Yatta Checkout for Eclipse</h1>
+    <p>
+      With the clumsy bird <b>demo</b> solution you can experience and test the <b>Yatta in-app checkout</b>.<br>
+      You can subscribe and cancel a license with the provided test data. No real transaction fees will be charged.
+    </p>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">How to get a license</h4>
+        <p class="card-text">The clumsy bird game is locked until you get a license. To do so you can either click
+          "subscribe" (periodic renewal) or “purchase” (one-time). To continue you will be asked to sign in with your
+          Yatta account.</p>
+      </div>
     </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery.js"> </script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"> </script>
-    <script src="js/jquery.jscrollpane.min.js"> </script>
-    <script src="js/jquery.mousewheel.js"> </script>
-    <script type="text/javascript" id="sourcecode">
-		$(function()
-			{
-				$('.scroll-pane').jScrollPane();
-			});
-	</script>
-  </body>
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Demo billing and payment information</h4>
+        <p class="card-text">The checkout has prefilled test data for billing and payment information. You are
+          purchasing the software with test data, therefore no money will be withdraw from a real bank account. After
+          you press the “Subscribe” or “purchase” button you will receive a climsy bird license and can start using it
+          immediately without entering any license key or leaving your Eclipse IDE.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Managing your solutions</h4>
+        <p class="card-text">You have the ability to manage your licenses in the Yatta <a href="">account
+            management</a>.
+          You can reset your clumsy bird demo to replay the subscription flow.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Start selling your solution</h4>
+        <p class="card-text">If you want to integrate the check out for your own eclipse solution, you can
+          <a href="">become a vendor</a>.
+          Once you agreed to our vendor agreement, you will have access
+          to an integration documentation in your account management.
+        </p>
+      </div>
+    </div>
+
+    <footer class="small">
+      <p>If you have any questions, please <a href="">contact us</a>. We are happy to help.</p>
+      <input type="checkbox" id="doNotShowWelcomePage"
+        onclick="typeof(doNotShowWelcomePageChecked)=='function' && doNotShowWelcomePageChecked(this.checked)">
+      <label for="doNotShowWelcomePage">Do not show this page on startup</label>
+    </footer>
+  </div>
+
+</body>
+
 </html>

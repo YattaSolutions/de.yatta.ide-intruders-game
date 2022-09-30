@@ -1,0 +1,46 @@
+body{
+	font-family: Segoe UI, verdana, sans-serif;
+	font-size: 5px;
+	color: #353535;
+	background: whitesmoke;
+	margin: 0;
+}
+
+h1.header {
+  margin-top: 0;
+  margin-bottom: .8em;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 16px;
+  line-height: 1.6em;
+}
+
+.container {
+    padding: 16px 24px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 8px 12px;
+  box-shadow: 0px 2px 2px -1px rgba(53, 53, 53, 0.15);
+  margin-bottom: 12px;
+}
+
+.card-title {
+  margin-top: 0;
+  margin-bottom: .4em;
+}
+
+.card-text:last-child {
+    margin-bottom: 0;
+}
+
+/*@media (max-width: 576px) {
+    .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}*/
