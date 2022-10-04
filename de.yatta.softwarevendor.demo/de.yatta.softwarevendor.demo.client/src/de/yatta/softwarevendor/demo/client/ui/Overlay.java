@@ -37,10 +37,12 @@ public class Overlay {
   private Label descriptionLabel;
   private Composite buttons;
   private Composite parent;
-  private List<Composite> parents;
+  private List<Composite> ancestors;
 
   public Overlay(Composite parent, IWorkbenchPage page, IEditorPart editor) {
     this.parent = parent;
+
+    // create overlay contents
     overlay = new Shell(parent.getShell(), SWT.NO_TRIM);
     overlay.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_TRANSPARENT));
     overlay.setAlpha(500);
@@ -67,13 +69,15 @@ public class Overlay {
     buttonsLayout.spacing = 6;
     buttons.setLayout(buttonsLayout);
 
-    parents = new ArrayList<>();
+    // determine ancestor composites
+    ancestors = new ArrayList<>();
     Composite c = parent;
     while (c != null) {
-      parents.add(c);
+      ancestors.add(c);
       c = c.getParent();
     }
 
+    // create listeners for disposal, paint, resize and move (not yet adding them)
     disposeListener = evt -> hideOverlay();
     paintListener = evt -> updateOverlay();
     controlListener = new ControlListener() {
@@ -92,18 +96,23 @@ public class Overlay {
     overlay.setVisible(false);
   }
 
+  /**
+   * Show the overlay.
+   */
   public void showOverlay() {
     if (visible) {
       return;
     }
 
+    // make overlay visible and re-calculate its size
     updateOverlay();
 
     overlay.setVisible(true);
     overlay.setFocus();
 
+    // add required listeners to parent and ancestors
     parent.addDisposeListener(disposeListener);
-    parents.forEach(p -> {
+    ancestors.forEach(p -> {
       p.addControlListener(controlListener);
       p.addPaintListener(paintListener);
     });
@@ -111,22 +120,27 @@ public class Overlay {
     visible = true;
   }
 
+  /**
+   * Hide the overlay.
+   */
   public void hideOverlay() {
     if (!visible) {
       return;
     }
 
+    // remove listeners
     if (!parent.isDisposed()) {
       parent.removeDisposeListener(disposeListener);
     }
 
-    parents.stream()
+    ancestors.stream()
         .filter(p -> !p.isDisposed())
         .forEach(p -> {
           p.removeControlListener(controlListener);
           p.removePaintListener(paintListener);
         });
 
+    // hide the overlay
     if (!overlay.isDisposed()) {
       overlay.setVisible(false);
     }
@@ -134,6 +148,9 @@ public class Overlay {
     visible = false;
   }
 
+  /**
+   * Resize the overlay to match the parent composite.
+   */
   private void updateOverlay() {
     if (!parent.isVisible()) {
       overlay.setBounds(0, 0, 0, 0);
@@ -148,18 +165,38 @@ public class Overlay {
     contentArea.setFocus();
   }
 
+  /**
+   * Set the header text. Specifying a non-null value makes the header label
+   * visible, providing {@code null} on the other hand hides the label.
+   * 
+   * @param text the text to be displayed inside the header, can be null
+   */
   public void setHeaderText(String text) {
     headerLabel.setText(text);
     headerLabel.setVisible(text != null);
     headerLabel.requestLayout();
   }
 
+  /**
+   * Set the description text. Specifying a non-null value makes the description
+   * label visible, providing {@code null} on the other hand hides the label.
+   * 
+   * @param text the text to be displayed inside the description, can be null
+   */
   public void setDescriptionText(String text) {
     descriptionLabel.setText(text);
     descriptionLabel.setVisible(text != null);
     descriptionLabel.requestLayout();
   }
 
+  /**
+   * Add a button with the specified text and action to the <i>buttons</i> section
+   * of the overlay.
+   * 
+   * @param text     the text to be displayed on the button
+   * @param consumer the action to perform on selection
+   * @return the button that was created
+   */
   public Button addButton(String text, Consumer<SelectionEvent> consumer) {
     Button button = new Button(buttons, SWT.NONE);
     button.setText(text);
@@ -168,6 +205,14 @@ public class Overlay {
     return button;
   }
 
+  /**
+   * Add a link with the specified text and action to the <i>buttons</i> section
+   * of the overlay.
+   * 
+   * @param text     the text to be displayed on the link
+   * @param consumer the action to perform on selection
+   * @return the link that was created
+   */
   public Link addLink(String text, Consumer<SelectionEvent> consumer) {
     Link link = new Link(buttons, SWT.NONE);
     link.setText(text);

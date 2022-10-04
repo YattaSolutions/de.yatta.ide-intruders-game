@@ -108,6 +108,7 @@ public class GameEditor extends BrowserWrapper {
 
   private void showOverlay(boolean showSignInLink, String headerText, String descriptionText) {
     if (overlay == null) {
+      // create overlay with buttons
       overlay = new Overlay(parent, getEditorSite().getPage(), this);
       overlay.addButton("Purchase",
           e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID_ONETIMEPURCHASE));
@@ -117,6 +118,7 @@ public class GameEditor extends BrowserWrapper {
           e -> MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID));
     }
 
+    // update overlay with specified texts and show/hide the sign-in link
     overlay.setHeaderText(headerText);
     overlay.setDescriptionText(descriptionText);
     signInLink.setVisible(showSignInLink);
@@ -130,12 +132,15 @@ public class GameEditor extends BrowserWrapper {
   }
 
   private void afterLoginOrLogout(Event event) {
+    // after login or logout, check the license and hide/display the license overlay
     parent.getDisplay().syncExec(() -> checkLicense());
   }
 
   private LicenseResponse fetchLicenseStatus(final long timeoutInMillis) {
+    // check if the license is valid
     LicenseResponse licenseResponse = fetchLicense(SOLUTION_ID);
     final long tryUntil = System.currentTimeMillis() + timeoutInMillis;
+    // repeat the call for the specified interval while the validity is "WAIT"
     while (licenseResponse.getValidity() == Validity.WAIT && System.currentTimeMillis() <= tryUntil) {
       try {
         Thread.sleep(500);
