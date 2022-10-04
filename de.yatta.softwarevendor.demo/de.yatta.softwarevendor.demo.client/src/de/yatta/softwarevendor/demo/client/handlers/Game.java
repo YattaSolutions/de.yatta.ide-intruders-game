@@ -5,7 +5,7 @@ public enum Game {
   TILES_2048("2048", "http://axilleasiv.github.io/vue2048/"),
   CLUMSY_BIRD("Clumsy Bird", "http://ellisonleao.github.io/clumsy-bird/"),
   PACMAN("Pacman", "https://pacman.platzh1rsch.ch/"),
-  SPACE_INVADERS("Space Invaders", "/space-invaders/index.html/");
+  SPACE_INVADERS("Space Invaders", "space-invaders/index.html");
 
   private final String url;
   private final String name;
