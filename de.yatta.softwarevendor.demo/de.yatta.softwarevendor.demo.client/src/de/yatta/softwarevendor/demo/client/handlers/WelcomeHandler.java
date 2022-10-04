@@ -49,8 +49,9 @@ public class WelcomeHandler extends AbstractHandler {
             // activate checkbox if setting is active
             final Preferences preferences = InstanceScope.INSTANCE.getNode(VendorDemoPlugin.PLUGIN_ID);
             if (preferences.getBoolean(SoftwareVendorPreferencePage.DO_NOT_SHOW_WELCOME_PAGE, false)) {
-              String script = "document.getElementById('" + SoftwareVendorPreferencePage.DO_NOT_SHOW_WELCOME_PAGE
-                  + "').checked=true";
+              String script = "let checkbox = document.getElementById('"
+                  + SoftwareVendorPreferencePage.DO_NOT_SHOW_WELCOME_PAGE + "');"
+                  + "if(checkbox){checkbox.checked=true;}";
               browser.addProgressListener(ProgressListener.completedAdapter(evt -> browser.execute(script)));
             }
 
