@@ -1,5 +1,9 @@
 package de.yatta.softwarevendor.demo.client.ui;
 
+import java.io.IOException;
+import java.net.URL;
+
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -48,7 +52,7 @@ public class BrowserWrapper extends EditorPart {
     IEditorInput editorInput = getEditorInput();
     if (editorInput instanceof BrowserWrapperInput) {
       BrowserWrapperInput input = (BrowserWrapperInput) editorInput;
-      browser.setUrl(input.getUrl().toExternalForm());
+      browser.setUrl(input.getUrl());
       setPartName(input.getName());
     }
   }
@@ -64,6 +68,23 @@ public class BrowserWrapper extends EditorPart {
 
   public Browser getBrowser() {
     return browser;
+  }
+
+  public static String buildFileUrlForResource(String resource) {
+    try {
+      ClassLoader classLoader = BrowserWrapper.class.getClassLoader();
+      int index = resource.indexOf("/", 1) + 1;
+      if (index > 1 && index < resource.length()) {
+        // get base folder first; the content is extracted to a cache if necessary
+        // (e.g. if the files are located inside the jar)
+        String base = resource.substring(0, index);
+        FileLocator.toFileURL(classLoader.getResource(base));
+      }
+      URL url = FileLocator.toFileURL(classLoader.getResource(resource));
+      return url.toExternalForm();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 }

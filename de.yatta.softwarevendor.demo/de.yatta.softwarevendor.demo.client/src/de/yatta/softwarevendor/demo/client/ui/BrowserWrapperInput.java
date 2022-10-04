@@ -1,6 +1,5 @@
 package de.yatta.softwarevendor.demo.client.ui;
 
-import java.net.URL;
 import java.util.Objects;
 
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -10,9 +9,9 @@ import org.eclipse.ui.IPersistableElement;
 public class BrowserWrapperInput implements IEditorInput {
 
   private final String title;
-  private final URL url;
+  private final String url;
 
-  public BrowserWrapperInput(String title, URL url) {
+  public BrowserWrapperInput(String title, String url) {
     super();
     this.title = title;
     this.url = url;
@@ -52,7 +51,7 @@ public class BrowserWrapperInput implements IEditorInput {
     return title;
   }
 
-  public URL getUrl() {
+  public String getUrl() {
     return url;
   }
 

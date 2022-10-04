@@ -1,12 +1,8 @@
 package de.yatta.softwarevendor.demo.client.handlers;
 
-import java.io.IOException;
-import java.net.URL;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -43,8 +39,7 @@ public class WelcomeHandler extends AbstractHandler {
       protected IStatus run(IProgressMonitor monitor) {
         PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
           try {
-            URL base = FileLocator.toFileURL(getClass().getResource("/welcome"));
-            URL url = new URL(base, "index.html");
+            String url = BrowserWrapper.buildFileUrlForResource("welcome/index.html");
             IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
             IWorkbenchPage page = window.getActivePage();
             BrowserWrapper browserWrapper = (BrowserWrapper) page
@@ -75,7 +70,7 @@ public class WelcomeHandler extends AbstractHandler {
                 return true;
               }
             };
-          } catch (PartInitException | IOException e) {
+          } catch (PartInitException e) {
             throw new RuntimeException(e);
           }
         });

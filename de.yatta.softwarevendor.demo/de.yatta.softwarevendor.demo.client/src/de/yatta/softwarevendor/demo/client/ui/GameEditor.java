@@ -39,7 +39,14 @@ public class GameEditor extends BrowserWrapper {
     IEditorInput editorInput = getEditorInput();
     if (editorInput instanceof GameEditorInput) {
       GameEditorInput input = (GameEditorInput) editorInput;
-      getBrowser().setUrl(input.getGame().getUrl());
+
+      String gameUrl = input.getGame().getUrl();
+      if (!gameUrl.contains(":")) {
+        // no protocol specified -> bundled resource
+        gameUrl = buildFileUrlForResource(gameUrl);
+      }
+
+      getBrowser().setUrl(gameUrl);
       setPartName(input.getName());
     }
 
