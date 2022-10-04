@@ -1,9 +1,9 @@
-body{
-	font-family: Segoe UI, verdana, sans-serif;
-	font-size: 5px;
-	color: #353535;
-	background: whitesmoke;
-	margin: 0;
+body {
+			  font-family: Segoe UI, verdana, sans-serif;
+	  font-size: 5px;
+	  color: #353535;
+	  background: whitesmoke;
+	  margin: 0;
 }
 
 h1.header {
@@ -18,24 +18,24 @@ p {
 }
 
 .container {
-    padding: 16px 24px;
+    padding: 3.2em 4.8em;
 }
 
 .card {
   background-color: #fff;
-  border-radius: 4px;
-  padding: 8px 12px;
-  box-shadow: 0px 2px 2px -1px rgba(53, 53, 53, 0.15);
-  margin-bottom: 12px;
+  border-radius: .8em;
+  padding: 1.6em 2.4em;
+  box-shadow: 0 .4em .4em -.2em rgba(53, 53, 53, 0.15);
+  margin-bottom: 2.4em;
 
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 10px;
+  gap: 2em;
 }
 
 .card-image:last-child {
-  margin-left: 10px;
+  margin-left: 2em;
 }
 
 .card-title {
