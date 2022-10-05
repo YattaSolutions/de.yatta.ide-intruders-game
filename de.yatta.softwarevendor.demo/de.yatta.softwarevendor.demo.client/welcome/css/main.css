@@ -1,9 +1,9 @@
 body {
-			  font-family: Segoe UI, verdana, sans-serif;
-	  font-size: 5px;
-	  color: #353535;
-	  background: whitesmoke;
-	  margin: 0;
+  font-family: Segoe UI, verdana, sans-serif;
+  font-size: 12px;
+  color: #353535;
+  background: whitesmoke;
+  margin: 0;
 }
 
 h1.header {
@@ -18,7 +18,7 @@ p {
 }
 
 .container {
-    padding: 3.2em 4.8em;
+  padding: 3.2em 4.8em;
 }
 
 .card {
@@ -44,7 +44,7 @@ p {
 }
 
 .card-text:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 /*@media (max-width: 576px) {
