@@ -34,8 +34,21 @@ p {
   gap: 2em;
 }
 
-.card-image:last-child {
+.card-image {
   margin-left: 2em;
+  flex: 0 0 30%;
+  width: 30%;
+  min-width: 300px;
+}
+
+div.card-image {
+  border-radius: 0.8em;
+  background-color: #f0f0f0;
+  padding: 1em 0;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .card-title {
