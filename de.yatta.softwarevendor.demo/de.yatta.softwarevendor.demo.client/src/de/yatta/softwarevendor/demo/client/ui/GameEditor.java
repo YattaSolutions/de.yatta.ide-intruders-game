@@ -1,6 +1,7 @@
 package de.yatta.softwarevendor.demo.client.ui;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IEditorInput;
@@ -51,6 +52,10 @@ public class GameEditor extends BrowserWrapper {
     checkLicense();
     String[] topics = { MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT, MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT };
     serviceRegistration = MarketplaceClientPlugin.getDefault().registerEventHandler(this::afterLoginOrLogout, topics);
+
+    getBrowser().addProgressListener(ProgressListener.completedAdapter(e->{
+      openExternalSitesInExternalBrowser(true);
+    }));
   }
 
   @Override
@@ -65,7 +70,9 @@ public class GameEditor extends BrowserWrapper {
   @Override
   public void dispose() {
     super.dispose();
-    serviceRegistration.unregister();
+    if (serviceRegistration != null) {
+      serviceRegistration.unregister();
+    }
   }
 
   private void checkLicense() {
@@ -108,12 +115,16 @@ public class GameEditor extends BrowserWrapper {
     overlay.setDescriptionText(descriptionText);
     signInLink.setVisible(showSignInLink);
     overlay.showOverlay();
+
+    parent.getDisplay().asyncExec(() -> getBrowser().execute("showOverlay(" + overlay.getPanelHeight() + ")"));
   }
 
   private void hideOverlay() {
     if (overlay != null) {
       overlay.hideOverlay();
     }
+
+    getBrowser().execute("showOverlay(0)");
   }
 
   private void afterLoginOrLogout(Event event) {

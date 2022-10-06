@@ -1,8 +1,8 @@
 body, html{
-  background-color: #222;
+  background-color: #000;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  margin: 0;
 }
 
 canvas {
@@ -18,4 +18,38 @@ canvas {
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: optimize-contrast
+}
+
+.panel-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 5px;
+
+  background-color: #f2f2f2;
+}
+
+.panel-overlay#vendor-panel {
+  padding: 16px 28px;
+  opacity: 0.85;
+
+  font-family: 'Segoe UI', verdana, sans-serif;
+  font-size: 12px;
+  color: #2f2f2f;
+}
+
+.panel-overlay button {
+  font-family: inherit;
+  font-size: inherit;
+  margin-right: 10px;
+}
+
+.panel-overlay a {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.panel-overlay .header {
+  margin-bottom: 10px;
 }

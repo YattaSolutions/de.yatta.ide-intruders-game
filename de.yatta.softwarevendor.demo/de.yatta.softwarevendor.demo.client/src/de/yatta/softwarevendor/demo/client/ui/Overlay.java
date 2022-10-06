@@ -45,7 +45,7 @@ public class Overlay {
     // create overlay contents
     overlay = new Shell(parent.getShell(), SWT.NO_TRIM);
     overlay.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_TRANSPARENT));
-    overlay.setAlpha(500);
+    overlay.setAlpha(480);
     overlay.setLayout(new GridLayout());
 
     contentArea = new Composite(overlay, SWT.NONE);
@@ -223,5 +223,9 @@ public class Overlay {
 
   public boolean isVisible() {
     return visible;
+  }
+
+  public int getPanelHeight() {
+    return contentArea.getBounds().height;
   }
 }
