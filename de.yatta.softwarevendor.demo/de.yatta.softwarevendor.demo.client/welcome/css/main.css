@@ -8,43 +8,52 @@ body {
 
 h1.header {
   margin-top: 0;
-  margin-bottom: .8em;
+  margin-bottom: 8px;
 }
 
 p {
   margin-top: 0;
-  margin-bottom: 3.2em;
-  line-height: 1.6em;
+  margin-bottom: 16px;
+  line-height: 16px;
+}
+
+a {
+  text-decoration: none;
+  color: #3c91ff;
+}
+
+a:hover {
+  color: #257ae9
 }
 
 .container {
-  padding: 3.2em 4.8em;
+  padding: 16px 24px;
 }
 
 .card {
   background-color: #fff;
-  border-radius: .8em;
-  padding: 1.6em 2.4em;
-  box-shadow: 0 .4em .4em -.2em rgba(53, 53, 53, 0.15);
-  margin-bottom: 2.4em;
+  border-radius: 4px;
+  padding: 12px;
+  box-shadow: 0 2px 2px -1px rgba(53, 53, 53, 0.15);
+  margin-bottom: 12px;
 
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 2em;
+  gap: 10px;
 }
 
 .card-image {
-  margin-left: 2em;
+  margin-left: 10px;
   flex: 0 0 30%;
   width: 30%;
   min-width: 300px;
 }
 
 div.card-image {
-  border-radius: 0.8em;
+  border-radius: 4px;
   background-color: #f0f0f0;
-  padding: 1em 0;
+  padding: 5px 0;
 
   display: flex;
   align-items: stretch;
@@ -53,7 +62,7 @@ div.card-image {
 
 .card-title {
   margin-top: 0;
-  margin-bottom: .4em;
+  margin-bottom: 8px;
 }
 
 .card-text:last-child {
