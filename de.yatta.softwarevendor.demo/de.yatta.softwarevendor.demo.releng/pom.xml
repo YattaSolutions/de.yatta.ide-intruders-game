@@ -19,6 +19,7 @@
       <module>../de.yatta.softwarevendor.demo.client</module>
       <module>../de.yatta.softwarevendor.demo.feature</module>
       <module>../de.yatta.softwarevendor.demo.site</module>
+      <module>../de.yatta.softwarevendor.demo.product</module>
   </modules>
 
 </project>
