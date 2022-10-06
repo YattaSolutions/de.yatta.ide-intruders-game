@@ -1,6 +1,5 @@
 package de.yatta.softwarevendor.demo.client.ui;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
@@ -91,8 +90,9 @@ public class GameEditor extends BrowserWrapper {
           "We couldn't detect a valid license",
           "To play the game, please purchase or subscribe for a license.");
     } else if (licenseResponse.getValidity() == Validity.WAIT) {
-      MessageDialog.openInformation(getEditorSite().getShell(), getPartName(),
-          "There was an error communicating with the licensing server.");
+      showOverlay(false,
+          "There was an error communicating with the licensing server",
+          "Please check your connection and try again.");
     } else if (licenseResponse.getValidity() == Validity.LICENSED) {
       hideOverlay();
     }
