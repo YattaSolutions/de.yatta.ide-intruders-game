@@ -6,11 +6,6 @@ body {
   margin: 0;
 }
 
-h1.header {
-  margin-top: 0;
-  margin-bottom: 8px;
-}
-
 p {
   margin-top: 0;
   margin-bottom: 16px;
@@ -60,7 +55,7 @@ div.card-image {
   justify-content: center;
 }
 
-.card-title {
+.title {
   margin-top: 0;
   margin-bottom: 8px;
 }
