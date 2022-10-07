@@ -1,5 +1,6 @@
 package de.yatta.softwarevendor.demo.client.ui;
 
+import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
@@ -52,9 +53,17 @@ public class GameEditor extends BrowserWrapper {
     String[] topics = { MarketplaceClient.ACCOUNT_LOGGED_IN_EVENT, MarketplaceClient.ACCOUNT_LOGGED_OUT_EVENT };
     serviceRegistration = MarketplaceClientPlugin.getDefault().registerEventHandler(this::afterLoginOrLogout, topics);
 
-    getBrowser().addProgressListener(ProgressListener.completedAdapter(e->{
+    getBrowser().addProgressListener(ProgressListener.completedAdapter(e -> {
       openExternalSitesInExternalBrowser(true);
     }));
+
+    new BrowserFunction(getBrowser(), "resetDemo") {
+      @Override
+      public Object function(Object[] arguments) {
+        MarketplaceClient.get().showCancelDialog(parent.getDisplay(), SOLUTION_ID);
+        return null;
+      }
+    };
   }
 
   @Override
