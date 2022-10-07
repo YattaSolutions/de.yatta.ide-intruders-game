@@ -85,26 +85,31 @@ public class GameEditor extends BrowserWrapper {
 
   private void checkLicense() {
     if (!MarketplaceClient.get().isAccountLoggedIn()) {
-      showOverlay(true,
-          "We couldn't detect a valid license",
-          "To play the game, either sign in with an account with a valid license"
-              + " or purchase or subscribe for a license.");
+      showOverlay(true);
       return;
     }
 
     final LicenseResponse licenseResponse = fetchLicenseStatus(5000);
 
-    if (licenseResponse.getValidity() == Validity.UNLICENSED) {
-      showOverlay(false,
-          "We couldn't detect a valid license",
-          "To play the game, please purchase or subscribe for a license.");
+    if (licenseResponse.getValidity() == Validity.LICENSED) {
+      hideOverlay();
     } else if (licenseResponse.getValidity() == Validity.WAIT) {
       showOverlay(false,
           "There was an error communicating with the licensing server",
           "Please check your connection and try again.");
-    } else if (licenseResponse.getValidity() == Validity.LICENSED) {
-      hideOverlay();
+    } else {
+      showOverlay(false);
     }
+  }
+
+  /**
+   * Show overlay with default message.
+   * 
+   * @param showSignInLink whether to show the sign in link or not.
+   */
+  private void showOverlay(boolean showSignInLink) {
+    showOverlay(showSignInLink, null,
+        "We couldn't detect a valid license, please go ahead and purchase or subscribe for a license.");
   }
 
   private void showOverlay(boolean showSignInLink, String headerText, String descriptionText) {

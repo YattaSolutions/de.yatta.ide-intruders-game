@@ -58,10 +58,8 @@ public class Overlay {
     headerLabel = new Label(contentArea, SWT.WRAP);
     FontDescriptor descriptor = FontDescriptor.createFrom(headerLabel.getFont()).setStyle(SWT.BOLD);
     headerLabel.setFont(descriptor.createFont(headerLabel.getDisplay()));
-    headerLabel.setVisible(false);
 
     descriptionLabel = new Label(contentArea, SWT.WRAP);
-    descriptionLabel.setVisible(false);
 
     buttons = new Composite(contentArea, SWT.NONE);
     RowLayout buttonsLayout = new RowLayout();
@@ -172,9 +170,7 @@ public class Overlay {
    * @param text the text to be displayed inside the header, can be null
    */
   public void setHeaderText(String text) {
-    headerLabel.setText(text);
-    headerLabel.setVisible(text != null);
-    headerLabel.requestLayout();
+    setLabelText(headerLabel, text);
   }
 
   /**
@@ -184,9 +180,28 @@ public class Overlay {
    * @param text the text to be displayed inside the description, can be null
    */
   public void setDescriptionText(String text) {
-    descriptionLabel.setText(text);
-    descriptionLabel.setVisible(text != null);
-    descriptionLabel.requestLayout();
+    setLabelText(descriptionLabel, text);
+  }
+
+  private static void setLabelText(Label label, String text) {
+    final boolean visible = text != null;
+    boolean changed = false;
+    if (visible != label.isVisible()) {
+      label.setVisible(visible);
+      changed = true;
+    }
+    if(((GridData) label.getLayoutData()).exclude == visible) {
+      ((GridData) label.getLayoutData()).exclude = !visible;
+      changed = true;
+    }
+    if (text != null && !text.equals(label.getText())) {
+      label.setText(text);
+      changed = true;
+    }
+    if (changed) {
+      label.requestLayout();
+      label.getParent().layout(true, true);
+    }
   }
 
   /**
