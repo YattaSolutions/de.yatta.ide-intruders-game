@@ -36,6 +36,11 @@
       <url>${ymp-repo.url}</url>
       <layout>p2</layout>
     </repository>
+    <repository>
+      <id>justj</id>
+      <url>https://download.eclipse.org/justj/jres/11/updates/release/latest/</url>
+      <layout>p2</layout>
+    </repository>
   </repositories>
 
   <build>
@@ -89,14 +94,7 @@
                 <arch>x86_64</arch>
               </environment>
             </environments>
-            <target>
-              <artifact>
-                <groupId>de.yatta.softwarevendor.demo</groupId>
-                <artifactId>de.yatta.softwarevendor.demo.client</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
-                <classifier>softwarevendor-target</classifier>
-              </artifact>
-            </target>
+            <executionEnvironment>org.eclipse.justj.openjdk.hotspot.jre.full-11</executionEnvironment>
           </configuration>
         </plugin>
         <plugin>
