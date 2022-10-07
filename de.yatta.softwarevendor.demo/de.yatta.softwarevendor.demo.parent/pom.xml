@@ -7,9 +7,8 @@
   <version>1.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-
   <properties>
-    <tycho.version>1.3.0</tycho.version>
+    <tycho.version>2.7.5</tycho.version>
     <bundle-ee>SYSTEM</bundle-ee>
     <repo-base.url>http://download.eclipse.org</repo-base.url>
     <ymp-repo.url>https://cdn.yatta.de/stage/update/marketplace</ymp-repo.url>
