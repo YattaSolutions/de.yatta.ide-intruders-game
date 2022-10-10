@@ -53,3 +53,8 @@ canvas {
 .panel-overlay .header {
   margin-bottom: 10px;
 }
+
+@font-face {
+  font-family: 'Hiro Mono';
+  src: url('HiroMonoTT20220818-Regular.ttf');
+}

@@ -769,7 +769,7 @@ function drawIntoCanvas(width, height, drawFunc) {
 
 function fillText(text, x, y, color, fontSize) {
   if (typeof color !== "undefined") ctx.fillStyle = color;
-  if (typeof fontSize !== "undefined") ctx.font = fontSize + "px Play";
+  if (typeof fontSize !== "undefined") ctx.font = fontSize + "px 'Hiro Mono'";
   ctx.fillText(text, x, y);
 }
 
@@ -794,15 +794,15 @@ function drawBottomHud() {
     player.clipRect.y,
     player.clipRect.w,
     player.clipRect.h,
-    45,
+    60,
     CANVAS_HEIGHT - 23,
     player.clipRect.w * 0.5,
     player.clipRect.h * 0.5
   );
-  fillText("press X to shoot", CANVAS_WIDTH - 150, CANVAS_HEIGHT - 7.5);
+  fillText("Press 'x' to shoot", CANVAS_WIDTH - 220, CANVAS_HEIGHT - 7.5);
   fillCenteredText(
-    "SCORE: " + player.score,
-    CANVAS_WIDTH / 2,
+    "Score: " + player.score,
+    CANVAS_WIDTH / 2 - 70,
     CANVAS_HEIGHT - 7.5
   );
 }
@@ -830,10 +830,10 @@ function drawStartScreen() {
     36
   );
   fillBlinkingText(
-    "Press enter to play!",
+    "Press 'Enter' to play!",
     CANVAS_WIDTH / 2,
     CANVAS_HEIGHT / 2,
-    500,
+    900,
     "#FFFFFF",
     36
   );
