@@ -39,6 +39,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
    </license>
 
+   <requires>
+      <import feature="com.yattasolutions.platform.marketplace.client.feature" version="2.0.7.202209151552"/>
+   </requires>
+
    <plugin
          id="de.yatta.softwarevendor.demo.client"
          download-size="0"
