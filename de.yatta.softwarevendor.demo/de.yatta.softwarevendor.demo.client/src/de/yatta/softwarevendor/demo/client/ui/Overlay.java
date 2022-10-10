@@ -38,6 +38,7 @@ public class Overlay {
   private Composite buttons;
   private Composite parent;
   private List<Composite> ancestors;
+  private Runnable updateListener;
 
   public Overlay(Composite parent, IWorkbenchPage page, IEditorPart editor) {
     this.parent = parent;
@@ -157,6 +158,10 @@ public class Overlay {
     Point point = parent.toDisplay(0, 0);
     Rectangle bounds = parent.getBounds();
     overlay.setBounds(point.x, point.y, bounds.width, bounds.height);
+
+    if (updateListener != null) {
+      updateListener.run();
+    }
   }
 
   public void setFocus() {
@@ -190,7 +195,7 @@ public class Overlay {
       label.setVisible(visible);
       changed = true;
     }
-    if(((GridData) label.getLayoutData()).exclude == visible) {
+    if (((GridData) label.getLayoutData()).exclude == visible) {
       ((GridData) label.getLayoutData()).exclude = !visible;
       changed = true;
     }
@@ -242,5 +247,9 @@ public class Overlay {
 
   public int getPanelHeight() {
     return contentArea.getBounds().height;
+  }
+  
+  public void setUpdateListener(Runnable updateListener) {
+    this.updateListener = updateListener;
   }
 }

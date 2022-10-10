@@ -122,6 +122,8 @@ public class GameEditor extends BrowserWrapper {
           e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID));
       signInLink = overlay.addLink("<a>Sign in</a>",
           e -> MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID));
+
+      overlay.setUpdateListener(() -> getBrowser().execute("showOverlay(" + overlay.getPanelHeight() + ")"));
     }
 
     // update overlay with specified texts and show/hide the sign-in link
@@ -129,8 +131,6 @@ public class GameEditor extends BrowserWrapper {
     overlay.setDescriptionText(descriptionText);
     signInLink.setVisible(showSignInLink);
     overlay.showOverlay();
-
-    parent.getDisplay().asyncExec(() -> getBrowser().execute("showOverlay(" + overlay.getPanelHeight() + ")"));
   }
 
   private void hideOverlay() {
