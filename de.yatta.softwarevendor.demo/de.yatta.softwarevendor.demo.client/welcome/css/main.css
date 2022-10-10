@@ -25,6 +25,11 @@ a:hover {
   padding: 16px 24px;
 }
 
+img.hiro {
+  float: right;
+  width: 24px;
+}
+
 .card {
   background-color: #fff;
   border-radius: 4px;
