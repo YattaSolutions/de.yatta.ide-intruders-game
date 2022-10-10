@@ -5,6 +5,10 @@ import org.osgi.framework.BundleContext;
 
 public class VendorDemoPlugin extends AbstractUIPlugin {
 
+  public static final String SOLUTION_ID = "de.softwarevendor.product";
+  public static final String SOLUTION_ID_ONETIMEPURCHASE = "de.softwarevendor.product.onetimepurchase";
+  public static final String VENDOR_KEY = "DEMO";
+
   public static final String PLUGIN_ID = "de.yatta.softwarevendor.demo.client";
 
   private static VendorDemoPlugin instance;

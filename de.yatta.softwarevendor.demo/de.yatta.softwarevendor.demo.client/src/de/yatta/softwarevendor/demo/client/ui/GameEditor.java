@@ -15,15 +15,12 @@ import com.yattasolutions.platform.marketplace.client.MarketplaceClientPlugin;
 import de.yatta.platform.marketplace.licensing.client.LicenseRequest;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse.Validity;
+import de.yatta.softwarevendor.demo.VendorDemoPlugin;
 import de.yatta.platform.marketplace.licensing.client.LicensingClient;
 
 public class GameEditor extends BrowserWrapper {
 
   public static final String EDITOR_ID = "de.yatta.softwarevendor.demo.editors.gameEditor";
-
-  private static final String SOLUTION_ID = "de.softwarevendor.product";
-  private static final String SOLUTION_ID_ONETIMEPURCHASE = "de.softwarevendor.product.onetimepurchase";
-  private static final String VENDOR_KEY = "g5JE78Z0UIiQrHCAMjTR";
 
   private Composite parent;
   private Overlay overlay;
@@ -65,7 +62,7 @@ public class GameEditor extends BrowserWrapper {
     new BrowserFunction(getBrowser(), "resetDemo") {
       @Override
       public Object function(Object[] arguments) {
-        MarketplaceClient.get().showCancelDialog(parent.getDisplay(), SOLUTION_ID);
+        MarketplaceClient.get().showCancelDialog(parent.getDisplay(), VendorDemoPlugin.SOLUTION_ID);
         return null;
       }
     };
@@ -122,11 +119,11 @@ public class GameEditor extends BrowserWrapper {
       // create overlay with buttons
       overlay = new Overlay(parent, getEditorSite().getPage(), this);
       overlay.addButton("Purchase",
-          e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID_ONETIMEPURCHASE));
+          e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE));
       overlay.addButton("Subscribe",
-          e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID));
+          e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID));
       signInLink = overlay.addLink("<a>Sign in</a>",
-          e -> MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), SOLUTION_ID));
+          e -> MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID));
 
       overlay.setUpdateListener(() -> getBrowser().execute("showOverlay(" + overlay.getPanelHeight() + ")"));
     }
@@ -153,7 +150,7 @@ public class GameEditor extends BrowserWrapper {
 
   private LicenseResponse fetchLicenseStatus(final long timeoutInMillis) {
     // check if the license is valid
-    LicenseResponse licenseResponse = fetchLicense(SOLUTION_ID);
+    LicenseResponse licenseResponse = fetchLicense(VendorDemoPlugin.SOLUTION_ID);
     final long tryUntil = System.currentTimeMillis() + timeoutInMillis;
     // repeat the call for the specified interval while the validity is "WAIT"
     while (licenseResponse.getValidity() == Validity.WAIT && System.currentTimeMillis() <= tryUntil) {
@@ -162,12 +159,12 @@ public class GameEditor extends BrowserWrapper {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      licenseResponse = fetchLicense(SOLUTION_ID);
+      licenseResponse = fetchLicense(VendorDemoPlugin.SOLUTION_ID);
     }
     return licenseResponse;
   }
 
   private LicenseResponse fetchLicense(String solutionId) {
-    return LicensingClient.get().queryLicense(new LicenseRequest(solutionId, null, 1, VENDOR_KEY));
+    return LicensingClient.get().queryLicense(new LicenseRequest(solutionId, null, 1, VendorDemoPlugin.VENDOR_KEY));
   }
 }
