@@ -1,5 +1,6 @@
 package de.yatta.softwarevendor.demo.client.ui;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
@@ -47,6 +48,10 @@ public class GameEditor extends BrowserWrapper {
 
       getBrowser().setUrl(gameUrl);
       setPartName(input.getName());
+      String titleImage = input.getGame().getTitleImage();
+      if (titleImage != null) {
+        setTitleImage(ImageDescriptor.createFromFile(getClass(), titleImage).createImage());
+      }
     }
 
     checkLicense();

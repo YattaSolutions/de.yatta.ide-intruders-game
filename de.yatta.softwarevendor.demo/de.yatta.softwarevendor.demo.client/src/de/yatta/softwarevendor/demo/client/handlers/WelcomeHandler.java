@@ -43,7 +43,7 @@ public class WelcomeHandler extends AbstractHandler {
             IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
             IWorkbenchPage page = window.getActivePage();
             BrowserWrapper browserWrapper = (BrowserWrapper) page
-                .openEditor(new BrowserWrapperInput(BROWSER_TITLE, url), BrowserWrapper.EDITOR_ID);
+                .openEditor(new BrowserWrapperInput(BROWSER_TITLE, url, "/icons/yatta-icon-16x16.png"), BrowserWrapper.EDITOR_ID);
             Browser browser = browserWrapper.getBrowser();
 
             // activate checkbox if setting is active

@@ -6,6 +6,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationListener;
@@ -59,6 +60,11 @@ public class BrowserWrapper extends EditorPart {
     if (editorInput instanceof BrowserWrapperInput) {
       BrowserWrapperInput input = (BrowserWrapperInput) editorInput;
       browser.setUrl(input.getUrl());
+
+      String titleImage = input.getTitleImage();
+      if (titleImage != null) {
+        setTitleImage(ImageDescriptor.createFromFile(getClass(), titleImage).createImage());
+      }
     }
 
     openExternalSitesInExternalBrowser(true);
