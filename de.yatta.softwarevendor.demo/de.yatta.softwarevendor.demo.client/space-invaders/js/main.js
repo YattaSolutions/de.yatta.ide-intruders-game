@@ -4,7 +4,12 @@
  */
 // Inspired by base2 and Prototype
 (function() {
-  var initializing = false, fnTest = /xyz/.test(function() { xyz; }) ? /\b_super\b/ : /.*/;
+  var initializing = false,
+    fnTest = /xyz/.test(function() {
+      xyz;
+    })
+      ? /\b_super\b/
+      : /.*/;
 
   // The base Class implementation (does nothing)
   this.Class = function() { };
@@ -22,32 +27,33 @@
     // Copy the properties over onto the new prototype
     for (var name in prop) {
       // Check if we're overwriting an existing function
-      prototype[name] = typeof prop[name] == "function" &&
-        typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-        (function(name, fn) {
-          return function() {
-            var tmp = this._super;
+      prototype[name] =
+        typeof prop[name] == "function" &&
+          typeof _super[name] == "function" &&
+          fnTest.test(prop[name])
+          ? (function(name, fn) {
+            return function() {
+              var tmp = this._super;
 
-            // Add a new ._super() method that is the same method
-            // but on the super-class
-            this._super = _super[name];
+              // Add a new ._super() method that is the same method
+              // but on the super-class
+              this._super = _super[name];
 
-            // The method only need to be bound temporarily, so we
-            // remove it when we're done executing
-            var ret = fn.apply(this, arguments);
-            this._super = tmp;
+              // The method only need to be bound temporarily, so we
+              // remove it when we're done executing
+              var ret = fn.apply(this, arguments);
+              this._super = tmp;
 
-            return ret;
-          };
-        })(name, prop[name]) :
-        prop[name];
+              return ret;
+            };
+          })(name, prop[name])
+          : prop[name];
     }
 
     // The dummy class constructor
     function Class() {
       // All construction is actually done in the init method
-      if (!initializing && this.init)
-        this.init.apply(this, arguments);
+      if (!initializing && this.init) this.init.apply(this, arguments);
     }
 
     // Populate our constructed prototype object
@@ -63,20 +69,28 @@
   };
 })();
 
-
 // ###################################################################
 // shims
 //
 // ###################################################################
 (function() {
-  var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+  var requestAnimationFrame =
+    window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame;
   window.requestAnimationFrame = requestAnimationFrame;
 })();
 
 (function() {
   if (!window.performance.now) {
-    window.performance.now = (!Date.now) ? function() { return new Date().getTime(); } :
-      function() { return Date.now(); }
+    window.performance.now = !Date.now
+      ? function() {
+        return new Date().getTime();
+      }
+      : function() {
+        return Date.now();
+      };
   }
 })();
 
@@ -84,22 +98,33 @@
 // Constants
 //
 // ###################################################################
-var IS_CHROME = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+var IS_CHROME =
+  /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 var CANVAS_WIDTH = 640;
 var CANVAS_HEIGHT = 640;
-var SPRITE_SHEET_SRC = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAEACAYAAAADRnAGAAACGUlEQVR42u3aSQ7CMBAEQIsn8P+/hiviAAK8zFIt5QbELiTHmfEYE3L9mZE9AAAAqAVwBQ8AAAD6THY5CgAAAKbfbPX3AQAAYBEEAADAuZrC6UUyfMEEAIBiAN8OePXnAQAAsLcmmKFPAQAAgHMbm+gbr3Sdo/LtcAAAANR6GywPAgBAM4D2JXAAABoBzBjA7AmlOx8AAEAzAOcDAADovTc4vQim6wUCABAYQG8QAADd4dPd2fRVYQAAANQG0B4HAABAawDnAwAA6AXgfAAAALpA2uMAAABwPgAAgPoAM9Ci/R4AAAD2dmqcEQIAIC/AiQGuAAYAAECcRS/a/cJXkUf2AAAAoBaA3iAAALrD+gIAAADY9baX/nwAAADNADwFAADo9YK0e5FMX/UFACA5QPSNEAAAAHKtCekmDAAAAADvBljtfgAAAGgMMGOrunvCy2uCAAAACFU6BwAAwF6AGQPa/XsAAADYB+B8AAAAtU+ItD4OAwAAAFVhAACaA0T7B44/BQAAANALwGMQAAAAADYO8If2+P31AgAAQN0SWbhFDwCAZlXgaO1xAAAA1FngnA8AACAeQPSNEAAAAM4CnC64AAAA4GzN4N9NSfgKEAAAAACszO26X8/X6BYAAAD0Anid8KcLAAAAAAAAAJBnwNEvAAAA9Jns1ygAAAAAAAAAAAAAAAAAAABAQ4COCENERERERERERBrnAa1sJuUVr3rsAAAAAElFTkSuQmCC';
+var SPRITE_SHEET_SRC =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAEACAYAAAADRnAGAAACGUlEQVR42u3aSQ7CMBAEQIsn8P+/hiviAAK8zFIt5QbELiTHmfEYE3L9mZE9AAAAqAVwBQ8AAAD6THY5CgAAAKbfbPX3AQAAYBEEAADAuZrC6UUyfMEEAIBiAN8OePXnAQAAsLcmmKFPAQAAgHMbm+gbr3Sdo/LtcAAAANR6GywPAgBAM4D2JXAAABoBzBjA7AmlOx8AAEAzAOcDAADovTc4vQim6wUCABAYQG8QAADd4dPd2fRVYQAAANQG0B4HAABAawDnAwAA6AXgfAAAALpA2uMAAABwPgAAgPoAM9Ci/R4AAAD2dmqcEQIAIC/AiQGuAAYAAECcRS/a/cJXkUf2AAAAoBaA3iAAALrD+gIAAADY9baX/nwAAADNADwFAADo9YK0e5FMX/UFACA5QPSNEAAAAHKtCekmDAAAAADvBljtfgAAAGgMMGOrunvCy2uCAAAACFU6BwAAwF6AGQPa/XsAAADYB+B8AAAAtU+ItD4OAwAAAFVhAACaA0T7B44/BQAAANALwGMQAAAAADYO8If2+P31AgAAQN0SWbhFDwCAZlXgaO1xAAAA1FngnA8AACAeQPSNEAAAAM4CnC64AAAA4GzN4N9NSfgKEAAAAACszO26X8/X6BYAAAD0Anid8KcLAAAAAAAAAJBnwNEvAAAA9Jns1ygAAAAAAAAAAAAAAAAAAABAQ4COCENERERERERERBrnAa1sJuUVr3rsAAAAAElFTkSuQmCC";
 var LEFT_KEY = 37;
 var RIGHT_KEY = 39;
 var SHOOT_KEY = 88;
 var TEXT_BLINK_FREQ = 500;
 var PLAYER_CLIP_RECT = { x: 0, y: 204, w: 62, h: 32 };
-var ALIEN_BOTTOM_ROW = [{ x: 0, y: 0, w: 51, h: 34 }, { x: 0, y: 102, w: 51, h: 34 }];
-var ALIEN_MIDDLE_ROW = [{ x: 0, y: 137, w: 50, h: 33 }, { x: 0, y: 170, w: 50, h: 34 }];
-var ALIEN_TOP_ROW = [{ x: 0, y: 68, w: 50, h: 32 }, { x: 0, y: 34, w: 50, h: 32 }];
+var ALIEN_BOTTOM_ROW = [
+  { x: 0, y: 0, w: 51, h: 34 },
+  { x: 0, y: 102, w: 51, h: 34 },
+];
+var ALIEN_MIDDLE_ROW = [
+  { x: 0, y: 137, w: 50, h: 33 },
+  { x: 0, y: 170, w: 50, h: 34 },
+];
+var ALIEN_TOP_ROW = [
+  { x: 0, y: 68, w: 50, h: 32 },
+  { x: 0, y: 34, w: 50, h: 32 },
+];
 var ALIEN_X_MARGIN = 40;
-var ALIEN_SQUAD_WIDTH = 11 * ALIEN_X_MARGIN;
-
-
+var ALIENS_PER_COLUMN = 9;
+var ALIEN_ROWS = 4;
+var ALIEN_SQUAD_WIDTH = ALIENS_PER_COLUMN * ALIEN_X_MARGIN;
 
 // ###################################################################
 // Utility functions & classes
@@ -118,36 +143,36 @@ function clamp(num, min, max) {
 }
 
 function valueInRange(value, min, max) {
-  return (value <= max) && (value >= min);
+  return value <= max && value >= min;
 }
 
 function checkRectCollision(A, B) {
-  var xOverlap = valueInRange(A.x, B.x, B.x + B.w) ||
-    valueInRange(B.x, A.x, A.x + A.w);
+  var xOverlap =
+    valueInRange(A.x, B.x, B.x + B.w) || valueInRange(B.x, A.x, A.x + A.w);
 
-  var yOverlap = valueInRange(A.y, B.y, B.y + B.h) ||
-    valueInRange(B.y, A.y, A.y + A.h);
+  var yOverlap =
+    valueInRange(A.y, B.y, B.y + B.h) || valueInRange(B.y, A.y, A.y + A.h);
   return xOverlap && yOverlap;
 }
 
 var Point2D = Class.extend({
   init: function(x, y) {
-    this.x = (typeof x === 'undefined') ? 0 : x;
-    this.y = (typeof y === 'undefined') ? 0 : y;
+    this.x = typeof x === "undefined" ? 0 : x;
+    this.y = typeof y === "undefined" ? 0 : y;
   },
 
   set: function(x, y) {
     this.x = x;
     this.y = y;
-  }
+  },
 });
 
 var Rect = Class.extend({
   init: function(x, y, w, h) {
-    this.x = (typeof x === 'undefined') ? 0 : x;
-    this.y = (typeof y === 'undefined') ? 0 : y;
-    this.w = (typeof w === 'undefined') ? 0 : w;
-    this.h = (typeof h === 'undefined') ? 0 : h;
+    this.x = typeof x === "undefined" ? 0 : x;
+    this.y = typeof y === "undefined" ? 0 : y;
+    this.w = typeof w === "undefined" ? 0 : w;
+    this.h = typeof h === "undefined" ? 0 : h;
   },
 
   set: function(x, y, w, h) {
@@ -155,10 +180,8 @@ var Rect = Class.extend({
     this.y = y;
     this.w = w;
     this.h = h;
-  }
+  },
 });
-
-
 
 // ###################################################################
 // Globals
@@ -181,8 +204,6 @@ var alienCount = 0;
 var wave = 1;
 var hasGameStarted = false;
 
-
-
 // ###################################################################
 // Entities
 //
@@ -199,7 +220,12 @@ var BaseSprite = Class.extend({
   update: function(dt) { },
 
   _updateBounds: function() {
-    this.bounds.set(this.position.x, this.position.y, ~~(0.5 + this.img.width * this.scale.x), ~~(0.5 + this.img.height * this.scale.y));
+    this.bounds.set(
+      this.position.x,
+      this.position.y,
+      ~~(0.5 + this.img.width * this.scale.x),
+      ~~(0.5 + this.img.height * this.scale.y)
+    );
   },
 
   _drawImage: function() {
@@ -210,7 +236,7 @@ var BaseSprite = Class.extend({
     this._updateBounds();
 
     this._drawImage();
-  }
+  },
 });
 
 var SheetSprite = BaseSprite.extend({
@@ -230,22 +256,43 @@ var SheetSprite = BaseSprite.extend({
 
   _drawImage: function() {
     ctx.save();
-    ctx.transform(this.scale.x, 0, 0, this.scale.y, this.position.x, this.position.y);
-    ctx.drawImage(this.img, this.clipRect.x, this.clipRect.y, this.clipRect.w, this.clipRect.h, ~~(0.5 + -this.clipRect.w * 0.5), ~~(0.5 + -this.clipRect.h * 0.5), this.clipRect.w, this.clipRect.h);
+    ctx.transform(
+      this.scale.x,
+      0,
+      0,
+      this.scale.y,
+      this.position.x,
+      this.position.y
+    );
+    ctx.drawImage(
+      this.img,
+      this.clipRect.x,
+      this.clipRect.y,
+      this.clipRect.w,
+      this.clipRect.h,
+      ~~(0.5 + -this.clipRect.w * 0.5),
+      ~~(0.5 + -this.clipRect.h * 0.5),
+      this.clipRect.w,
+      this.clipRect.h
+    );
     ctx.restore();
-
   },
 
   draw: function(resized) {
     this._super(resized);
-  }
+  },
 });
 
 var Player = SheetSprite.extend({
   init: function() {
-    this._super(spriteSheetImg, PLAYER_CLIP_RECT, CANVAS_WIDTH / 2, CANVAS_HEIGHT - 70);
+    this._super(
+      spriteSheetImg,
+      PLAYER_CLIP_RECT,
+      CANVAS_WIDTH / 2,
+      CANVAS_HEIGHT - 70
+    );
     this.scale.set(0.85, 0.85);
-    this.lives = 3;
+    this.lives = 5;
     this.xVel = 0;
     this.bullets = [];
     this.bulletDelayAccumulator = 0;
@@ -259,7 +306,12 @@ var Player = SheetSprite.extend({
   },
 
   shoot: function() {
-    var bullet = new Bullet(this.position.x, this.position.y - this.bounds.h / 2, 1, 1000);
+    var bullet = new Bullet(
+      this.position.x,
+      this.position.y - this.bounds.h / 2,
+      1,
+      800
+    );
     this.bullets.push(bullet);
   },
 
@@ -298,7 +350,11 @@ var Player = SheetSprite.extend({
     this.position.x += this.xVel * dt;
 
     // cap player position in screen bounds
-    this.position.x = clamp(this.position.x, this.bounds.w / 2, CANVAS_WIDTH - this.bounds.w / 2);
+    this.position.x = clamp(
+      this.position.x,
+      this.bounds.w / 2,
+      CANVAS_WIDTH - this.bounds.w / 2
+    );
     this.updateBullets(dt);
   },
 
@@ -312,7 +368,7 @@ var Player = SheetSprite.extend({
         bullet.draw(resized);
       }
     }
-  }
+  },
 });
 
 var Bullet = BaseSprite.extend({
@@ -324,7 +380,7 @@ var Bullet = BaseSprite.extend({
   },
 
   update: function(dt) {
-    this.position.y -= (this.speed * this.direction) * dt;
+    this.position.y -= this.speed * this.direction * dt;
 
     if (this.position.y < 0) {
       this.alive = false;
@@ -333,7 +389,7 @@ var Bullet = BaseSprite.extend({
 
   draw: function(resized) {
     this._super(resized);
-  }
+  },
 });
 
 var Enemy = SheetSprite.extend({
@@ -351,11 +407,16 @@ var Enemy = SheetSprite.extend({
 
   toggleFrame: function() {
     this.onFirstState = !this.onFirstState;
-    this.clipRect = (this.onFirstState) ? this.clipRects[0] : this.clipRects[1];
+    this.clipRect = this.onFirstState ? this.clipRects[0] : this.clipRects[1];
   },
 
   shoot: function() {
-    this.bullet = new Bullet(this.position.x, this.position.y + this.bounds.w / 2, -1, 500);
+    this.bullet = new Bullet(
+      this.position.x,
+      this.position.y + this.bounds.w / 2,
+      -1,
+      450
+    );
   },
 
   update: function(dt) {
@@ -364,7 +425,11 @@ var Enemy = SheetSprite.extend({
     if (this.stepAccumulator >= this.stepDelay) {
       if (this.position.x < this.bounds.w / 2 + 20 && alienDirection < 0) {
         updateAlienLogic = true;
-      } if (alienDirection === 1 && this.position.x > CANVAS_WIDTH - this.bounds.w / 2 - 20) {
+      }
+      if (
+        alienDirection === 1 &&
+        this.position.x > CANVAS_WIDTH - this.bounds.w / 2 - 20
+      ) {
         updateAlienLogic = true;
       }
       if (this.position.y > CANVAS_WIDTH - 50) {
@@ -393,7 +458,7 @@ var Enemy = SheetSprite.extend({
     if (this.bullet !== null && this.bullet.alive) {
       this.bullet.draw(resized);
     }
-  }
+  },
 });
 
 var ParticleExplosion = Class.extend({
@@ -407,7 +472,7 @@ var ParticleExplosion = Class.extend({
       var particle = this.particles[i];
       particle.moves++;
       particle.x += particle.xunits;
-      particle.y += particle.yunits + (particle.gravity * particle.moves);
+      particle.y += particle.yunits + particle.gravity * particle.moves;
       particle.life--;
 
       if (particle.life <= 0) {
@@ -417,7 +482,7 @@ var ParticleExplosion = Class.extend({
           this.particles.splice(i, 1);
         }
       } else {
-        ctx.globalAlpha = (particle.life) / (particle.maxLife);
+        ctx.globalAlpha = particle.life / particle.maxLife;
         ctx.fillStyle = particle.color;
         ctx.fillRect(particle.x, particle.y, particle.width, particle.height);
         ctx.globalAlpha = 1;
@@ -425,12 +490,22 @@ var ParticleExplosion = Class.extend({
     }
   },
 
-  createExplosion: function(x, y, color, number, width, height, spd, grav, lif) {
+  createExplosion: function(
+    x,
+    y,
+    color,
+    number,
+    width,
+    height,
+    spd,
+    grav,
+    lif
+  ) {
     for (var i = 0; i < number; i++) {
       var angle = Math.floor(Math.random() * 360);
-      var speed = Math.floor(Math.random() * spd / 2) + spd;
+      var speed = Math.floor((Math.random() * spd) / 2) + spd;
       var life = Math.floor(Math.random() * lif) + lif / 2;
-      var radians = angle * Math.PI / 180;
+      var radians = (angle * Math.PI) / 180;
       var xunits = Math.cos(radians) * speed;
       var yunits = Math.sin(radians) * speed;
 
@@ -450,14 +525,24 @@ var ParticleExplosion = Class.extend({
         tempParticle.maxLife = life;
         this.particles.push(tempParticle);
       } else {
-        this.particles.push({ x: x, y: y, xunits: xunits, yunits: yunits, life: life, color: color, width: width, height: height, gravity: grav, moves: 0, alpha: 1, maxLife: life });
+        this.particles.push({
+          x: x,
+          y: y,
+          xunits: xunits,
+          yunits: yunits,
+          life: life,
+          color: color,
+          width: width,
+          height: height,
+          gravity: grav,
+          moves: 0,
+          alpha: 1,
+          maxLife: life,
+        });
       }
-
     }
-  }
+  },
 });
-
-
 
 // ###################################################################
 // Initialization functions
@@ -465,8 +550,8 @@ var ParticleExplosion = Class.extend({
 // ###################################################################
 function initCanvas() {
   // create our canvas and context
-  canvas = document.getElementById('game-canvas');
-  ctx = canvas.getContext('2d');
+  canvas = document.getElementById("game-canvas");
+  ctx = canvas.getContext("2d");
 
   // turn off image smoothing
   setImageSmoothing(false);
@@ -477,14 +562,14 @@ function initCanvas() {
   preDrawImages();
 
   // add event listeners and initially resize
-  window.addEventListener('resize', resize);
-  document.addEventListener('keydown', onKeyDown);
-  document.addEventListener('keyup', onKeyUp);
+  window.addEventListener("resize", resize);
+  document.addEventListener("keydown", onKeyDown);
+  document.addEventListener("keyup", onKeyUp);
 }
 
 function preDrawImages() {
-  var canvas = drawIntoCanvas(2, 8, function(ctx) {
-    ctx.fillStyle = 'white';
+  var canvas = drawIntoCanvas(3, 6, function(ctx) {
+    ctx.fillStyle = "white";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   });
   bulletImg = new Image();
@@ -492,11 +577,11 @@ function preDrawImages() {
 }
 
 function setImageSmoothing(value) {
-  this.ctx['imageSmoothingEnabled'] = value;
-  this.ctx['mozImageSmoothingEnabled'] = value;
-  this.ctx['oImageSmoothingEnabled'] = value;
-  this.ctx['webkitImageSmoothingEnabled'] = value;
-  this.ctx['msImageSmoothingEnabled'] = value;
+  this.ctx["imageSmoothingEnabled"] = value;
+  this.ctx["mozImageSmoothingEnabled"] = value;
+  this.ctx["oImageSmoothingEnabled"] = value;
+  this.ctx["webkitImageSmoothingEnabled"] = value;
+  this.ctx["msImageSmoothingEnabled"] = value;
 }
 
 function initGame() {
@@ -510,18 +595,33 @@ function initGame() {
 
 function setupAlienFormation() {
   alienCount = 0;
-  for (var i = 0, len = 5 * 11; i < len; i++) {
-    var gridX = (i % 11);
-    var gridY = Math.floor(i / 11);
+  for (var i = 0, len = ALIEN_ROWS * ALIENS_PER_COLUMN; i < len; i++) {
+    var gridX = i % ALIENS_PER_COLUMN;
+    var gridY = Math.floor(i / ALIENS_PER_COLUMN);
     var clipRects;
     switch (gridY) {
       case 0:
-      case 1: clipRects = ALIEN_BOTTOM_ROW; break;
+      case 1:
+        clipRects = ALIEN_BOTTOM_ROW;
+        break;
       case 2:
-      case 3: clipRects = ALIEN_MIDDLE_ROW; break;
-      case 4: clipRects = ALIEN_TOP_ROW; break;
+      case 3:
+        clipRects = ALIEN_MIDDLE_ROW;
+        break;
+      case 4:
+        clipRects = ALIEN_TOP_ROW;
+        break;
     }
-    aliens.push(new Enemy(clipRects, (CANVAS_WIDTH / 2 - ALIEN_SQUAD_WIDTH / 2) + ALIEN_X_MARGIN / 2 + gridX * ALIEN_X_MARGIN, CANVAS_HEIGHT / 3.25 - gridY * 40));
+    aliens.push(
+      new Enemy(
+        clipRects,
+        CANVAS_WIDTH / 2 -
+        ALIEN_SQUAD_WIDTH / 2 +
+        ALIEN_X_MARGIN / 2 +
+        gridX * ALIEN_X_MARGIN,
+        CANVAS_HEIGHT / 3.25 - gridY * 40
+      )
+    );
     alienCount++;
   }
 }
@@ -539,8 +639,6 @@ function init() {
   resize();
 }
 
-
-
 // ###################################################################
 // Helpful input functions
 //
@@ -552,7 +650,6 @@ function isKeyDown(key) {
 function wasKeyPressed(key) {
   return !prevKeyStates[key] && keyStates[key];
 }
-
 
 // ###################################################################
 // Drawing & Update functions
@@ -578,9 +675,9 @@ function updateAliens(dt) {
       return;
     }
 
-    alien.stepDelay = ((alienCount * 20) - (wave * 10)) / 1000;
-    if (alien.stepDelay <= 0.05) {
-      alien.stepDelay = 0.05;
+    alien.stepDelay = (alienCount * 10 - wave * 10) / 1000;
+    if (alien.stepDelay <= 0.1) {
+      alien.stepDelay = 0.1;
     }
     alien.update(dt);
 
@@ -601,8 +698,18 @@ function resolveBulletEnemyCollisions() {
       var alien = aliens[j];
       if (checkRectCollision(bullet.bounds, alien.bounds)) {
         alien.alive = bullet.alive = false;
-        particleManager.createExplosion(alien.position.x, alien.position.y, 'white', 70, 5, 5, 3, .15, 50);
-        player.score += 25;
+        particleManager.createExplosion(
+          alien.position.x,
+          alien.position.y,
+          "white",
+          30,
+          3,
+          3,
+          4,
+          0.3,
+          50
+        );
+        player.score += 10;
       }
     }
   }
@@ -611,17 +718,29 @@ function resolveBulletEnemyCollisions() {
 function resolveBulletPlayerCollisions() {
   for (var i = 0, len = aliens.length; i < len; i++) {
     var alien = aliens[i];
-    if (alien.bullet !== null && checkRectCollision(alien.bullet.bounds, player.bounds)) {
+    if (
+      alien.bullet !== null &&
+      checkRectCollision(alien.bullet.bounds, player.bounds)
+    ) {
       if (player.lives === 0) {
         hasGameStarted = false;
       } else {
         alien.bullet.alive = false;
-        particleManager.createExplosion(player.position.x, player.position.y, 'green', 100, 8, 8, 6, 0.001, 40);
+        particleManager.createExplosion(
+          player.position.x,
+          player.position.y,
+          "green",
+          80,
+          5,
+          5,
+          10,
+          0.005,
+          40
+        );
         player.position.set(CANVAS_WIDTH / 2, CANVAS_HEIGHT - 70);
         player.lives--;
         break;
       }
-
     }
   }
 }
@@ -640,17 +759,17 @@ function updateGame(dt) {
 }
 
 function drawIntoCanvas(width, height, drawFunc) {
-  var canvas = document.createElement('canvas');
+  var canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
-  var ctx = canvas.getContext('2d');
+  var ctx = canvas.getContext("2d");
   drawFunc(ctx);
   return canvas;
 }
 
 function fillText(text, x, y, color, fontSize) {
-  if (typeof color !== 'undefined') ctx.fillStyle = color;
-  if (typeof fontSize !== 'undefined') ctx.font = fontSize + 'px Play';
+  if (typeof color !== "undefined") ctx.fillStyle = color;
+  if (typeof fontSize !== "undefined") ctx.font = fontSize + "px Play";
   ctx.fillText(text, x, y);
 }
 
@@ -666,15 +785,26 @@ function fillBlinkingText(text, x, y, blinkFreq, color, fontSize) {
 }
 
 function drawBottomHud() {
-  ctx.fillStyle = '#02ff12';
+  ctx.fillStyle = "#02ff12";
   ctx.fillRect(0, CANVAS_HEIGHT - 30, CANVAS_WIDTH, 2);
-  fillText(player.lives + ' x ', 10, CANVAS_HEIGHT - 7.5, 'white', 20);
-  ctx.drawImage(spriteSheetImg, player.clipRect.x, player.clipRect.y, player.clipRect.w,
-    player.clipRect.h, 45, CANVAS_HEIGHT - 23, player.clipRect.w * 0.5,
-    player.clipRect.h * 0.5);
-  fillText('CREDIT: ', CANVAS_WIDTH - 115, CANVAS_HEIGHT - 7.5);
-  fillCenteredText('SCORE: ' + player.score, CANVAS_WIDTH / 2, 20);
-  fillBlinkingText('00', CANVAS_WIDTH - 25, CANVAS_HEIGHT - 7.5, TEXT_BLINK_FREQ);
+  fillText(player.lives + " x ", 10, CANVAS_HEIGHT - 7.5, "white", 20);
+  ctx.drawImage(
+    spriteSheetImg,
+    player.clipRect.x,
+    player.clipRect.y,
+    player.clipRect.w,
+    player.clipRect.h,
+    45,
+    CANVAS_HEIGHT - 23,
+    player.clipRect.w * 0.5,
+    player.clipRect.h * 0.5
+  );
+  fillText("press X to shoot", CANVAS_WIDTH - 150, CANVAS_HEIGHT - 7.5);
+  fillCenteredText(
+    "SCORE: " + player.score,
+    CANVAS_WIDTH / 2,
+    CANVAS_HEIGHT - 7.5
+  );
 }
 
 function drawAliens(resized) {
@@ -692,8 +822,21 @@ function drawGame(resized) {
 }
 
 function drawStartScreen() {
-  fillCenteredText("Space Invaders", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2.75, '#FFFFFF', 36);
-  fillBlinkingText("Press enter to play!", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 500, '#FFFFFF', 36);
+  fillCenteredText(
+    "Space Invaders",
+    CANVAS_WIDTH / 2,
+    CANVAS_HEIGHT / 2.75,
+    "#FFFFFF",
+    36
+  );
+  fillBlinkingText(
+    "Press enter to play!",
+    CANVAS_WIDTH / 2,
+    CANVAS_HEIGHT / 2,
+    500,
+    "#FFFFFF",
+    36
+  );
 }
 
 function animate() {
@@ -709,8 +852,7 @@ function animate() {
     updateGame(dt / 1000);
   }
 
-
-  ctx.fillStyle = 'black';
+  ctx.fillStyle = "black";
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   if (hasGameStarted) {
     drawGame(false);
@@ -720,8 +862,6 @@ function animate() {
   lastTime = now;
   requestAnimationFrame(animate);
 }
-
-
 
 // ###################################################################
 // Event Listener functions
@@ -741,8 +881,8 @@ function resize() {
     ctx.transform(scaleFactor, 0, 0, scaleFactor, 0, 0);
   } else {
     // resize the canvas css properties
-    canvas.style.width = CANVAS_WIDTH * scaleFactor + 'px';
-    canvas.style.height = CANVAS_HEIGHT * scaleFactor + 'px';
+    canvas.style.width = CANVAS_WIDTH * scaleFactor + "px";
+    canvas.style.height = CANVAS_HEIGHT * scaleFactor + "px";
   }
 }
 
@@ -755,7 +895,6 @@ function onKeyUp(e) {
   e.preventDefault();
   keyStates[e.keyCode] = false;
 }
-
 
 // ###################################################################
 // Start game!
