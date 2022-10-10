@@ -823,7 +823,7 @@ function drawGame(resized) {
 
 function drawStartScreen() {
   fillCenteredText(
-    "Space Invaders",
+    "Eclipse Intruders",
     CANVAS_WIDTH / 2,
     CANVAS_HEIGHT / 2.75,
     "#FFFFFF",

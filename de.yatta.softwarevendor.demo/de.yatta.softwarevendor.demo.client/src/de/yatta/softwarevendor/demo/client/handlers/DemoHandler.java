@@ -13,7 +13,7 @@ import de.yatta.softwarevendor.demo.client.ui.GameEditorInput;
 
 public class DemoHandler extends AbstractHandler {
 
-  private Game game = Game.SPACE_INVADERS;
+  private Game game = Game.ECLIPSE_INTRUDERS;
   private IWorkbenchWindow window = null;
 
   @Override
