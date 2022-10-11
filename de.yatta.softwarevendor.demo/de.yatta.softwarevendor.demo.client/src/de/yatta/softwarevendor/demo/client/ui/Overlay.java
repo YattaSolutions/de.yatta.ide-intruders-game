@@ -32,6 +32,7 @@ public class Overlay {
   private Shell overlay;
   private DisposeListener disposeListener;
   private PaintListener paintListener;
+  private PaintListener contentPaintListener;
   private ControlListener controlListener;
   private Label headerLabel;
   private Label descriptionLabel;
@@ -91,6 +92,12 @@ public class Overlay {
       }
     };
 
+    contentPaintListener = evt -> {
+      if (updateListener != null) {
+        updateListener.run();
+      }
+    };
+
     overlay.open();
     overlay.setVisible(false);
   }
@@ -115,6 +122,7 @@ public class Overlay {
       p.addControlListener(controlListener);
       p.addPaintListener(paintListener);
     });
+    contentArea.addPaintListener(contentPaintListener);
 
     visible = true;
   }
@@ -138,7 +146,9 @@ public class Overlay {
           p.removeControlListener(controlListener);
           p.removePaintListener(paintListener);
         });
-
+    if (!contentArea.isDisposed()) {
+      contentArea.removePaintListener(contentPaintListener);
+    }
     // hide the overlay
     if (!overlay.isDisposed()) {
       overlay.setVisible(false);
@@ -248,7 +258,7 @@ public class Overlay {
   public int getPanelHeight() {
     return contentArea.getBounds().height;
   }
-  
+
   public void setUpdateListener(Runnable updateListener) {
     this.updateListener = updateListener;
   }
