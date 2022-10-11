@@ -102,12 +102,16 @@ var IS_CHROME =
   /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 var CANVAS_WIDTH = 640;
 var CANVAS_HEIGHT = 640;
+var CANVAS_BG_STYLE = "#F5F5F5";
+var FONT_COLOR = "#353535";
+var BULLET_COLOR = "#353535";
+var ALIEN_EXPLOSION_COLOR = "#660000";
+var SPACESHIP_COLOR = "#9966FF";
 var SPRITE_SHEET_SRC =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAEACAYAAAADRnAGAAACGUlEQVR42u3aSQ7CMBAEQIsn8P+/hiviAAK8zFIt5QbELiTHmfEYE3L9mZE9AAAAqAVwBQ8AAAD6THY5CgAAAKbfbPX3AQAAYBEEAADAuZrC6UUyfMEEAIBiAN8OePXnAQAAsLcmmKFPAQAAgHMbm+gbr3Sdo/LtcAAAANR6GywPAgBAM4D2JXAAABoBzBjA7AmlOx8AAEAzAOcDAADovTc4vQim6wUCABAYQG8QAADd4dPd2fRVYQAAANQG0B4HAABAawDnAwAA6AXgfAAAALpA2uMAAABwPgAAgPoAM9Ci/R4AAAD2dmqcEQIAIC/AiQGuAAYAAECcRS/a/cJXkUf2AAAAoBaA3iAAALrD+gIAAADY9baX/nwAAADNADwFAADo9YK0e5FMX/UFACA5QPSNEAAAAHKtCekmDAAAAADvBljtfgAAAGgMMGOrunvCy2uCAAAACFU6BwAAwF6AGQPa/XsAAADYB+B8AAAAtU+ItD4OAwAAAFVhAACaA0T7B44/BQAAANALwGMQAAAAADYO8If2+P31AgAAQN0SWbhFDwCAZlXgaO1xAAAA1FngnA8AACAeQPSNEAAAAM4CnC64AAAA4GzN4N9NSfgKEAAAAACszO26X8/X6BYAAAD0Anid8KcLAAAAAAAAAJBnwNEvAAAA9Jns1ygAAAAAAAAAAAAAAAAAAABAQ4COCENERERERERERBrnAa1sJuUVr3rsAAAAAElFTkSuQmCC";
+  "data:image/png;base64,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";
 var LEFT_KEY = 37;
 var RIGHT_KEY = 39;
-var SHOOT_KEY = 88;
-var TEXT_BLINK_FREQ = 500;
+var SHOOT_KEY = 88; // 'x'
 var PLAYER_CLIP_RECT = { x: 0, y: 204, w: 62, h: 32 };
 var ALIEN_BOTTOM_ROW = [
   { x: 0, y: 0, w: 51, h: 34 },
@@ -300,7 +304,7 @@ var Player = SheetSprite.extend({
   },
 
   reset: function() {
-    this.lives = 3;
+    this.lives = 5;
     this.score = 0;
     this.position.set(CANVAS_WIDTH / 2, CANVAS_HEIGHT - 70);
   },
@@ -569,7 +573,7 @@ function initCanvas() {
 
 function preDrawImages() {
   var canvas = drawIntoCanvas(3, 6, function(ctx) {
-    ctx.fillStyle = "white";
+    ctx.fillStyle = BULLET_COLOR;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   });
   bulletImg = new Image();
@@ -605,10 +609,10 @@ function setupAlienFormation() {
         clipRects = ALIEN_BOTTOM_ROW;
         break;
       case 2:
-      case 3:
+        //case 3:
         clipRects = ALIEN_MIDDLE_ROW;
         break;
-      case 4:
+      default:
         clipRects = ALIEN_TOP_ROW;
         break;
     }
@@ -701,7 +705,7 @@ function resolveBulletEnemyCollisions() {
         particleManager.createExplosion(
           alien.position.x,
           alien.position.y,
-          "white",
+          ALIEN_EXPLOSION_COLOR,
           30,
           3,
           3,
@@ -729,7 +733,7 @@ function resolveBulletPlayerCollisions() {
         particleManager.createExplosion(
           player.position.x,
           player.position.y,
-          "green",
+          SPACESHIP_COLOR,
           80,
           5,
           5,
@@ -785,9 +789,9 @@ function fillBlinkingText(text, x, y, blinkFreq, color, fontSize) {
 }
 
 function drawBottomHud() {
-  ctx.fillStyle = "#02ff12";
+  ctx.fillStyle = SPACESHIP_COLOR;
   ctx.fillRect(0, CANVAS_HEIGHT - 30, CANVAS_WIDTH, 2);
-  fillText(player.lives + " x ", 10, CANVAS_HEIGHT - 7.5, "white", 20);
+  fillText(player.lives + " x ", 10, CANVAS_HEIGHT - 7.5, FONT_COLOR, 20);
   ctx.drawImage(
     spriteSheetImg,
     player.clipRect.x,
@@ -826,7 +830,7 @@ function drawStartScreen() {
     "Eclipse Intruders",
     CANVAS_WIDTH / 2,
     CANVAS_HEIGHT / 2.75,
-    "#FFFFFF",
+    FONT_COLOR,
     36
   );
   fillBlinkingText(
@@ -834,7 +838,7 @@ function drawStartScreen() {
     CANVAS_WIDTH / 2,
     CANVAS_HEIGHT / 2,
     900,
-    "#FFFFFF",
+    FONT_COLOR,
     36
   );
 }
@@ -852,7 +856,7 @@ function animate() {
     updateGame(dt / 1000);
   }
 
-  ctx.fillStyle = "black";
+  ctx.fillStyle = CANVAS_BG_STYLE;
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   if (hasGameStarted) {
     drawGame(false);
