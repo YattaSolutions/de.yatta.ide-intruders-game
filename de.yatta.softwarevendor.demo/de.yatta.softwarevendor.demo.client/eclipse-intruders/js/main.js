@@ -105,30 +105,30 @@ var CANVAS_HEIGHT = 640;
 var CANVAS_BG_STYLE = "#F5F5F5";
 var FONT_COLOR = "#353535";
 var BULLET_COLOR = "#353535";
-var ALIEN_EXPLOSION_COLOR = "#660000";
+var BUG_EXPLOSION_COLOR = "#660000";
 var SPACESHIP_COLOR = "#9966FF";
 var SPRITE_SHEET_SRC =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD4AAADtCAYAAADna8bFAAAACXBIWXMAAAsSAAALEgHS3X78AAACvklEQVR4nO3d3VHDMBBFYcPQUlIS1AQlpakwvEHwSFp5Jcc+53smP3dYyZa1sV/u9/sSdb1e4y8KuN1uLyPf/8fr6A94VganaRrjo8d0zYgxb6nTGJxmdXLbezKryZjsLHWat2jeUplFh0jme0W9Pft4XrP2naPjnjurXy6Xw/3H1/gfb2RwGk9ZI2qHwNpEs/X1GSx1Gsd4SXRMjv77DJY6jYuUkhnH1ZKWpbOLlEYGp/EEpiTzIuIy4P16WOo0BqcxOI2bhpmOsB9nYwCNwWmw28RNs/qMlo3ZbSGOcRpbQWgMTvPvXL1n1+LxNdGLjdHd1pbPqLHUaTyOl7hbeiIGpxnS9RRl19NEBqdxcovwVgkHZnAaJ7ff3C09MYPTGJzGrqdWLYeSjAsL3iphhbdK2MANhaOz1BsZnMb1eMQZLjYO6VdfCl/+WU6YHOM0XdfcerqUMt/Pa24bGJymq+sp2slYs0eno6VOY3CarkXKo+wTmBksdRqD03T9JmVvrs42MDiNW0g0dkS0OktHhKVO4+Hs6DycNTI4jevxkjM+xdKOCBrH+G8jFxmzFjk1ljqNY7ykNOYyxpv3iJjI4DReZY3InmyyW0RbWOo0BqdJ+U3K6F7WESx1GoPTcE9Z95hRM2z93pY6TdPqrLZayl5NzRh+ljqNwWm6mn+ytoAzt5I9jjey1I/OUm9kcBpsu5elTuN6PGL05Sl3SwcyOI2bhjQGpzE4jcFpPIEp8ULEiRicpvvpV6Vxt+U3JjOePb5Y6kBuGh6dm4aNDE6zuqGwx8+hSkZ8H0udxjEe4abhgRmcZsjTr2pzwB73hHhkqdMYnCblqRlRXx/Lnw99/1x8asYsBqcxOI3BaQxOY3AaFymZHhchW41YxFjqNNwx/vm+w5WIJ2Cp0xicxuA0BqcxOI3BaQxOY3CUZVm+Ac6spvCeZr+zAAAAAElFTkSuQmCC";
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD8AAADrCAYAAADe8E7mAAAACXBIWXMAAAsSAAALEgHS3X78AAACpUlEQVR4nO3dQXKDMAyFYdLplZL7r3MpuupMFrEQtmWE3v/t01iNbCxA8Nj3fYv2er26vuT9fj8ih/YT+cezkw4+LO17U70lYgr89n7wM7jouRk1hu7gjwYzW8Q/mznv1frvR/7iltYYvJnBoU7V4YKXYVX36JkCpL2qw7TPnOotrPYOBK+qu6q7alfX0rM2kfaqTpW0FDaFkPYWCpuiSHsLhU1RU8/brzref/s+trcnTb1oEbnru/xyVbZjPtvbAVPT/tOMKRCdXdLb27BfvjWwTJYEf9u0Z3tb1JJb0f55039VtvHLr9bKgNXrCzu8mTynt1u/8Mhne3AOT1XogjeSritqCtJe1WHa36Wk/cQVGwdKWu8AMk8BTmCeFJb2M87bR2faqeCzTQHaTAawyRmV4W6sHuztVXGct1DYFEXaWyhsimKH14M2k5sj7UdR2NwQwasieFUEr4o2E1W0mXjRZlIIbSYW2kwmDiwT7sm5cgARWO0daDNRRZuJKtpMVLHgRaHNJDHSXhXH+Wi8zSQhFrwIvM0kGG0mA5jzXjz0txB2eBYe+lsUaW/hclVRBK+KNhNVHOq8KGwKIe0tFDZFkfYWCpuiaDNRRZuJF20mhdBmYqHNZOLAMqHN5MoBRGC1d6DNRBVtJqpoM1HFgheFNpPESHsLD/0tipLWOwAe+lsIbzPx4m0mzsHMRpvJZDz0VxXBq+JtJqpIewuFTVHs8HrQZnJzpP0oCpsbInhVBK+K4FXRZqKKNhMv2kwKoc3EQpvJxIFlwj05Vw4gAqu9A20mqmgzUUWbiSoWvCi0mSRG2qtaUtV9822jwyZnIYJXRfCqCF4Vwau6xburqOoCELyqx/P5lK1pSXtVBK+K4FURvCqCV0XwqgheFcGr0g1+27Y/VWz8dnQl3RUAAAAASUVORK5CYII=";
 var LEFT_KEY = 37;
 var RIGHT_KEY = 39;
 var SHOOT_KEY = 88; // 'x'
-var PLAYER_CLIP_RECT = { x: 0, y: 203, w: 62, h: 34 };
-var ALIEN_BOTTOM_ROW = [
-  { x: 0, y: 0, w: 50, h: 33 },
-  { x: 0, y: 33, w: 50, h: 34 },
+var PLAYER_CLIP_RECT = { x: 0, y: 203, w: 63, h: 32 };
+var BUG_BOTTOM_ROW = [
+  { x: 7, y: 0, w: 48, h: 49 },
+  { x: 7, y: 49, w: 48, h: 51 },
 ];
-var ALIEN_MIDDLE_ROW = [
-  { x: 0, y: 135, w: 50, h: 34 },
-  { x: 0, y: 169, w: 50, h: 34 },
+var BUG_MIDDLE_ROW = [
+  { x: 7, y: 151, w: 48, h: 51 },
+  { x: 7, y: 100, w: 48, h: 51 },
 ];
-var ALIEN_TOP_ROW = [
-  { x: 0, y: 67, w: 50, h: 34 },
-  { x: 0, y: 101, w: 50, h: 34 },
+var BUG_TOP_ROW = [
+  { x: 7, y: 100, w: 48, h: 51 },
+  { x: 7, y: 151, w: 48, h: 51 },
 ];
-var ALIEN_X_MARGIN = 40;
-var ALIENS_PER_COLUMN = 9;
-var ALIEN_ROWS = 4;
-var ALIEN_SQUAD_WIDTH = ALIENS_PER_COLUMN * ALIEN_X_MARGIN;
+var BUG_X_MARGIN = 40;
+var BUGS_PER_COLUMN = 9;
+var BUG_ROWS = 4;
+var BUG_SQUAD_WIDTH = BUGS_PER_COLUMN * BUG_X_MARGIN;
 
 // ###################################################################
 // Utility functions & classes
@@ -199,12 +199,12 @@ var keyStates = null;
 var prevKeyStates = null;
 var lastTime = 0;
 var player = null;
-var aliens = [];
+var bugs = [];
 var particleManager = null;
-var updateAlienLogic = false;
-var alienDirection = -1;
-var alienYDown = 0;
-var alienCount = 0;
+var updateBugLogic = false;
+var bugDirection = -1;
+var bugYDown = 0;
+var bugCount = 0;
 var wave = 1;
 var hasGameStarted = false;
 
@@ -427,14 +427,14 @@ var Enemy = SheetSprite.extend({
     this.stepAccumulator += dt;
 
     if (this.stepAccumulator >= this.stepDelay) {
-      if (this.position.x < this.bounds.w / 2 + 20 && alienDirection < 0) {
-        updateAlienLogic = true;
+      if (this.position.x < this.bounds.w / 2 + 20 && bugDirection < 0) {
+        updateBugLogic = true;
       }
       if (
-        alienDirection === 1 &&
+        bugDirection === 1 &&
         this.position.x > CANVAS_WIDTH - this.bounds.w / 2 - 20
       ) {
-        updateAlienLogic = true;
+        updateBugLogic = true;
       }
       if (this.position.y > CANVAS_WIDTH - 50) {
         reset();
@@ -444,11 +444,11 @@ var Enemy = SheetSprite.extend({
       if (getRandomArbitrary(0, 1000) <= 5 * (this.stepDelay + 1)) {
         this.doShoot = true;
       }
-      this.position.x += 10 * alienDirection;
+      this.position.x += 10 * bugDirection;
       this.toggleFrame();
       this.stepAccumulator = 0;
     }
-    this.position.y += alienYDown;
+    this.position.y += bugYDown;
 
     if (this.bullet !== null && this.bullet.alive) {
       this.bullet.update(dt);
@@ -590,49 +590,49 @@ function setImageSmoothing(value) {
 
 function initGame() {
   dirtyRects = [];
-  aliens = [];
+  bugs = [];
   player = new Player();
   particleManager = new ParticleExplosion();
-  setupAlienFormation();
+  setupBugFormation();
   drawBottomHud();
 }
 
-function setupAlienFormation() {
-  alienCount = 0;
-  for (var i = 0, len = ALIEN_ROWS * ALIENS_PER_COLUMN; i < len; i++) {
-    var gridX = i % ALIENS_PER_COLUMN;
-    var gridY = Math.floor(i / ALIENS_PER_COLUMN);
+function setupBugFormation() {
+  bugCount = 0;
+  for (var i = 0, len = BUG_ROWS * BUGS_PER_COLUMN; i < len; i++) {
+    var gridX = i % BUGS_PER_COLUMN;
+    var gridY = Math.floor(i / BUGS_PER_COLUMN);
     var clipRects;
     switch (gridY) {
       case 0:
       case 1:
-        clipRects = ALIEN_BOTTOM_ROW;
+        clipRects = BUG_BOTTOM_ROW;
         break;
       case 2:
         //case 3:
-        clipRects = ALIEN_MIDDLE_ROW;
+        clipRects = BUG_MIDDLE_ROW;
         break;
       default:
-        clipRects = ALIEN_TOP_ROW;
+        clipRects = BUG_TOP_ROW;
         break;
     }
-    aliens.push(
+    bugs.push(
       new Enemy(
         clipRects,
         CANVAS_WIDTH / 2 -
-        ALIEN_SQUAD_WIDTH / 2 +
-        ALIEN_X_MARGIN / 2 +
-        gridX * ALIEN_X_MARGIN,
+        BUG_SQUAD_WIDTH / 2 +
+        BUG_X_MARGIN / 2 +
+        gridX * BUG_X_MARGIN,
         CANVAS_HEIGHT / 3.25 - gridY * 40
       )
     );
-    alienCount++;
+    bugCount++;
   }
 }
 
 function reset() {
-  aliens = [];
-  setupAlienFormation();
+  bugs = [];
+  setupBugFormation();
   player.reset();
 }
 
@@ -659,38 +659,38 @@ function wasKeyPressed(key) {
 // Drawing & Update functions
 //
 // ###################################################################
-function updateAliens(dt) {
-  if (updateAlienLogic) {
-    updateAlienLogic = false;
-    alienDirection = -alienDirection;
-    alienYDown = 25;
+function updateBugs(dt) {
+  if (updateBugLogic) {
+    updateBugLogic = false;
+    bugDirection = -bugDirection;
+    bugYDown = 25;
   }
 
-  for (var i = aliens.length - 1; i >= 0; i--) {
-    var alien = aliens[i];
-    if (!alien.alive) {
-      aliens.splice(i, 1);
-      alien = null;
-      alienCount--;
-      if (alienCount < 1) {
+  for (var i = bugs.length - 1; i >= 0; i--) {
+    var bug = bugs[i];
+    if (!bug.alive) {
+      bugs.splice(i, 1);
+      bug = null;
+      bugCount--;
+      if (bugCount < 1) {
         wave++;
-        setupAlienFormation();
+        setupBugFormation();
       }
       return;
     }
 
-    alien.stepDelay = (alienCount * 10 - wave * 10) / 1000;
-    if (alien.stepDelay <= 0.1) {
-      alien.stepDelay = 0.1;
+    bug.stepDelay = (bugCount * 10 - wave * 10) / 1000;
+    if (bug.stepDelay <= 0.1) {
+      bug.stepDelay = 0.1;
     }
-    alien.update(dt);
+    bug.update(dt);
 
-    if (alien.doShoot) {
-      alien.doShoot = false;
-      alien.shoot();
+    if (bug.doShoot) {
+      bug.doShoot = false;
+      bug.shoot();
     }
   }
-  alienYDown = 0;
+  bugYDown = 0;
 }
 
 function resolveBulletEnemyCollisions() {
@@ -698,14 +698,14 @@ function resolveBulletEnemyCollisions() {
 
   for (var i = 0, len = bullets.length; i < len; i++) {
     var bullet = bullets[i];
-    for (var j = 0, alen = aliens.length; j < alen; j++) {
-      var alien = aliens[j];
-      if (checkRectCollision(bullet.bounds, alien.bounds)) {
-        alien.alive = bullet.alive = false;
+    for (var j = 0, alen = bugs.length; j < alen; j++) {
+      var bug = bugs[j];
+      if (checkRectCollision(bullet.bounds, bug.bounds)) {
+        bug.alive = bullet.alive = false;
         particleManager.createExplosion(
-          alien.position.x,
-          alien.position.y,
-          ALIEN_EXPLOSION_COLOR,
+          bug.position.x,
+          bug.position.y,
+          BUG_EXPLOSION_COLOR,
           30,
           3,
           3,
@@ -720,16 +720,16 @@ function resolveBulletEnemyCollisions() {
 }
 
 function resolveBulletPlayerCollisions() {
-  for (var i = 0, len = aliens.length; i < len; i++) {
-    var alien = aliens[i];
+  for (var i = 0, len = bugs.length; i < len; i++) {
+    var bug = bugs[i];
     if (
-      alien.bullet !== null &&
-      checkRectCollision(alien.bullet.bounds, player.bounds)
+      bug.bullet !== null &&
+      checkRectCollision(bug.bullet.bounds, player.bounds)
     ) {
       if (player.lives === 0) {
         hasGameStarted = false;
       } else {
-        alien.bullet.alive = false;
+        bug.bullet.alive = false;
         particleManager.createExplosion(
           player.position.x,
           player.position.y,
@@ -758,7 +758,7 @@ function updateGame(dt) {
   player.handleInput();
   prevKeyStates = keyStates.slice();
   player.update(dt);
-  updateAliens(dt);
+  updateBugs(dt);
   resolveCollisions();
 }
 
@@ -811,16 +811,16 @@ function drawBottomHud() {
   );
 }
 
-function drawAliens(resized) {
-  for (var i = 0; i < aliens.length; i++) {
-    var alien = aliens[i];
-    alien.draw(resized);
+function drawBugs(resized) {
+  for (var i = 0; i < bugs.length; i++) {
+    var bug = bugs[i];
+    bug.draw(resized);
   }
 }
 
 function drawGame(resized) {
   player.draw(resized);
-  drawAliens(resized);
+  drawBugs(resized);
   particleManager.draw();
   drawBottomHud();
 }
