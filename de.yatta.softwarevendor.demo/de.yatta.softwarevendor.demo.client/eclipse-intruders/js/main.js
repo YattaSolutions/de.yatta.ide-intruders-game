@@ -111,7 +111,9 @@ var SPRITE_SHEET_SRC =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD8AAADrCAYAAADe8E7mAAAACXBIWXMAAAsSAAALEgHS3X78AAACpUlEQVR4nO3dQXKDMAyFYdLplZL7r3MpuupMFrEQtmWE3v/t01iNbCxA8Nj3fYv2er26vuT9fj8ih/YT+cezkw4+LO17U70lYgr89n7wM7jouRk1hu7gjwYzW8Q/mznv1frvR/7iltYYvJnBoU7V4YKXYVX36JkCpL2qw7TPnOotrPYOBK+qu6q7alfX0rM2kfaqTpW0FDaFkPYWCpuiSHsLhU1RU8/brzref/s+trcnTb1oEbnru/xyVbZjPtvbAVPT/tOMKRCdXdLb27BfvjWwTJYEf9u0Z3tb1JJb0f55039VtvHLr9bKgNXrCzu8mTynt1u/8Mhne3AOT1XogjeSritqCtJe1WHa36Wk/cQVGwdKWu8AMk8BTmCeFJb2M87bR2faqeCzTQHaTAawyRmV4W6sHuztVXGct1DYFEXaWyhsimKH14M2k5sj7UdR2NwQwasieFUEr4o2E1W0mXjRZlIIbSYW2kwmDiwT7sm5cgARWO0daDNRRZuJKtpMVLHgRaHNJDHSXhXH+Wi8zSQhFrwIvM0kGG0mA5jzXjz0txB2eBYe+lsUaW/hclVRBK+KNhNVHOq8KGwKIe0tFDZFkfYWCpuiaDNRRZuJF20mhdBmYqHNZOLAMqHN5MoBRGC1d6DNRBVtJqpoM1HFgheFNpPESHsLD/0tipLWOwAe+lsIbzPx4m0mzsHMRpvJZDz0VxXBq+JtJqpIewuFTVHs8HrQZnJzpP0oCpsbInhVBK+K4FXRZqKKNhMv2kwKoc3EQpvJxIFlwj05Vw4gAqu9A20mqmgzUUWbiSoWvCi0mSRG2qtaUtV9822jwyZnIYJXRfCqCF4Vwau6xburqOoCELyqx/P5lK1pSXtVBK+K4FURvCqCV0XwqgheFcGr0g1+27Y/VWz8dnQl3RUAAAAASUVORK5CYII=";
 var LEFT_KEY = 37;
 var RIGHT_KEY = 39;
-var SHOOT_KEY = 88; // 'x'
+var SHOOT_KEY = 32; 
+var START_KEY = 32;
+// key codes: 'Space' = 32, 'x' = 88, 'enter' = 13
 var PLAYER_CLIP_RECT = { x: 0, y: 203, w: 63, h: 32 };
 var BUG_BOTTOM_ROW = [
   { x: 7, y: 0, w: 48, h: 49 },
@@ -787,6 +789,12 @@ function fillCenteredText(text, x, y, color, fontSize) {
   fillText(text, x - metrics.width / 2, y, color, fontSize);
 }
 
+function fillRightAlignedText(text, x, y, color, fontSize) {
+  if (typeof fontSize !== "undefined") ctx.font = fontSize + "px 'Hiro Mono'";
+  var metrics = ctx.measureText(text);
+  fillText(text, x - metrics.width, y, color, fontSize);
+}
+
 function fillBlinkingText(text, x, y, blinkFreq, color, fontSize) {
   if (~~(0.5 + Date.now() / blinkFreq) % 2) {
     fillCenteredText(text, x, y, color, fontSize);
@@ -808,10 +816,9 @@ function drawBottomHud() {
     player.clipRect.w * 0.5,
     player.clipRect.h * 0.5
   );
-  fillText("Press 'x' to shoot", CANVAS_WIDTH - 220, CANVAS_HEIGHT - 7.5);
-  fillCenteredText(
+  fillRightAlignedText(
     "Score: " + player.score,
-    CANVAS_WIDTH / 2 - 70,
+    CANVAS_WIDTH,
     CANVAS_HEIGHT - 7.5
   );
 }
@@ -846,7 +853,7 @@ function drawStartScreen() {
     30
   );
   fillBlinkingText(
-    "Press 'Enter' to play!",
+    "Press 'Space' to shoot",
     CANVAS_WIDTH / 2,
     CANVAS_HEIGHT / 1.8,
     900,
@@ -859,7 +866,7 @@ function animate() {
   var now = window.performance.now();
   var dt = now - lastTime;
   if (dt > 100) dt = 100;
-  if (wasKeyPressed(13) && !hasGameStarted) {
+  if (wasKeyPressed(START_KEY) && !hasGameStarted) {
     initGame();
     hasGameStarted = true;
   }
