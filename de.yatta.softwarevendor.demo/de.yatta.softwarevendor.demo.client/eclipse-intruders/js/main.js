@@ -892,7 +892,7 @@ function animate() {
 // ###################################################################
 function resize() {
   var w = window.innerWidth;
-  var h = window.innerHeight;
+  var h = window.innerHeight - document.getElementById('vendor-panel').offsetHeight -5;
 
   // calculate the scale factor to keep a correct aspect ratio
   var scaleFactor = Math.min(w / CANVAS_WIDTH, h / CANVAS_HEIGHT);
