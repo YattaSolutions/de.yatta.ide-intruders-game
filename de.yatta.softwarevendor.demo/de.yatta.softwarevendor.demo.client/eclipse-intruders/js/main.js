@@ -105,8 +105,8 @@ var CANVAS_HEIGHT = 640;
 var CANVAS_BG_STYLE = "#F5F5F5";
 var FONT_COLOR = "#353535";
 var BULLET_COLOR = "#353535";
-var BUG_EXPLOSION_COLOR = "#660000";
-var SPACESHIP_COLOR = "#9966FF";
+var BUG_EXPLOSION_COLOR = "#008009";
+var SPACESHIP_COLOR = "#660000";
 var SPRITE_SHEET_SRC =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD8AAADrCAYAAADe8E7mAAAACXBIWXMAAAsSAAALEgHS3X78AAACpUlEQVR4nO3dQXKDMAyFYdLplZL7r3MpuupMFrEQtmWE3v/t01iNbCxA8Nj3fYv2er26vuT9fj8ih/YT+cezkw4+LO17U70lYgr89n7wM7jouRk1hu7gjwYzW8Q/mznv1frvR/7iltYYvJnBoU7V4YKXYVX36JkCpL2qw7TPnOotrPYOBK+qu6q7alfX0rM2kfaqTpW0FDaFkPYWCpuiSHsLhU1RU8/brzref/s+trcnTb1oEbnru/xyVbZjPtvbAVPT/tOMKRCdXdLb27BfvjWwTJYEf9u0Z3tb1JJb0f55039VtvHLr9bKgNXrCzu8mTynt1u/8Mhne3AOT1XogjeSritqCtJe1WHa36Wk/cQVGwdKWu8AMk8BTmCeFJb2M87bR2faqeCzTQHaTAawyRmV4W6sHuztVXGct1DYFEXaWyhsimKH14M2k5sj7UdR2NwQwasieFUEr4o2E1W0mXjRZlIIbSYW2kwmDiwT7sm5cgARWO0daDNRRZuJKtpMVLHgRaHNJDHSXhXH+Wi8zSQhFrwIvM0kGG0mA5jzXjz0txB2eBYe+lsUaW/hclVRBK+KNhNVHOq8KGwKIe0tFDZFkfYWCpuiaDNRRZuJF20mhdBmYqHNZOLAMqHN5MoBRGC1d6DNRBVtJqpoM1HFgheFNpPESHsLD/0tipLWOwAe+lsIbzPx4m0mzsHMRpvJZDz0VxXBq+JtJqpIewuFTVHs8HrQZnJzpP0oCpsbInhVBK+K4FXRZqKKNhMv2kwKoc3EQpvJxIFlwj05Vw4gAqu9A20mqmgzUUWbiSoWvCi0mSRG2qtaUtV9822jwyZnIYJXRfCqCF4Vwau6xburqOoCELyqx/P5lK1pSXtVBK+K4FURvCqCV0XwqgheFcGr0g1+27Y/VWz8dnQl3RUAAAAASUVORK5CYII=";
 var LEFT_KEY = 37;
@@ -125,7 +125,7 @@ var BUG_TOP_ROW = [
   { x: 7, y: 100, w: 48, h: 51 },
   { x: 7, y: 151, w: 48, h: 51 },
 ];
-var BUG_X_MARGIN = 40;
+var BUG_X_MARGIN = 50;
 var BUGS_PER_COLUMN = 9;
 var BUG_ROWS = 4;
 var BUG_SQUAD_WIDTH = BUGS_PER_COLUMN * BUG_X_MARGIN;
@@ -194,7 +194,7 @@ var Rect = Class.extend({
 var canvas = null;
 var ctx = null;
 var spriteSheetImg = null;
-var bulletImg = null;
+var bulletImgs = [];
 var keyStates = null;
 var prevKeyStates = null;
 var lastTime = 0;
@@ -377,7 +377,8 @@ var Player = SheetSprite.extend({
 
 var Bullet = BaseSprite.extend({
   init: function(x, y, direction, speed) {
-    this._super(bulletImg, x, y);
+    var img = bulletImgs[Math.floor(Math.random()*bulletImgs.length)];
+    this._super(img, x, y);
     this.direction = direction;
     this.speed = speed;
     this.alive = true;
@@ -572,12 +573,15 @@ function initCanvas() {
 }
 
 function preDrawImages() {
-  var canvas = drawIntoCanvas(3, 6, function(ctx) {
-    ctx.fillStyle = BULLET_COLOR;
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  });
-  bulletImg = new Image();
-  bulletImg.src = canvas.toDataURL();
+  // '0', resolution 5 x 10
+  bulletImgs = [];
+  var img = new Image();
+  img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAAMUlEQVQI12NkYGBgMDU1/c8ABadPn2ZkhAmcPn0azkZRBeMzMWABNBOEuQBGM2JzPACEvxQm6nrehwAAAABJRU5ErkJggg==";
+  bulletImgs.push(img);
+  // '1', resolution 5 x 10
+  img = new Image();
+  img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAAJklEQVQI12NggAJTU9P/MDYTugADAwMDE7oACsDQjg5oIciIzUkAcV0IJqLp3/kAAAAASUVORK5CYII=";
+  bulletImgs.push(img);
 }
 
 function setImageSmoothing(value) {
@@ -778,6 +782,7 @@ function fillText(text, x, y, color, fontSize) {
 }
 
 function fillCenteredText(text, x, y, color, fontSize) {
+  if (typeof fontSize !== "undefined") ctx.font = fontSize + "px 'Hiro Mono'";
   var metrics = ctx.measureText(text);
   fillText(text, x - metrics.width / 2, y, color, fontSize);
 }
@@ -833,13 +838,20 @@ function drawStartScreen() {
     FONT_COLOR,
     36
   );
+  fillCenteredText(
+    "Fight the bugs!",
+    CANVAS_WIDTH / 2,
+    CANVAS_HEIGHT / 2.2,
+    FONT_COLOR,
+    30
+  );
   fillBlinkingText(
     "Press 'Enter' to play!",
     CANVAS_WIDTH / 2,
-    CANVAS_HEIGHT / 2,
+    CANVAS_HEIGHT / 1.8,
     900,
     FONT_COLOR,
-    36
+    30
   );
 }
 
