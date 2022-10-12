@@ -11,6 +11,7 @@ import org.osgi.service.event.Event;
 
 import com.yattasolutions.platform.marketplace.client.MarketplaceClient;
 import com.yattasolutions.platform.marketplace.client.MarketplaceClientPlugin;
+import com.yattasolutions.platform.marketplace.client.account.AccountManager;
 
 import de.yatta.platform.marketplace.licensing.client.LicenseRequest;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse;
@@ -62,7 +63,16 @@ public class GameEditor extends BrowserWrapper {
     new BrowserFunction(getBrowser(), "resetDemo") {
       @Override
       public Object function(Object[] arguments) {
-        MarketplaceClient.get().showCancelDialog(parent.getDisplay(), VendorDemoPlugin.SOLUTION_ID);
+        LicenseResponse licenseResponse = fetchLicenseStatus(5000);
+        if (VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE.equals(licenseResponse.getLicenseTypeId()))
+        {
+           MarketplaceClient.get().showDeleteDemoOrderDialog(parent.getDisplay(), VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE, true);           
+        }
+        else
+        {
+           MarketplaceClient.get().showCancelDialog(parent.getDisplay(), VendorDemoPlugin.SOLUTION_ID, true);
+        }
+        AccountManager.get().signOut();
         return null;
       }
     };
