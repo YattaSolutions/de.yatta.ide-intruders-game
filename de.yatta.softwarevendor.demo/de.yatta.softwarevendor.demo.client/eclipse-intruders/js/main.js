@@ -817,7 +817,7 @@ function drawBottomHud() {
     player.clipRect.h * 0.5
   );
   fillRightAlignedText(
-    "Score: " + player.score,
+    "Debugging score: " + player.score,
     CANVAS_WIDTH,
     CANVAS_HEIGHT - 7.5
   );
