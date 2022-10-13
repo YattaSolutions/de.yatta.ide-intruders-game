@@ -1,37 +1,33 @@
-# SoftwareVendor Test Application
+# Integrating the Yatta Checkout for Eclipse
 
-Demo applications for https://stage.platform.yatta.de/
+## Running the application
 
-Profile: https://www.yatta.de/profiles/hub/YkxZ
+Start the launch configuration [SoftwareVendorTool.launch](de.yatta.softwarevendor.demo\de.yatta.softwarevendor.demo.client\SoftwareVendorTool.launch) either in run or debug mode.
 
-Update Site: https://cdn.yatta.de/stage/update/softwarevendor
+## Building update site and the Rich Client Platform (RCP)
 
-Installer: https://cdn.yatta.de/update/softwarevendor/0.0.1/softwarevendor.exe
-
-## Build
-
-For stage we can use the default target definition in `de.yatta.softwarevendor.demo\de.yatta.softwarevendor.demo.client\softwarevendor-target.target`
-
+Build the [de.yatta.softwarevendor.demo.releng](de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.releng) project:
 ```bash
 pushd de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.releng
-mvn package
-popd
-
-pushd de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.site/target/repository
-rsync -n --delete -v -a ./* push-33.cdn77.com:/www/stage/update/softwarevendor/
+mvn clean package
 popd
 ```
+This will build the following artifacts:
 
-To build against a local LicenseClient you have to change the repository tag in the `*.target`
-```xml
-			<!-- for stage -->
-			<!-- <repository location="http://cdn.yatta.de/stage/update/marketplace" /> -->
-			<!-- for local -->
-			<repository location="file:/C:/.../platform-server/marketplace/com.yattasolutions.platform.marketplace.client.site/target/repository" />
+### Eclipse Update Site
 ```
+de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.site/target/repository/
+```
+The folder can be copied to an FTP server, or you can use it locally and specify it as update site inside an Eclipse installation.
 
-The local update site of the licensing client has to built like this beforehand:
-```bash
-cd ${workspace}/platform-server/marketplace
-mvn package -DskipTests=true -Dbuild.stage=dev -Dinclude.client=nosandbox -Dexclude.server=true -Denvironment=dev -Dhostname.backend="http://localhost:8013" -Dhostname.frontend="http://localhost:4300" -Dhostname.account="http://localhost:5000" --batch-mode
- ```
+### Eclipse RCP
+```
+de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/target/products/
+```
+The folder will include applications for Windows, MacOS and Linux. A Java Runtime Environment (JRE) is bundled with each application.
+
+## Start selling your solution
+[Become a vendor](https://www.yatta.de/portal) to integrate the Checkout into your own Eclipse product, tool or any other solution. For more information, read the [vendor documentation](https://www.yatta.de/docs).
+
+---
+If you have any questions, please [contact us](mailto:contact@yatta.de). We are happy to help.
