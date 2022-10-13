@@ -14,11 +14,11 @@ p {
 
 a {
   text-decoration: none;
-  color: #3c91ff;
+  color: #202eff;
 }
 
 a:hover {
-  color: #257ae9
+  color: #1e2ad7
 }
 
 .container {
@@ -32,7 +32,7 @@ img.hiro {
 
 .card {
   background-color: #fff;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 12px;
   box-shadow: 0 2px 2px -1px rgba(53, 53, 53, 0.15);
   margin-bottom: 12px;
@@ -44,6 +44,7 @@ img.hiro {
 }
 
 .card-image {
+  border-radius: 8px;
   margin-left: 10px;
   flex: 0 0 30%;
   width: 30%;
