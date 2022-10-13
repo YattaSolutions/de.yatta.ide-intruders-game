@@ -109,7 +109,7 @@ public class BrowserWrapper extends EditorPart {
 
     if (enable) {
       locationListener = LocationListener.changingAdapter(event -> {
-        if (!event.location.startsWith("file:")) {
+        if (!event.location.startsWith("file:") && !event.location.startsWith("mailto:")) {
           // location is not local
           // stop navigation on embedded browser
           event.doit = false;
