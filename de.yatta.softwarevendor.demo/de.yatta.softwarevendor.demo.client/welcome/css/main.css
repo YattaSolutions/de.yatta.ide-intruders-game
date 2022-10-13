@@ -67,10 +67,3 @@ div.card-image {
 .card-text:last-child {
   margin-bottom: 0;
 }
-
-/*@media (max-width: 576px) {
-    .container {
-        padding-left: 0;
-        padding-right: 0;
-    }
-}*/
