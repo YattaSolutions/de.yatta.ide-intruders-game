@@ -7,5 +7,5 @@
       <category name="de.yatta.softwarevendor.demo"/>
    </feature>
    <category-def name="de.yatta.softwarevendor.demo" label="Softwarevendor Demo"/>
-   <repository-reference location="https://cdn.yatta.de/stage/update/marketplace" enabled="true" />
+   <repository-reference location="https://cdn.yatta.de/update/marketplace/2.0.7_rebrand" enabled="true" />
 </site>
