@@ -11,7 +11,7 @@
     <tycho.version>2.7.5</tycho.version>
     <bundle-ee>SYSTEM</bundle-ee>
     <repo-base.url>http://download.eclipse.org</repo-base.url>
-    <ymp-repo.url>https://cdn.yatta.de/update/marketplace/2.0.7_rebrand</ymp-repo.url>
+    <ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
   </properties>
 
   <repositories>
