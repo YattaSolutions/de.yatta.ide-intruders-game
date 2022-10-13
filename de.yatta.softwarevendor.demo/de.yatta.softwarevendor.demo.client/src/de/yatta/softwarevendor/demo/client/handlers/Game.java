@@ -2,9 +2,6 @@ package de.yatta.softwarevendor.demo.client.handlers;
 
 public enum Game {
 
-  TILES_2048("2048", "http://axilleasiv.github.io/vue2048/"),
-  CLUMSY_BIRD("Clumsy Bird", "http://ellisonleao.github.io/clumsy-bird/"),
-  PACMAN("Pacman", "https://pacman.platzh1rsch.ch/"),
   ECLIPSE_INTRUDERS("Eclipse Intruders", "eclipse-intruders/index.html", "/eclipse-intruders/img/favicon.ico");
 
   private final String url;
