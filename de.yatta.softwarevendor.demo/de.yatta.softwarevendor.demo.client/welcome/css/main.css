@@ -27,7 +27,6 @@ a:hover {
 
 img.hiro {
   float: right;
-  width: 24px;
 }
 
 .card {
@@ -49,6 +48,7 @@ img.hiro {
   flex: 0 0 30%;
   width: 30%;
   min-width: 400px;
+  max-width: 575px;
 }
 
 div.card-image {
