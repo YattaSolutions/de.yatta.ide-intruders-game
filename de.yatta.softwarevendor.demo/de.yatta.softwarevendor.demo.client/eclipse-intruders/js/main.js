@@ -762,7 +762,6 @@ function resolveCollisions() {
 
 function updateGame(dt) {
   player.handleInput();
-  prevKeyStates = keyStates.slice();
   player.update(dt);
   updateBugs(dt);
   resolveCollisions();
@@ -874,6 +873,8 @@ function animate() {
   if (hasGameStarted) {
     updateGame(dt / 1000);
   }
+
+  prevKeyStates = keyStates.slice();
 
   ctx.fillStyle = CANVAS_BG_STYLE;
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
