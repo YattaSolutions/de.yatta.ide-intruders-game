@@ -1,0 +1,30 @@
+<html>
+
+<head>
+  <link href='css/stylesheet.css' rel='stylesheet' type='text/css' />
+  <link href='img/favicon.ico' rel='icon' />
+  <script src='js/main.js' type='text/javascript'></script>
+</head>
+
+<body>
+  <canvas id="game-canvas" width="640" height="640"></canvas>
+
+  <div id="vendor-panel">
+    <div class="header">Congratulations, you purchased a demo license via the Yatta In-App Checkout demo.</div>
+    <a href="https://www.yatta.de/portal"><button>Start selling</button></a>
+    <a onclick="typeof(resetDemo)=='function' && resetDemo()">Reset demo</a>
+  </div>
+
+  <div class="panel-overlay" id="overlay-support" hidden></div>
+  
+  <script type="text/javascript">
+    function showOverlay(height) {
+      document.getElementById('vendor-panel').hidden = !!height;
+      let sup = document.getElementById('overlay-support');
+      sup.hidden = !height;
+      sup.style.height = height;
+    }
+  </script>
+</body>
+
+</html>
