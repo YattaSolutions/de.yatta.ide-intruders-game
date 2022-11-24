@@ -152,6 +152,7 @@
         <eclipse-repo.url>${repo-base.url}/staging/2022-09</eclipse-repo.url>
         <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.25</eclipse-updates-repo.url>
         <orbit-repo.url>${repo-base.url}/tools/orbit/downloads/drops/R20220830213456/repository</orbit-repo.url>
+        <ymp-repo.url>https://cdn.yatta.de/stage/update/marketplace</ymp-repo.url>
       </properties>
     </profile>
     <profile>
@@ -162,6 +163,9 @@
           <value>true</value>
         </property>
       </activation>
+      <properties>
+        <ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
+      </properties>
       <build>
         <pluginManagement>
           <plugins>
