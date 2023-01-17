@@ -17,7 +17,7 @@ import de.yatta.softwarevendor.demo.client.ui.BrowserWrapperInput;
 
 public class WelcomeHandler extends AbstractHandler {
 
-  private static final String BROWSER_TITLE = "Checkout Demo";
+  private static final String BROWSER_TITLE = "Getting started with Yatta Checkout";
 
   @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {

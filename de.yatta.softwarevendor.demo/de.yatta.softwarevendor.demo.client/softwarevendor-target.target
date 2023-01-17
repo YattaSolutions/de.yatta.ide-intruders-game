@@ -19,6 +19,7 @@
             <unit id="com.yattasolutions.platform.marketplace.client.feature.feature.group" version="0.0.0"/>
             <unit id="de.yatta.platform.browser.feature.feature.group" version="0.0.0"/>
             <unit id="de.yatta.platform.marketplace.licensing.client.feature.feature.group" version="0.0.0"/>
+            <unit id="com.yattasolutions.platform.marketplace.api.docs" version="0.0.0"/>
         </location>
     </locations>
 </target>

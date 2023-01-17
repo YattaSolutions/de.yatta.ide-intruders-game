@@ -16,7 +16,7 @@
       <command
             categoryId="org.eclipse.ui.category.help"
             id="de.yatta.softwarevendor.demo.commands.welcome"
-            name="Checkout Demo welcome page">
+            name="Getting started with Yatta Checkout">
       </command>
    </extension>
 
@@ -62,10 +62,12 @@
          <toolbar
                id="de.yatta.softwarevendor.demo.toolbars.vendorGame">
             <command
-                  id="de.yatta.softwarevendor.demo.toolbars.vendorGame"
                   commandId="de.yatta.softwarevendor.demo.commands.vendorGame"
-                  icon="icons/vendorlogo.png"
-                  tooltip="Start Vendor Game">
+                  icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
+                  id="de.yatta.softwarevendor.demo.toolbars.vendorGame"
+                  label="Start the demo"
+                  mode="FORCE_TEXT"
+                  tooltip="Start the demo">
             </command>
          </toolbar>
       </menuContribution>

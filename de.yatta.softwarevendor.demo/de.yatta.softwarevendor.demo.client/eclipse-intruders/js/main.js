@@ -838,7 +838,7 @@ function drawGame(resized) {
 
 function drawStartScreen() {
   fillCenteredText(
-    "Eclipse Intruders",
+    "Eclipse Intruders (demo)",
     CANVAS_WIDTH / 2,
     CANVAS_HEIGHT / 2.75,
     FONT_COLOR,

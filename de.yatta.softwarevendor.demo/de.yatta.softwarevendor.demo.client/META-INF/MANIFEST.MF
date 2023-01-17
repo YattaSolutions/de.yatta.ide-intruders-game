@@ -4,9 +4,9 @@ Bundle-Name: SoftwareVendor Tool
 Bundle-SymbolicName: de.yatta.softwarevendor.demo.client;singleton:=true
 Bundle-Version: 1.1.1.qualifier
 Require-Bundle: org.eclipse.ui,
- com.yattasolutions.platform.marketplace.client;bundle-version="2.0.7",
- de.yatta.platform.marketplace.licensing.client;bundle-version="2.0.7",
- de.yatta.platform.marketplace.licensing.client.ui;bundle-version="2.0.7",
+ com.yattasolutions.platform.marketplace.client;bundle-version="2.0.8",
+ de.yatta.platform.marketplace.licensing.client;bundle-version="2.0.8",
+ de.yatta.platform.marketplace.licensing.client.ui;bundle-version="2.0.8",
  org.eclipse.osgi.services,
  org.eclipse.core.runtime
 Automatic-Module-Name: de.yatta.softwarevendor.demo

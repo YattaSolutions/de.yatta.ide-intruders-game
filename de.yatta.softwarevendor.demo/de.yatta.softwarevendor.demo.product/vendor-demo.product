@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Softwarevendor Demo" uid="vendor-demo" application="org.eclipse.ui.ide.workbench" version="0.0.0" useFeatures="true" includeLaunchers="true" autoIncludeRequirements="true">
+<product name="Eclipse Intruders (demo)" uid="vendor-demo" version="0.0.0" useFeatures="true" includeLaunchers="true">
+
 
    <configIni use="default">
    </configIni>
@@ -17,11 +18,22 @@
 
    <windowImages/>
 
+
    <launcher>
+      <linux icon="icons/AppIcon_256x256.xpm"/>
+      <macosx icon="icons/AppIcon-MacOS.icns"/>
       <win useIco="false">
-         <bmp/>
+         <bmp
+            winSmallHigh="icons/AppIcon_16x16.bmp"
+            winSmallLow="icons/AppIcon_16x168bit.bmp"
+            winMediumHigh="icons/AppIcon_32x32.bmp"
+            winMediumLow="icons/AppIcon_32x32-8bit.bmp"
+            winLargeHigh="icons/AppIcon_48x48.bmp"
+            winLargeLow="icons/AppIcon_48x48-8bit.bmp"
+            winExtraLargeHigh="icons/AppIcon_256x256.bmp"/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
