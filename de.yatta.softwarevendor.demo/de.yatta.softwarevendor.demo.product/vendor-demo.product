@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Eclipse Intruders (demo)" uid="vendor-demo" version="0.0.0" useFeatures="true" includeLaunchers="true">
+<product name="Eclipse Intruders (demo)" uid="vendor-demo" id="de.yatta.softwarevendor.demo.client.softwarevendor_demo_product" application="org.eclipse.ui.ide.workbench" version="0.0.0" useFeatures="true" includeLaunchers="true">
 
 
    <configIni use="default">
@@ -16,27 +16,21 @@
       </vmArgsMac>
    </launcherArgs>
 
-   <windowImages/>
+   <windowImages i16="icons/AppIcon-16.png" i32="icons/AppIcon-32.png" i48="icons/AppIcon-48.png" i64="icons/AppIcon-64.png" i128="icons/AppIcon-128.png" i256="icons/AppIcon-256.png"/>
 
-
-   <launcher>
+   <launcher name="YattaCheckoutDemo">
       <linux icon="icons/AppIcon_256x256.xpm"/>
       <macosx icon="icons/AppIcon-MacOS.icns"/>
-      <win useIco="false">
-         <bmp
-            winSmallHigh="icons/AppIcon_16x16.bmp"
-            winSmallLow="icons/AppIcon_16x168bit.bmp"
-            winMediumHigh="icons/AppIcon_32x32.bmp"
-            winMediumLow="icons/AppIcon_32x32-8bit.bmp"
-            winLargeHigh="icons/AppIcon_48x48.bmp"
-            winLargeLow="icons/AppIcon_48x48-8bit.bmp"
-            winExtraLargeHigh="icons/AppIcon_256x256.bmp"/>
+      <win useIco="true">
+         <ico path="icons/Eclipse_Intruders.ico"/>
+         <bmp/>
       </win>
    </launcher>
 
 
    <vm>
    </vm>
+
 
    <plugins>
    </plugins>
