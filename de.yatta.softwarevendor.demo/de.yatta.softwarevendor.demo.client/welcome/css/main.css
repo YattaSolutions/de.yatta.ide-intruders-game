@@ -35,7 +35,6 @@ img.hiro {
   padding: 12px;
   box-shadow: 0 2px 2px -1px rgba(53, 53, 53, 0.15);
   margin-bottom: 12px;
-
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -54,7 +53,6 @@ img.hiro {
 div.card-image {
   background-color: #f0f0f0;
   padding: 5px 0;
-
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -67,4 +65,26 @@ div.card-image {
 
 .card-text:last-child {
   margin-bottom: 0;
+}
+
+body.dark {
+  color: whitesmoke;
+  background: #353535;
+}
+
+.dark a {
+  color: #9eccfe;
+}
+
+.dark a:hover {
+  color: #6db3fe;
+}
+
+.dark .card {
+  background-color: #535353;
+  box-shadow: 0 2px 2px -1px rgba(53, 53, 53, 0.15);
+}
+
+.dark div.card-image {
+  background-color: #d2d2d2;
 }
