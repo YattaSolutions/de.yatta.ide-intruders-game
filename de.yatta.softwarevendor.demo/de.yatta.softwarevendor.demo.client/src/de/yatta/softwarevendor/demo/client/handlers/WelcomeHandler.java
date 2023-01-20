@@ -15,10 +15,9 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import com.yattasolutions.platform.marketplace.client.ThemeHandler;
-
 import de.yatta.softwarevendor.demo.client.ui.BrowserWrapper;
 import de.yatta.softwarevendor.demo.client.ui.BrowserWrapperInput;
+import de.yatta.softwarevendor.demo.client.ui.WelcomeEditor;
 
 public class WelcomeHandler extends AbstractHandler
 {
@@ -41,8 +40,8 @@ public class WelcomeHandler extends AbstractHandler
             PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
                try
                {
-                  String theme = ThemeHandler.currentSelectedTheme().getName();
-                  String url = BrowserWrapper.buildFileUrlForResource("welcome/index-" + theme + ".html");
+                  String theme = ThemeHandler.isDarkMode() ? "-dark" : "";
+                  String url = BrowserWrapper.buildFileUrlForResource("welcome/index" + theme + ".html");
 
                   IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
                   IWorkbenchPage page = window.getActivePage();
@@ -50,8 +49,11 @@ public class WelcomeHandler extends AbstractHandler
                   BrowserWrapperInput input = new BrowserWrapperInput(BROWSER_TITLE, url,
                         "/welcome/img/yatta_16x16.png");
                   IEditorPart editor = page.findEditor(input);
-                  page.closeEditor(editor, false);
-                  page.openEditor(input, BrowserWrapper.EDITOR_ID);
+                  if (editor != null)
+                  {
+                     page.closeEditor(editor, false);
+                  }
+                  page.openEditor(input, WelcomeEditor.EDITOR_ID);
                }
                catch (PartInitException e)
                {

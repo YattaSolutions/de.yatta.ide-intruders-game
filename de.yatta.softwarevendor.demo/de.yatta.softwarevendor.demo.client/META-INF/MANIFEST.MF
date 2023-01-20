@@ -13,3 +13,4 @@ Automatic-Module-Name: de.yatta.softwarevendor.demo
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.yatta.softwarevendor.demo.VendorDemoPlugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: org.eclipse.e4.ui.css.swt.theme

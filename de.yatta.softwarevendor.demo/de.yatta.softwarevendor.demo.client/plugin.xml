@@ -101,16 +101,16 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="de.yatta.softwarevendor.demo.client.ui.BrowserWrapper"
-            contributorClass="org.eclipse.ui.part.EditorActionBarContributor"
-            id="de.yatta.softwarevendor.demo.editors.browserWrapper"
-            name="Browser Wrapper">
-      </editor>
-      <editor
             class="de.yatta.softwarevendor.demo.client.ui.GameEditor"
             contributorClass="org.eclipse.ui.part.EditorActionBarContributor"
             id="de.yatta.softwarevendor.demo.editors.gameEditor"
             name="Game Editor">
+      </editor>
+      <editor
+            class="de.yatta.softwarevendor.demo.client.ui.WelcomeEditor"
+            contributorClass="org.eclipse.ui.part.EditorActionBarContributor"
+            id="de.yatta.softwarevendor.demo.editors.welcomeEditor"
+            name="Welcome Page">
       </editor>
    </extension>
    <extension
