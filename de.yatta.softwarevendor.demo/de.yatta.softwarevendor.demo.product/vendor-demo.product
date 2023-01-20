@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Softwarevendor Demo" uid="vendor-demo" application="org.eclipse.ui.ide.workbench" version="0.0.0" useFeatures="true" includeLaunchers="true" autoIncludeRequirements="true">
+<product name="Eclipse Intruders (demo)" uid="vendor-demo" id="de.yatta.softwarevendor.demo.client.softwarevendor_demo_product" application="org.eclipse.ui.ide.workbench" version="0.0.0" useFeatures="true" includeLaunchers="true">
+
 
    <configIni use="default">
    </configIni>
@@ -15,16 +16,21 @@
       </vmArgsMac>
    </launcherArgs>
 
-   <windowImages/>
+   <windowImages i16="icons/AppIcon-16.png" i32="icons/AppIcon-32.png" i48="icons/AppIcon-48.png" i64="icons/AppIcon-64.png" i128="icons/AppIcon-128.png" i256="icons/AppIcon-256.png"/>
 
-   <launcher>
-      <win useIco="false">
+   <launcher name="YattaCheckoutDemo">
+      <linux icon="icons/AppIcon_256x256.xpm"/>
+      <macosx icon="icons/AppIcon-MacOS.icns"/>
+      <win useIco="true">
+         <ico path="icons/Eclipse_Intruders.ico"/>
          <bmp/>
       </win>
    </launcher>
 
+
    <vm>
    </vm>
+
 
    <plugins>
    </plugins>

@@ -10,13 +10,13 @@
       </category>
       <command
             categoryId="de.yatta.softwarevendor.demo.commands.category"
-            name="Start Vendor Game"
+            name="Start the demo"
             id="de.yatta.softwarevendor.demo.commands.vendorGame">
       </command>
       <command
             categoryId="org.eclipse.ui.category.help"
             id="de.yatta.softwarevendor.demo.commands.welcome"
-            name="Checkout Demo welcome page">
+            name="Getting started with Yatta Checkout">
       </command>
    </extension>
 
@@ -52,6 +52,7 @@
                mnemonic="M">
             <command
                   commandId="de.yatta.softwarevendor.demo.commands.vendorGame"
+                  icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
                   id="de.yatta.softwarevendor.demo.menus.vendorGame"
                   mnemonic="S">
             </command>
@@ -62,10 +63,12 @@
          <toolbar
                id="de.yatta.softwarevendor.demo.toolbars.vendorGame">
             <command
-                  id="de.yatta.softwarevendor.demo.toolbars.vendorGame"
                   commandId="de.yatta.softwarevendor.demo.commands.vendorGame"
-                  icon="icons/vendorlogo.png"
-                  tooltip="Start Vendor Game">
+                  icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
+                  id="de.yatta.softwarevendor.demo.toolbars.vendorGame"
+                  label="Start the demo"
+                  mode="FORCE_TEXT"
+                  tooltip="Start the demo">
             </command>
          </toolbar>
       </menuContribution>
@@ -98,16 +101,16 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="de.yatta.softwarevendor.demo.client.ui.BrowserWrapper"
-            contributorClass="org.eclipse.ui.part.EditorActionBarContributor"
-            id="de.yatta.softwarevendor.demo.editors.browserWrapper"
-            name="Browser Wrapper">
-      </editor>
-      <editor
             class="de.yatta.softwarevendor.demo.client.ui.GameEditor"
             contributorClass="org.eclipse.ui.part.EditorActionBarContributor"
             id="de.yatta.softwarevendor.demo.editors.gameEditor"
             name="Game Editor">
+      </editor>
+      <editor
+            class="de.yatta.softwarevendor.demo.client.ui.WelcomeEditor"
+            contributorClass="org.eclipse.ui.part.EditorActionBarContributor"
+            id="de.yatta.softwarevendor.demo.editors.welcomeEditor"
+            name="Welcome Page">
       </editor>
    </extension>
    <extension
@@ -115,6 +118,18 @@
       <startup
             class="de.yatta.softwarevendor.demo.client.handlers.WelcomePageStartup">
       </startup>
+   </extension>
+   <extension
+         id="softwarevendor_demo_product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.ui.ide.workbench"
+            name="Eclipse Intruders (demo)">
+         <property
+               name="windowImages"
+               value="icons/AppIcon-16.png,icons/AppIcon-32.png,icons/AppIcon-48.png,icons/AppIcon-64.png,icons/AppIcon-128.png,icons/AppIcon-256.png">
+         </property>
+      </product>
    </extension>
 
 </plugin>
