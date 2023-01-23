@@ -86,10 +86,12 @@ a {
 
 .dark .card {
   background-color: #41464a;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 .light .card {
   background-color: #ffffff;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 .card {
@@ -97,7 +99,6 @@ a {
   margin-left: 32px;
   margin-bottom: 12px;
   margin-right: 32px;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
 }
 
@@ -109,6 +110,7 @@ a {
 .card-content {
   padding: 12px 34px 12px 12px;
   max-width: 594px;
+  min-width: 150px;
   margin-right: auto;
 }
 
@@ -121,9 +123,9 @@ a {
 }
 
 .card-image {
-  width: 226px;
-  min-width: 226px;
-  padding: 12px;
+  width: 250px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -131,7 +133,7 @@ a {
 
 .card-image img {
   margin: auto;
-  max-width: 226px;
+  width: 250px;
 }
 
 .dark .footer {
