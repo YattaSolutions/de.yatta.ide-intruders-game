@@ -1,6 +1,11 @@
-function showOverlay(infoText) {
+function showOverlay(showSignInLink) {
   document.getElementById("game").style.display = "none";
   document.getElementById("start-page").style.display = "flex";
+  if (showSignInLink === false) {
+    document.getElementById("sign-in-btn").style.display = "none";
+  } else {
+    document.getElementById("sign-in-btn").style.display = "flex";
+  }
 }
 
 function hideOverlay() {

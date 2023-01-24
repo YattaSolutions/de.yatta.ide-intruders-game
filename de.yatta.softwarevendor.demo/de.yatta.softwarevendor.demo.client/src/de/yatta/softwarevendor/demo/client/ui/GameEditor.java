@@ -24,6 +24,8 @@ public class GameEditor extends BrowserWrapper
    public static final String EDITOR_ID = "de.yatta.softwarevendor.demo.editors.gameEditor";
 
    private Composite parent;
+   private boolean isLicensed = false;
+   private boolean isNotLoggedIn = true;
    private ServiceRegistration<?> serviceRegistration;
 
    @Override
@@ -43,7 +45,6 @@ public class GameEditor extends BrowserWrapper
             // no protocol specified -> bundled resource
             gameUrl = buildFileUrlForResource(gameUrl);
          }
-
          getBrowser().setUrl(gameUrl);
          setPartName(input.getName());
          String titleImage = input.getGame().getTitleImage();
@@ -59,6 +60,7 @@ public class GameEditor extends BrowserWrapper
 
       getBrowser().addProgressListener(ProgressListener.completedAdapter(e -> {
          openExternalSitesInExternalBrowser(true);
+         checkLicense();
       }));
 
       new BrowserFunction(getBrowser(), "resetDemo") {
@@ -125,43 +127,39 @@ public class GameEditor extends BrowserWrapper
 
    private void checkLicense()
    {
-      if (!MarketplaceClient.get().isAccountLoggedIn())
+      isNotLoggedIn = !MarketplaceClient.get().isAccountLoggedIn();
+      if (isNotLoggedIn)
       {
-         showOverlay(true);
-         return;
+         isLicensed = false;
+      }
+      else
+      {
+
+         final LicenseResponse licenseResponse = fetchLicenseStatus(5000);
+
+         if (licenseResponse.getValidity() == Validity.LICENSED)
+         {
+            isLicensed = true;
+         }
+         else
+         {
+            isLicensed = false;
+         }
       }
 
-      final LicenseResponse licenseResponse = fetchLicenseStatus(5000);
-
-      if (licenseResponse.getValidity() == Validity.LICENSED)
+      if (isLicensed)
       {
          hideOverlay();
       }
-      else if (licenseResponse.getValidity() == Validity.WAIT)
-      {
-         showOverlay(false,
-               "There was an error communicating with the licensing server\nPlease check your connection and try again.");
-      }
-
       else
       {
-         showOverlay(false);
+         showOverlay(isNotLoggedIn);
       }
    }
 
-   /**
-    * Show overlay with default message.
-    * 
-    */
    private void showOverlay(boolean showSignInLink)
    {
-      showOverlay(showSignInLink,
-            "We couldn't detect a valid license, please go ahead and purchase or subscribe for a license.");
-   }
-
-   private void showOverlay(boolean showSignInLink, String descriptionText)
-   {
-      getBrowser().execute("showOverlay()");
+      getBrowser().execute("showOverlay(" + (showSignInLink ? "true" : "false") + ")");
    }
 
    private void hideOverlay()
