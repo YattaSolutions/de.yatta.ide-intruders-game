@@ -1,53 +1,53 @@
-# Getting started with Yatta Checkout for Eclipse
+Testing the Checkout for Eclipse—and playing Eclipse Intruders
 
-Hi, this is Yatta! Our mission is to help vendors build and sell development tools—and thus provide developers with access to cutting-edge tooling.
+Hi, we are the Yatta developers! Our mission is to help vendors build and sell development tools—and thus provide developers with access to cutting-edge tooling.
 
-## About this download
+About this download
 
-This download includes an Eclipse IDE (https://www.eclipse.org/downloads/packages/) with a demo plugin that allows you to test the Yatta Checkout for Eclipse in a secure demo environment.
-The demo includes a sample product you can ’purchase’ as a demo user. You can reset the demo as many times as you want so you can test one-time purchases as well as monthly or annual subscriptions with the Yatta Checkout for Eclipse.
-No real payments or purchases take place in the demo.
+This download includes an Eclipse IDE (https://eclipseide.org/) with a sample product that allows you to test the Yatta Checkout for Eclipse in a secure demo environment.
+The sample product is a mini game you can demo-purchase as a demo user. Use the Checkout to access the game.
+No real payments or purchases are made in the demo.
 
-## How to start the demo
+How to start the demo
 
 1.  Extract the .zip file (if you haven't already)
 2.  Open the extracted folder and run eclipse.exe
-3.  "Launch" demo with default directory—or choose a custom directory
+3.  "Launch" demo with the default directory or choose a custom one
 
-## Testing the Checkout for Eclipse
+Testing the Checkout for Eclipse
 
-1.  On the getting started page, you can click "Start demo" in the toolbar on the top left or use the shortcut Ctrl+6 to begin testing Yatta Checkout for Eclipse.
-2.  When you click "Purchase" or "Subscribe" you will be prompted to sign in to or create a Yatta account.
-3.  Follow the checkout process. We have provided demo data for payment and billing — no real transactions take place in the demo.
-4.  After acquiring a license, the game Eclipse Intruders is unlocked for you to play.
-5.  You can reset the demo so you can try different license options by clicking "Reset demo".
+Simply follow the instructions in the demo—the Checkout should be self-explanatory.
 
-## Playing “Eclipse Intruders”
+- Purchase solution: You can test one-time purchases as well as monthly and annual subscriptions
+- Test payment options: The Checkout provides various payment options; test credit card, direct debit, SEPA and PayPal payments with the provided demo user data; the demo’s currency depends on your location
+- Check the invoice: Automated invoicing is included, take a look at the sample invoice after purchasing
+- Access management: After purchasing a valid license, the Checkout provides you with access to the game Eclipse Intruders
+- Reset demo: You can reset the demo and test the Checkout as many times as you want
 
-The demo contains a simple game—Eclipse Intruders. The game is unlocked when you demo-purchase a license.
+And by the way, find Yatta Checkout as a website drop-in here: https://yatta.de/checkout
+
+Playing Eclipse Intruders
+
+The demo contains a mini game—Eclipse Intruders. The game is unlocked when you demo-purchase a license.
 You can reset the demo as many times as you want. And you can play Eclipse Intruders (and fight bugs) as long as you want.
+By the way, Eclipse Intruders is used here as a sample product for the Checkout demo, but the game is open source and free of charge. The source code is available on GitHub: https://github.com/YattaSolutions/de.yatta.softwarevendor
 
-## Like the UX? Integrate Yatta Checkout
+Like the UX? Integrate Yatta Checkout to sell your product in Eclipse
 
-If you like the experience of acquiring an Eclipse plugin license without leaving the IDE, you can set up your solution for Yatta Checkout by clicking "Start selling" in the demo or going to https://www.yatta.de/start-selling.
-Once signed in, you can enter your solution information and begin integrating Yatta Checkout for Eclipse.
-For more detailed documentation, see https://www.yatta.de/docs.
+Yatta Checkout for Eclipse is designed and built to help you monetize and sell products (e.g., plugins, frameworks, libraries, SaaS and more) to millions of Eclipse users—and provide developers access to better and more tooling.
 
-## Can we help you?
+- Start integrating the Checkout: https://yatta.de/portal
+- Read our docs: https://yatta.de/docs
+- Visit our website for more info about the Checkout for Eclipse: https://yatta.de/checkout-for-eclipse
 
-Get in touch with an engineer to answer your questions:
+The Checkout includes everything you need to start selling with no upfront costs, no fixed monthly charges—and no surprises. Yatta Checkout fees are based on transaction volume only.
 
+- Read our success story: https://www.yatta.de/thoughts/yatta-checkout-case-study
+- Any questions? Get in touch with us for answers,
 - Call +49 69 2475666-0
 - Email checkout@yatta.de
 
-## Additional resources
-
-- Website: https://www.yatta.de/checkout-for-eclipse
-- Docs: https://www.yatta.de/docs
-- Terms of Use: https://www.yatta.de/legal/Yatta_TermsOfService.pdf
-- Case study: https://www.yatta.de/thoughts/yatta-checkout-case-study
-
-\o/ Enjoy the demo
+For now, enjoy the demo! \o/
 — Your Yatta developers
 
 Copyright, Yatta Solutions GmbH, Germany, 2023
