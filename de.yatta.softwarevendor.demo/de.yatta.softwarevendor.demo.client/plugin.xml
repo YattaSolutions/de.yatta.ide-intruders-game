@@ -10,7 +10,7 @@
       </category>
       <command
             categoryId="de.yatta.softwarevendor.demo.commands.category"
-            name="Start the demo"
+            name="Start demo"
             id="de.yatta.softwarevendor.demo.commands.vendorGame">
       </command>
       <command
@@ -66,9 +66,9 @@
                   commandId="de.yatta.softwarevendor.demo.commands.vendorGame"
                   icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
                   id="de.yatta.softwarevendor.demo.toolbars.vendorGame"
-                  label="Start the demo"
+                  label="Start demo"
                   mode="FORCE_TEXT"
-                  tooltip="Start the demo">
+                  tooltip="Start demo">
             </command>
          </toolbar>
       </menuContribution>

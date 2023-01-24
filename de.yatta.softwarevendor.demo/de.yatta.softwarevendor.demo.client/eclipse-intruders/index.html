@@ -6,6 +6,7 @@
 </head>
 
 <body>
+<div id="game" hidden>
   <canvas id="game-canvas" width="640" height="640"></canvas>
 
   <div id="vendor-panel">
@@ -14,15 +15,25 @@
     <a onclick="typeof(resetDemo)=='function' && resetDemo()">Reset demo</a>
   </div>
 
-  <div class="panel-overlay" id="overlay-support" hidden></div>
+  <div class="panel-overlay" id="overlay-support"></div>
+</div>
+<div id="overlay">
+  <a href="#" onclick="typeof(subscribeGame)=='function' && subscribeGame()">Subscribe()</a><br/>
+  <a href="#" onclick="typeof(purchaseGame)=='function' && purchaseGame()">Purchase()</a><br/>
+  <a href="#" onclick="typeof(signIn)=='function' && signIn()">SignIn()</a><br/>
+</div>
   
   <script type="text/javascript">
-    function showOverlay(height) {
-      document.getElementById('vendor-panel').hidden = !!height;
-      let sup = document.getElementById('overlay-support');
-      sup.hidden = !height;
-      sup.style.height = height;
-    }
+  function showOverlay(infoText) {
+    alert("overlay");
+    document.getElementById('overlay').setAttribute('hidden', '');
+    document.getElementById('game').removeAttribute('hidden');
+  }
+  function hideOverlay() {
+    alert("game");
+    document.getElementById('game').setAttribute('hidden', '');
+    document.getElementById('overlay').removeAttribute('hidden');
+  }
   </script>
 </body>
 

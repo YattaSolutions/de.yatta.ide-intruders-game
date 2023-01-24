@@ -4,7 +4,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IEditorInput;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
@@ -25,9 +24,6 @@ public class GameEditor extends BrowserWrapper
    public static final String EDITOR_ID = "de.yatta.softwarevendor.demo.editors.gameEditor";
 
    private Composite parent;
-   private Overlay overlay;
-   private Link signInLink;
-
    private ServiceRegistration<?> serviceRegistration;
 
    @Override
@@ -82,19 +78,39 @@ public class GameEditor extends BrowserWrapper
             return null;
          }
       };
+      new BrowserFunction(getBrowser(), "subscribeGame") {
+         @Override
+         public Object function(Object[] arguments)
+         {
+            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID);
+            return null;
+         }
+      };
+
+      new BrowserFunction(getBrowser(), "purchaseGame") {
+         @Override
+         public Object function(Object[] arguments)
+         {
+            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE);
+            return null;
+         }
+      };
+
+      new BrowserFunction(getBrowser(), "signIn") {
+         @Override
+         public Object function(Object[] arguments)
+         {
+            MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID);
+            return null;
+         }
+      };
+
    }
 
    @Override
    public void setFocus()
    {
-      if (overlay != null && overlay.isVisible())
-      {
-         overlay.setFocus();
-      }
-      else if (getBrowser() != null)
-      {
-         getBrowser().setFocus();
-      }
+      getBrowser().setFocus();
    }
 
    @Override
@@ -124,9 +140,9 @@ public class GameEditor extends BrowserWrapper
       else if (licenseResponse.getValidity() == Validity.WAIT)
       {
          showOverlay(false,
-               "There was an error communicating with the licensing server",
-               "Please check your connection and try again.");
+               "There was an error communicating with the licensing server\nPlease check your connection and try again.");
       }
+
       else
       {
          showOverlay(false);
@@ -136,45 +152,22 @@ public class GameEditor extends BrowserWrapper
    /**
     * Show overlay with default message.
     * 
-    * @param showSignInLink whether to show the sign in link or not.
     */
    private void showOverlay(boolean showSignInLink)
    {
-      showOverlay(showSignInLink, null,
+      showOverlay(showSignInLink,
             "We couldn't detect a valid license, please go ahead and purchase or subscribe for a license.");
    }
 
-   private void showOverlay(boolean showSignInLink, String headerText, String descriptionText)
+   private void showOverlay(boolean showSignInLink, String descriptionText)
    {
-      if (overlay == null)
-      {
-         // create overlay with buttons
-         overlay = new Overlay(parent, getEditorSite().getPage(), this);
-         overlay.addButton("Purchase",
-               e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE));
-         overlay.addButton("Subscribe",
-               e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID));
-         signInLink = overlay.addLink("<a>Sign in</a>",
-               e -> MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID));
-
-         overlay.setUpdateListener(() -> getBrowser().execute("showOverlay(" + overlay.getPanelHeight() + ")"));
-      }
-
-      // update overlay with specified texts and show/hide the sign-in link
-      overlay.setHeaderText(headerText);
-      overlay.setDescriptionText(descriptionText);
-      signInLink.setVisible(showSignInLink);
-      overlay.showOverlay();
+      getBrowser().execute("showOverlay()");
    }
 
    private void hideOverlay()
    {
-      if (overlay != null)
-      {
-         overlay.hideOverlay();
-      }
 
-      getBrowser().execute("showOverlay(0)");
+      getBrowser().execute("hideOverlay()");
    }
 
    private void afterLoginOrLogout(Event event)
