@@ -1,40 +1,43 @@
 <html>
+  <head>
+    <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
+    <script src="js/eclipse_intruders.js" type="text/javascript"></script>
+    <script src="js/java_communication.js" type="text/javascript"></script>
+  </head>
 
-<head>
-  <link href='css/stylesheet.css' rel='stylesheet' type='text/css' />
-  <script src='js/main.js' type='text/javascript'></script>
-</head>
+  <body>
+    <div id="game" style="display: none">
+      <canvas id="game-canvas" width="640" height="640"></canvas>
 
-<body>
-<div id="game" hidden>
-  <canvas id="game-canvas" width="640" height="640"></canvas>
+      <div class="vendor-panel" id="vendor-panel">
+        <div>
+          <p class="vendor-panel-header">Congratulations, you got an Eclipse Intruders license using Yatta Checkout!</p>
+          <p>It's easy to integrate the Checkout into your own Eclipse product, tool or solution.</p>
+          <p>
+            If you have any questions, please
+            <a href="mailto:checkout@yatta.de">contact us</a>. We are happy to help.
+          </p>
+        </div>
+        <div class="vendor-panel-separator"></div>
+        <div>
+          <a href="https://www.yatta.de/portal" target="_blank" class="start-integration">Start integration</a>
+          <button type="button" class="reset-demo" onclick="triggerResetDemo()">Reset demo</button>
+        </div>
+      </div>
+    </div>
 
-  <div id="vendor-panel">
-    <div class="header">Congratulations, you purchased a demo license via the Yatta In-App Checkout demo.</div>
-    <a href="https://www.yatta.de/portal"><button>Start selling</button></a>
-    <a onclick="typeof(resetDemo)=='function' && resetDemo()">Reset demo</a>
-  </div>
-
-  <div class="panel-overlay" id="overlay-support"></div>
-</div>
-<div id="overlay">
-  <a href="#" onclick="typeof(subscribeGame)=='function' && subscribeGame()">Subscribe()</a><br/>
-  <a href="#" onclick="typeof(purchaseGame)=='function' && purchaseGame()">Purchase()</a><br/>
-  <a href="#" onclick="typeof(signIn)=='function' && signIn()">SignIn()</a><br/>
-</div>
-  
-  <script type="text/javascript">
-  function showOverlay(infoText) {
-    alert("overlay");
-    document.getElementById('overlay').setAttribute('hidden', '');
-    document.getElementById('game').removeAttribute('hidden');
-  }
-  function hideOverlay() {
-    alert("game");
-    document.getElementById('game').setAttribute('hidden', '');
-    document.getElementById('overlay').removeAttribute('hidden');
-  }
-  </script>
-</body>
-
+    <div id="start-page" class="start-page">
+      <h1>Eclipse Intruders</h1>
+      <h2>Fight the bugs!</h2>
+      <div>
+        <button type="button" class="trigger-subscribe" onclick="triggerSubscribe()">Subscribe</button>
+        <button type="button" class="trigger-purchase" onclick="triggerPurchase()">Buy</button>
+      </div>
+      <button type="button" class="trigger-sign-in" onclick="triggerSignIn()">Sign in</button>
+      <img src="img/bugs.png" />
+      <div class="footer">
+        <p>Note: The Yatta Checkout demo uses test data for payment and billing—no real transactions take place.</p>
+      </div>
+    </div>
+  </body>
 </html>
