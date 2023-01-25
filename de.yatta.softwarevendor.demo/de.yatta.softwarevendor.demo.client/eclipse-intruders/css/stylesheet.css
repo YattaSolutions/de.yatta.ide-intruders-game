@@ -7,9 +7,9 @@ body,
 html {
   font-family: "Hiro Mono";
   background-color: #f5f5f5;
-  width: 100%;
-  height: 100%;
   margin: 0;
+  height: 100%;
+  width: 100%;
 }
 
 a,
@@ -36,6 +36,7 @@ canvas {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 86px;
 }
 
 .start-page h1 {
@@ -44,6 +45,11 @@ canvas {
   font-weight: 400;
   color: #9c9c9c;
   margin: 0px 0px 8px 0px;
+  height: 100%;
+}
+
+.spacing {
+  flex-grow: 1 1;
 }
 
 .start-page h2 {
@@ -63,6 +69,7 @@ canvas {
   font-size: 12px;
   line-height: 12px;
   cursor: pointer;
+  width: 108px;
 }
 
 .start-page .trigger-subscribe {
@@ -80,15 +87,13 @@ canvas {
   cursor: pointer;
 }
 
-.start-page img {
-}
-
 .start-page .footer {
   background: #e6e6e6;
   padding: 10px 0px;
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: auto;
 }
 
 .start-page .footer p {
