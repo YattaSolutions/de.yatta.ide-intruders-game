@@ -10,6 +10,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -25,6 +26,7 @@ public class BrowserWrapper extends EditorPart
    private Browser browser;
 
    private LocationListener locationListener;
+   private Image titleImage;
 
    @Override
    public void doSave(IProgressMonitor monitor)
@@ -69,10 +71,15 @@ public class BrowserWrapper extends EditorPart
          BrowserWrapperInput input = (BrowserWrapperInput)editorInput;
          browser.setUrl(input.getUrl());
 
-         String titleImage = input.getTitleImage();
-         if (titleImage != null)
+         String titleImagePath = input.getTitleImagePath();
+         if (titleImagePath != null)
          {
-            setTitleImage(ImageDescriptor.createFromFile(getClass(), titleImage).createImage());
+            if (titleImage != null)
+            {
+               titleImage.dispose();
+            }
+            titleImage = ImageDescriptor.createFromFile(getClass(), titleImagePath).createImage();
+            setTitleImage(titleImage);
          }
       }
 

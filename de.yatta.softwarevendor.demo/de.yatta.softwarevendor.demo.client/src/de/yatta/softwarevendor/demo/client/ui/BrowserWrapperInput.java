@@ -11,14 +11,14 @@ public class BrowserWrapperInput implements IEditorInput
 
    private final String title;
    private final String url;
-   private String titleImage;
+   private String titleImagePath;
 
    public BrowserWrapperInput(String title, String url, String titleImage)
    {
       super();
       this.title = title;
       this.url = url;
-      this.titleImage = titleImage;
+      this.titleImagePath = titleImage;
    }
 
    @Override
@@ -67,15 +67,15 @@ public class BrowserWrapperInput implements IEditorInput
       return url;
    }
 
-   public String getTitleImage()
+   public String getTitleImagePath()
    {
-      return titleImage;
+      return titleImagePath;
    }
 
    @Override
    public int hashCode()
    {
-      return Objects.hash(title, titleImage);
+      return Objects.hash(title, titleImagePath);
    }
 
    @Override
@@ -91,7 +91,7 @@ public class BrowserWrapperInput implements IEditorInput
       }
       BrowserWrapperInput other = (BrowserWrapperInput)obj;
       return Objects.equals(title, other.title)
-            && Objects.equals(titleImage, other.titleImage);
+            && Objects.equals(titleImagePath, other.titleImagePath);
    }
 
 }
