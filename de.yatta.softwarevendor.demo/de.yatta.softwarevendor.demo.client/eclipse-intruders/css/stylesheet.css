@@ -103,13 +103,24 @@ canvas {
 }
 
 .vendor-panel {
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   left: 0px;
   display: flex;
   align-items: center;
-  padding: 24px;
+  padding: 24px 0px;
   background: #e6e6e6;
+  width: 100%;
+}
+
+.vendor-panel .left-content {
+  margin-left: 24px;
+}
+
+.vendor-panel .right-content {
+  margin-right: 24px;
+  min-width: 224px;
+  margin-left: 12px;
 }
 
 .vendor-panel .vendor-panel-separator {

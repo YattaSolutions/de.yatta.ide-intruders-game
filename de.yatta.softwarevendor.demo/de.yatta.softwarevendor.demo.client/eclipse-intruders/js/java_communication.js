@@ -1,10 +1,10 @@
 function showOverlay(showSignInLink) {
   document.getElementById("game").style.display = "none";
-  document.getElementById("start-page").style.display = "flex";
+  document.getElementById("start-page").style.display = "block";
   if (showSignInLink === false) {
-    document.getElementById("sign-in-btn").style.display = "none";
+    document.getElementById("sign-in-btn").style.visibility = "hidden";
   } else {
-    document.getElementById("sign-in-btn").style.display = "block";
+    document.getElementById("sign-in-btn").style.visibility = "visible";
   }
 }
 
