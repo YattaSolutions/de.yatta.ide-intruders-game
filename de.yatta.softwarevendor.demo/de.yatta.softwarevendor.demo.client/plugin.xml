@@ -45,20 +45,6 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
-         <menu
-               id="de.yatta.softwarevendor.demo.menus.vendorGame"
-               label="Software Vendor"
-               mnemonic="M">
-            <command
-                  commandId="de.yatta.softwarevendor.demo.commands.vendorGame"
-                  icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
-                  id="de.yatta.softwarevendor.demo.menus.vendorGame"
-                  mnemonic="S">
-            </command>
-         </menu>
-      </menuContribution>
-      <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
                id="de.yatta.softwarevendor.demo.toolbars.vendorGame">
@@ -77,6 +63,7 @@
             locationURI="menu:help">
          <command
                commandId="de.yatta.softwarevendor.demo.commands.welcome"
+               icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
                id="de.yatta.softwarevendor.demo.menus.welcome">
          </command>
       </menuContribution>
