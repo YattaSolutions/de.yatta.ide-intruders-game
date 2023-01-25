@@ -4,7 +4,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IEditorInput;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
@@ -25,9 +24,8 @@ public class GameEditor extends BrowserWrapper
    public static final String EDITOR_ID = "de.yatta.softwarevendor.demo.editors.gameEditor";
 
    private Composite parent;
-   private Overlay overlay;
-   private Link signInLink;
-
+   private boolean isLicensed = false;
+   private boolean isNotLoggedIn = true;
    private ServiceRegistration<?> serviceRegistration;
 
    @Override
@@ -47,7 +45,6 @@ public class GameEditor extends BrowserWrapper
             // no protocol specified -> bundled resource
             gameUrl = buildFileUrlForResource(gameUrl);
          }
-
          getBrowser().setUrl(gameUrl);
          setPartName(input.getName());
          String titleImage = input.getGame().getTitleImage();
@@ -63,6 +60,7 @@ public class GameEditor extends BrowserWrapper
 
       getBrowser().addProgressListener(ProgressListener.completedAdapter(e -> {
          openExternalSitesInExternalBrowser(true);
+         checkLicense();
       }));
 
       new BrowserFunction(getBrowser(), "resetDemo") {
@@ -82,19 +80,39 @@ public class GameEditor extends BrowserWrapper
             return null;
          }
       };
+      new BrowserFunction(getBrowser(), "subscribeGame") {
+         @Override
+         public Object function(Object[] arguments)
+         {
+            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID);
+            return null;
+         }
+      };
+
+      new BrowserFunction(getBrowser(), "purchaseGame") {
+         @Override
+         public Object function(Object[] arguments)
+         {
+            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE);
+            return null;
+         }
+      };
+
+      new BrowserFunction(getBrowser(), "signIn") {
+         @Override
+         public Object function(Object[] arguments)
+         {
+            MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID);
+            return null;
+         }
+      };
+
    }
 
    @Override
    public void setFocus()
    {
-      if (overlay != null && overlay.isVisible())
-      {
-         overlay.setFocus();
-      }
-      else if (getBrowser() != null)
-      {
-         getBrowser().setFocus();
-      }
+      getBrowser().setFocus();
    }
 
    @Override
@@ -109,72 +127,45 @@ public class GameEditor extends BrowserWrapper
 
    private void checkLicense()
    {
-      if (!MarketplaceClient.get().isAccountLoggedIn())
+      isNotLoggedIn = !MarketplaceClient.get().isAccountLoggedIn();
+      if (isNotLoggedIn)
       {
-         showOverlay(true);
-         return;
-      }
-
-      final LicenseResponse licenseResponse = fetchLicenseStatus(5000);
-
-      if (licenseResponse.getValidity() == Validity.LICENSED)
-      {
-         hideOverlay();
-      }
-      else if (licenseResponse.getValidity() == Validity.WAIT)
-      {
-         showOverlay(false,
-               "There was an error communicating with the licensing server",
-               "Please check your connection and try again.");
+         isLicensed = false;
       }
       else
       {
-         showOverlay(false);
+
+         final LicenseResponse licenseResponse = fetchLicenseStatus(5000);
+
+         if (licenseResponse.getValidity() == Validity.LICENSED)
+         {
+            isLicensed = true;
+         }
+         else
+         {
+            isLicensed = false;
+         }
+      }
+
+      if (isLicensed)
+      {
+         hideOverlay();
+      }
+      else
+      {
+         showOverlay(isNotLoggedIn);
       }
    }
 
-   /**
-    * Show overlay with default message.
-    * 
-    * @param showSignInLink whether to show the sign in link or not.
-    */
    private void showOverlay(boolean showSignInLink)
    {
-      showOverlay(showSignInLink, null,
-            "We couldn't detect a valid license, please go ahead and purchase or subscribe for a license.");
-   }
-
-   private void showOverlay(boolean showSignInLink, String headerText, String descriptionText)
-   {
-      if (overlay == null)
-      {
-         // create overlay with buttons
-         overlay = new Overlay(parent, getEditorSite().getPage(), this);
-         overlay.addButton("Purchase",
-               e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE));
-         overlay.addButton("Subscribe",
-               e -> MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID));
-         signInLink = overlay.addLink("<a>Sign in</a>",
-               e -> MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID));
-
-         overlay.setUpdateListener(() -> getBrowser().execute("showOverlay(" + overlay.getPanelHeight() + ")"));
-      }
-
-      // update overlay with specified texts and show/hide the sign-in link
-      overlay.setHeaderText(headerText);
-      overlay.setDescriptionText(descriptionText);
-      signInLink.setVisible(showSignInLink);
-      overlay.showOverlay();
+      getBrowser().execute("showOverlay(" + (showSignInLink ? "true" : "false") + ")");
    }
 
    private void hideOverlay()
    {
-      if (overlay != null)
-      {
-         overlay.hideOverlay();
-      }
 
-      getBrowser().execute("showOverlay(0)");
+      getBrowser().execute("hideOverlay()");
    }
 
    private void afterLoginOrLogout(Event event)

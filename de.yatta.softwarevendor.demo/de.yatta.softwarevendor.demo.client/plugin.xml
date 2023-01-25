@@ -10,7 +10,7 @@
       </category>
       <command
             categoryId="de.yatta.softwarevendor.demo.commands.category"
-            name="Start the demo"
+            name="Start demo"
             id="de.yatta.softwarevendor.demo.commands.vendorGame">
       </command>
       <command
@@ -45,20 +45,6 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
-         <menu
-               id="de.yatta.softwarevendor.demo.menus.vendorGame"
-               label="Software Vendor"
-               mnemonic="M">
-            <command
-                  commandId="de.yatta.softwarevendor.demo.commands.vendorGame"
-                  icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
-                  id="de.yatta.softwarevendor.demo.menus.vendorGame"
-                  mnemonic="S">
-            </command>
-         </menu>
-      </menuContribution>
-      <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
                id="de.yatta.softwarevendor.demo.toolbars.vendorGame">
@@ -66,9 +52,9 @@
                   commandId="de.yatta.softwarevendor.demo.commands.vendorGame"
                   icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
                   id="de.yatta.softwarevendor.demo.toolbars.vendorGame"
-                  label="Start the demo"
+                  label="Start demo"
                   mode="FORCE_TEXT"
-                  tooltip="Start the demo">
+                  tooltip="Start demo">
             </command>
          </toolbar>
       </menuContribution>
@@ -77,6 +63,7 @@
             locationURI="menu:help">
          <command
                commandId="de.yatta.softwarevendor.demo.commands.welcome"
+               icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
                id="de.yatta.softwarevendor.demo.menus.welcome">
          </command>
       </menuContribution>
