@@ -32,7 +32,7 @@
                         <resource>
                            <directory>${project.basedir}</directory>
                            <includes>
-                              <include>README.md</include>
+                              <include>README.txt</include>
                            </includes>
                         </resource>
                      </resources>
@@ -53,7 +53,7 @@
                         <resource>
                            <directory>${project.basedir}</directory>
                            <includes>
-                              <include>README.md</include>
+                              <include>README.txt</include>
                            </includes>
                         </resource>
                      </resources>
@@ -74,7 +74,7 @@
                         <resource>
                            <directory>${project.basedir}</directory>
                            <includes>
-                              <include>README.md</include>
+                              <include>README.txt</include>
                            </includes>
                         </resource>
                      </resources>
