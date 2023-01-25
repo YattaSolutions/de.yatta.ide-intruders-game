@@ -37,6 +37,8 @@ canvas {
   flex-direction: column;
   align-items: center;
   padding-top: 86px;
+  padding-bottom: 20px;
+  overflow-y: auto;
 }
 
 .start-page h1 {
@@ -45,11 +47,6 @@ canvas {
   font-weight: 400;
   color: #9c9c9c;
   margin: 0px 0px 8px 0px;
-  height: 100%;
-}
-
-.spacing {
-  flex-grow: 1 1;
 }
 
 .start-page h2 {
@@ -87,16 +84,18 @@ canvas {
   cursor: pointer;
 }
 
-.start-page .footer {
+.start-page-footer {
   background: #e6e6e6;
   padding: 10px 0px;
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: auto;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
 }
 
-.start-page .footer p {
+.start-page-footer p {
   margin: 0px;
   font-size: 8px;
   line-height: 11px;
