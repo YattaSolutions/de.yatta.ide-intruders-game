@@ -116,6 +116,14 @@
                name="windowImages"
                value="icons/AppIcon-16.png,icons/AppIcon-32.png,icons/AppIcon-48.png,icons/AppIcon-64.png,icons/AppIcon-128.png,icons/AppIcon-256.png">
          </property>
+         <property
+               name="aboutText"
+               value="%productText">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/AppIcon-64.png">
+         </property>
       </product>
    </extension>
 

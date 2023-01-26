@@ -14,7 +14,7 @@ No real payments or purchases are made in the demo.
 How to start the demo
 
 1.  Extract the .zip file (if you haven't already)
-2.  Open the extracted folder and run eclipse.exe
+2.  Open the extracted folder and run YattaCheckoutDemo
 3.  "Launch" demo with the default directory or choose a custom one
 
 
