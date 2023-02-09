@@ -30,4 +30,4 @@ The folder will include applications for Windows, MacOS and Linux. A Java Runtim
 [Become a vendor](https://www.yatta.de/portal) to integrate the Checkout into your own Eclipse product, tool or any other solution. For more information, read the [vendor documentation](https://www.yatta.de/docs).
 
 ---
-If you have any questions, please [contact us](mailto:support@yatta.de). We are happy to help.
+If you have any questions, please [contact us](mailto:checkout@yatta.de). We are happy to help.
