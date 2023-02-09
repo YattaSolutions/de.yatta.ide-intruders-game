@@ -9,7 +9,7 @@ You can use this demo plug-in to prototype the integration of your own Eclipse p
 
 ## Open project in IDE
 
-Checkout this repository and import the contained projects in an Eclipse IDE that has the Eclipse Plug-in Development Environment installed. You could e.g. use the "Eclipse IDE for Eclipse Committers" from here: https://www.eclipse.org/downloads/packages/release/2022-12/r/eclipse-ide-eclipse-committers
+Checkout this repository and import the contained projects in an Eclipse IDE that has the Eclipse Plug-in Development Environment installed. You could e.g. use the "Eclipse IDE for Eclipse Committers": https://www.eclipse.org/downloads/packages/release/2022-12/r/eclipse-ide-eclipse-committers
 
 You should then set the active target platform in Eclipse to [de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.client/softwarevendor-target.target](de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.client/softwarevendor-target.target). The contained projects should afterwards compile without errors.
 
