@@ -9,7 +9,7 @@ You can use this demo plugin to prototype the integration of your own Eclipse pr
 
 ## Running the application
 
-Start the launch configuration [SoftwareVendorTool.launch](de.yatta.softwarevendor.demo\de.yatta.softwarevendor.demo.client\SoftwareVendorTool.launch) either in run or debug mode. More details about using the plugin could be found in the plugin's [Readme file](de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/README.txt).
+Start the launch configuration [SoftwareVendorTool.launch](de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.client/SoftwareVendorTool.launch) either in run or debug mode. More details about using the plugin could be found in the plugin's [Readme file](de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/README.txt).
 
 ## Building update site and the Rich Client Platform (RCP)
 
