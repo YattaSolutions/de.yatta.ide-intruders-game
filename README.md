@@ -3,8 +3,10 @@
 ## About this repository
 
 This repository contains a sample plugin for the Eclipse IDE (https://eclipseide.org/) that allows you to test the integration of Yatta Checkout for Eclipse in a secure demo environment.
-The sample plugin is a mini game you can demo-purchase as a demo user. Use the Checkout to access the game.
-No real payments or purchases are made in the demo.
+*  The sample plugin is a mini game you can demo-purchase as a demo user.
+*  Use the Checkout to access the game.
+*  No real payments or purchases are made in the demo.
+
 You can use this demo plugin to prototype the integration of your own Eclipse solution, tool or any other digital product.
 
 ## Open project in Eclipse IDE
