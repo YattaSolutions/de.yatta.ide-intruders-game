@@ -34,7 +34,7 @@ This will build the following artifacts:
 ```
 de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.site/target/repository/
 ```
-The folder can be copied to an FTP server or you can use it locally and specify it as update site inside an Eclipse installation.
+Copy the folder to an FTP server or use it locally and specify it as update site inside an Eclipse installation.
 
 ### Eclipse RCP
 ```
