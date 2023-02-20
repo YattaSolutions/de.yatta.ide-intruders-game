@@ -3,7 +3,6 @@
 
 <product name="Eclipse Intruders (demo)" uid="vendor-demo" id="de.yatta.softwarevendor.demo.client.softwarevendor_demo_product" application="org.eclipse.ui.ide.workbench" version="1.1.1.qualifier" useFeatures="true" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -18,7 +17,6 @@
 
    <windowImages i16="icons/AppIcon-16.png" i32="icons/AppIcon-32.png" i48="icons/AppIcon-48.png" i64="icons/AppIcon-64.png" i128="icons/AppIcon-128.png" i256="icons/AppIcon-256.png"/>
 
-
    <launcher name="YattaCheckoutDemo">
       <linux icon="icons/AppIcon_256x256.xpm"/>
       <macosx icon="icons/AppIcon-MacOS.icns"/>
@@ -27,7 +25,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
