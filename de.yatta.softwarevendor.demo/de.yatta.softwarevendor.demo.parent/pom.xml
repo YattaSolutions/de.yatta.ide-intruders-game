@@ -120,6 +120,21 @@
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-p2-director-plugin</artifactId>
           <version>${tycho.version}</version>
+            <configuration>
+               <formats>
+                  <win32>zip</win32>
+                  <linux>tar.gz</linux>
+                  <macosx>zip</macosx>
+               </formats>
+               <products>
+                  <product>
+                     <id>vendor-demo</id>
+                     <rootFolders>
+                        <macosx>Yatta Checkout Demo.app</macosx>
+                     </rootFolders>
+                  </product>
+               </products>
+           </configuration>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
