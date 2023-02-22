@@ -28,11 +28,11 @@ public class WelcomeEditor extends BrowserWrapper
             IWorkbenchPage page = window.getActivePage();
             try
             {
-               page.openEditor(new GameEditorInput(Game.ECLIPSE_INTRUDERS), GameEditor.EDITOR_ID);
+               page.openEditor(new GameEditorInput(Game.IDE_INTRUDERS), GameEditor.EDITOR_ID);
             }
             catch (PartInitException e)
             {
-               MessageDialog.openError(window.getShell(), Game.ECLIPSE_INTRUDERS.toString(), "Game could not be started. Please try again.");
+               MessageDialog.openError(window.getShell(), Game.IDE_INTRUDERS.toString(), "Game could not be started. Please try again.");
             }
             return null;
          }

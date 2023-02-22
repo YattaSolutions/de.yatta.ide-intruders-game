@@ -765,7 +765,7 @@ function drawGame(resized) {
 }
 
 function drawStartScreen() {
-  fillCenteredText("Eclipse Intruders (demo)", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2.75, FONT_COLOR, 36);
+  fillCenteredText("IDE Intruders (demo)", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2.75, FONT_COLOR, 36);
   fillCenteredText("Fight the bugs!", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2.2, FONT_COLOR, 30);
   fillBlinkingText("Press 'Space' to shoot", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 1.8, 900, FONT_COLOR, 30);
 }
