@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Eclipse Intruders (demo)" uid="vendor-demo" id="de.yatta.softwarevendor.demo.client.softwarevendor_demo_product" application="org.eclipse.ui.ide.workbench" version="1.1.1.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="IDE Intruders (demo)" uid="vendor-demo" id="de.yatta.softwarevendor.demo.client.softwarevendor_demo_product" application="org.eclipse.ui.ide.workbench" version="1.1.1.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -21,7 +21,7 @@
       <linux icon="icons/AppIcon_256x256.xpm"/>
       <macosx icon="icons/AppIcon-MacOS.icns"/>
       <win useIco="true">
-         <ico path="icons/Eclipse_Intruders.ico"/>
+         <ico path="icons/IDE_Intruders.ico"/>
          <bmp/>
       </win>
    </launcher>

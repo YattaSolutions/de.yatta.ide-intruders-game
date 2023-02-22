@@ -50,7 +50,7 @@
                id="de.yatta.softwarevendor.demo.toolbars.vendorGame">
             <command
                   commandId="de.yatta.softwarevendor.demo.commands.vendorGame"
-                  icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
+                  icon="ide-intruders/img/IDEIntruders_16x16.png"
                   id="de.yatta.softwarevendor.demo.toolbars.vendorGame"
                   label="Start demo"
                   mode="FORCE_TEXT"
@@ -63,7 +63,7 @@
             locationURI="menu:help">
          <command
                commandId="de.yatta.softwarevendor.demo.commands.welcome"
-               icon="eclipse-intruders/img/EclipseIntruders_16x16.png"
+               icon="ide-intruders/img/IDEIntruders_16x16.png"
                id="de.yatta.softwarevendor.demo.menus.welcome">
          </command>
       </menuContribution>
@@ -111,7 +111,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.eclipse.ui.ide.workbench"
-            name="Eclipse Intruders (demo)">
+            name="IDE Intruders (demo)">
          <property
                name="windowImages"
                value="icons/AppIcon-16.png,icons/AppIcon-32.png,icons/AppIcon-48.png,icons/AppIcon-64.png,icons/AppIcon-128.png,icons/AppIcon-256.png">

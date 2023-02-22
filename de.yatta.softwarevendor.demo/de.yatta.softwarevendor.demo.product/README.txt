@@ -1,4 +1,4 @@
-# Testing the Checkout for Eclipse—and playing Eclipse Intruders
+# Testing the Checkout for Eclipse—and playing IDE Intruders
 
 
 Hi, we are the Yatta developers! Our mission is to help vendors build and sell development tools—and thus provide developers with access to cutting-edge tooling.
@@ -25,17 +25,17 @@ Simply follow the instructions in the demo—the Checkout should be self-explana
 - Purchase solution: You can test one-time purchases as well as monthly and annual subscriptions
 - Test payment options: The Checkout provides various payment options; test credit card, direct debit, SEPA and PayPal payments with the provided demo user data; the demo’s currency depends on your location
 - Check the invoice: Automated invoicing is included, take a look at the sample invoice after purchasing
-- Access management: After purchasing a valid license, the Checkout provides you with access to the game Eclipse Intruders
+- Access management: After purchasing a valid license, the Checkout provides you with access to the game IDE Intruders
 - Reset demo: You can reset the demo and test the Checkout as many times as you want
 
 And by the way, find Yatta Checkout as a website drop-in here: https://yatta.de/checkout
 
 
-## Playing Eclipse Intruders
+## Playing IDE Intruders
 
-The demo contains a mini game—Eclipse Intruders. The game is unlocked when you demo-purchase a license.
-You can reset the demo as many times as you want. And you can play Eclipse Intruders (and fight bugs) as long as you want.
-By the way, Eclipse Intruders is used here as a sample product for the Checkout demo, but the game is open source and free of charge. The source code is available on GitHub: https://github.com/YattaSolutions/de.yatta.ide-intruders
+The demo contains a mini game—IDE Intruders. The game is unlocked when you demo-purchase a license.
+You can reset the demo as many times as you want. And you can play IDE Intruders (and fight bugs) as long as you want.
+By the way, IDE Intruders is used here as a sample product for the Checkout demo, but the game is open source and free of charge. The source code is available on GitHub: https://github.com/YattaSolutions/de.yatta.ide-intruders
 
 
 ## Like the UX? Integrate Yatta Checkout to sell your product in Eclipse
