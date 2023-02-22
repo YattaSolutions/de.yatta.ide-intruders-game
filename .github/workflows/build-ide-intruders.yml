@@ -1,0 +1,231 @@
+name: Build IDE Intruders
+
+on:
+  workflow_dispatch:
+    inputs:
+      cdn_upload:
+        description: 'Upload to CDN (/tmp)'
+        required: true
+        type: boolean
+      wait_for_notarization:
+        description: 'Wait for notarization'
+        required: true
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 'Extract branch name'
+      shell: bash
+      run: |
+        echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}"
+        echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+        
+    - name: 'Set environment variables'
+      run: |
+        if [ "${BRANCH_NAME}" == 'production' ]; then
+         echo "build_release=true" >> $GITHUB_ENV
+        else
+         echo "build_release=false" >> $GITHUB_ENV
+        fi
+
+    - name: 'Install SSH key'
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+        if_key_exists: ignore
+
+    - name: 'Check if connection for signing is working'
+      run: ssh -p ${{ secrets.SSH_JARSIGNING_PORT }} ${{ secrets.SSH_JARSIGNING_CONNECTION }} true
+
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: 'Setup Maven'
+      # explicitly use maven 3.6.3. At newer versions of Maven HTTP mirrors are blocken. We need to switch to HTTPS only mirrors first.
+      uses: stCarolas/setup-maven@v4.5
+      with:
+        maven-version: 3.6.3
+
+    - name: 'Cache local Maven repository'
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: 'Maven Build'
+      env:
+        JARSIGNING_JAVA_OPTS: ${{ secrets.JARSIGNING_JAVA_OPTS }}
+      run: |
+          export JAVA_OPTS="${JAVA_OPTS} ${JARSIGNING_JAVA_OPTS}"
+          cd de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.releng
+          mvn package -Dbuild.release=${build_release} -B -P 2022-12
+
+    - name: 'Prepare archives'
+      run: |
+          pushd de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/target/products/
+          mv vendor-demo-win32.win32.x86_64.zip YattaCheckoutDemo-x86_64.zip
+          mv vendor-demo-linux.gtk.x86_64.tar.gz YattaCheckoutDemo-linux.tar.gz
+          mv vendor-demo-macosx.cocoa.x86_64.zip YattaCheckoutDemo-macos.zip
+          popd
+          zip -x .github/\* .git/\* \*\*/target/\* \*\*/.settings/\* -r de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.site/target/YattaCheckoutDemo-source.zip .
+
+    - name: 'Upload Update Site and sources'
+      uses: actions/upload-artifact@v3
+      with:
+        name: YattaCheckoutDemo-site
+        path: |
+          de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.site/target/repository/
+          de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.site/target/YattaCheckoutDemo-source.zip
+
+        retention-days: 3
+
+    - name: 'Upload RCP - Windows+Linux'
+      uses: actions/upload-artifact@v3
+      with:
+        name: YattaCheckoutDemo-binaries
+        path: |
+          de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/target/products/YattaCheckoutDemo-x86_64.zip
+          de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/target/products/YattaCheckoutDemo-linux.tar.gz
+        retention-days: 3
+
+    - name: 'Upload RCP - Mac'
+      uses: actions/upload-artifact@v3
+      with:
+        name: YattaCheckoutDemo-macos-unsigned
+        path: de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/target/products/YattaCheckoutDemo-macos.zip
+        retention-days: 1
+
+  macos-signing:
+    needs: build
+    runs-on: 'macos-12'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 'Download RCP'
+      uses: actions/download-artifact@v3
+      with:
+        name: YattaCheckoutDemo-macos-unsigned
+
+    - name: 'Prepare files'
+      run: |
+          mkdir -p YattaCheckoutDemo
+          pushd YattaCheckoutDemo
+          unzip ../YattaCheckoutDemo-macos.zip
+          xattr -cr .
+          # hack will be removed once the dependencies have been cleaned up
+          zip -d Yatta\ Checkout\ Demo.app/Contents/Eclipse/plugins/de.yatta.eclipse.launcher.utils_*.jar de/yatta/eclipse/launcher/utils/osxCheDependencyInstaller
+          ln -s /Applications Applications
+          popd
+
+    - name: 'Import Certificate and Credentials'
+      env:
+        MACOS_SIGNING_CERTIFICATE: ${{ secrets.MACOS_SIGNING_CERTIFICATE }}
+        MACOS_SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_SIGNING_CERTIFICATE_PASSWORD }}
+        MACOS_SIGNING_CREDENTIALS_USER: ${{ secrets.MACOS_SIGNING_CREDENTIALS_USER }}
+        MACOS_SIGNING_CREDENTIALS_PASSWORD: ${{ secrets.MACOS_SIGNING_CREDENTIALS_PASSWORD }}
+        MACOS_SIGNING_CREDENTIALS_TEAM: ${{ secrets.MACOS_SIGNING_CREDENTIALS_TEAM }}
+      run: |
+          echo ${MACOS_SIGNING_CERTIFICATE} | base64 --decode > certificates.p12
+          security create-keychain -p ${MACOS_SIGNING_CREDENTIALS_PASSWORD} build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p ${MACOS_SIGNING_CREDENTIALS_PASSWORD}
+          security import certificates.p12 -k build.keychain -P ${MACOS_SIGNING_CERTIFICATE_PASSWORD} -T /usr/bin/codesign
+          rm -f certificates.p12
+          security set-key-partition-list -S apple-tool:,apple: -s -k ${MACOS_SIGNING_CREDENTIALS_PASSWORD} build.keychain >/dev/null
+          xcrun notarytool store-credentials "SIGNING_CREDENTIALS" --apple-id "${MACOS_SIGNING_CREDENTIALS_USER}" --team-id ${MACOS_SIGNING_CREDENTIALS_TEAM} --password ${MACOS_SIGNING_CREDENTIALS_PASSWORD}
+          plutil -convert xml1 de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/entitlements.plist
+
+    - name: 'Signing application'
+      env:
+        MACOS_SIGNING_CREDENTIALS_TEAM: ${{ secrets.MACOS_SIGNING_CREDENTIALS_TEAM }}
+      run: >
+          codesign
+          -s "Developer ID Application: Yatta Solutions GmbH (${MACOS_SIGNING_CREDENTIALS_TEAM})"
+          --deep YattaCheckoutDemo/Yatta\ Checkout\ Demo.app/
+          --force
+          --timestamp
+          --options=runtime
+          --entitlements=de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/entitlements.plist
+
+    - name: 'Creating disc image'
+      run: >
+          hdiutil create
+          -volname "Yatta Checkout Demo"
+          -srcfolder YattaCheckoutDemo/
+          -ov
+          -format UDZO
+          "YattaCheckoutDemo-macos.dmg"
+
+
+    - name: 'Notarizing application - Skip stapler'
+      if: ${{ !inputs.wait_for_notarization }}
+      run: |
+          xcrun notarytool submit YattaCheckoutDemo-macos.dmg --keychain-profile "SIGNING_CREDENTIALS"
+
+    - name: 'Notarizing application - With stapler for apple signatures'
+      if:  ${{ inputs.wait_for_notarization }}
+      run: |
+          xcrun notarytool submit YattaCheckoutDemo-macos.dmg --keychain-profile "SIGNING_CREDENTIALS" --wait && xcrun stapler staple YattaCheckoutDemo-macos.dmg
+
+    - name: 'Reset Keychain'
+      run: |
+          security default-keychain -s login.keychain
+          security delete-keychain build.keychain
+
+    - name: 'Upload RCP - Mac'
+      uses: actions/upload-artifact@v3
+      with:
+        name: YattaCheckoutDemo-binaries
+        path: YattaCheckoutDemo-macos.dmg
+        retention-days: 3
+
+  upload-cdn:
+    runs-on: ubuntu-22.04
+    needs: macos-signing
+    if: ${{ inputs.cdn_upload }}
+    steps:
+      
+    - name: Install SSH key for CDN
+      uses: shimataro/ssh-key-action@v2
+      with:
+        name: id_platform_ci_cdn
+        key: ${{ secrets.SSH_KEY_PLATFORM_CI_CDN }}
+        known_hosts: ${{ secrets.SSH_KNOWN_HOST_CDN }}
+        config: ${{ secrets.SSH_CONFIG_CDN }}
+
+    - name: 'Download RCP - binaries'
+      uses: actions/download-artifact@v3
+      with:
+        name: YattaCheckoutDemo-binaries
+
+    - name: 'Download RCP - update-site and sources'
+      uses: actions/download-artifact@v3
+      with:
+        name: YattaCheckoutDemo-site
+
+    - name: 'Upload files to CDN'
+      run: |
+        TMPPATH=tmp/vendor-plugin/$(date +'%Y-%m-%d')-${GITHUB_RUN_NUMBER}
+        RESSOURCES_PATH=/resources/products/checkout-eclipse-demo
+        UPDATESITE_PATH=/update/softwarevendor/0.0.0
+
+        mkdir -p ${TMPPATH}
+        mv YattaCheckoutDemo* ${TMPPATH}
+        find ${TMPPATH}/ -type f -printf "${RESSOURCES_PATH}/%P\n" | tee -a ${TMPPATH}/uploaded-files.txt
+
+        mv repository/ ${TMPPATH}/site/
+        find ${TMPPATH}/site/ -type f -printf "${UPDATESITE_PATH}/%P\n" | tee -a ${TMPPATH}/uploaded-files.txt
+
+        rsync -va ${TMPPATH}/ cdn:/www/${TMPPATH}/
