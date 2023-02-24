@@ -49,23 +49,14 @@
          <toolbar
                id="de.yatta.softwarevendor.demo.toolbars.vendorGame">
             <command
-                  commandId="de.yatta.softwarevendor.demo.commands.vendorGame"
-                  icon="ide-intruders/img/IDEIntruders_16x16.png"
+                  commandId="de.yatta.softwarevendor.demo.commands.welcome"
+                  icon="welcome/img/yatta_16x16.png"
                   id="de.yatta.softwarevendor.demo.toolbars.vendorGame"
-                  label="Start demo"
+                  label="Start Checkout Demo"
                   mode="FORCE_TEXT"
                   tooltip="Start demo">
             </command>
          </toolbar>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="menu:help">
-         <command
-               commandId="de.yatta.softwarevendor.demo.commands.welcome"
-               icon="ide-intruders/img/IDEIntruders_16x16.png"
-               id="de.yatta.softwarevendor.demo.menus.welcome">
-         </command>
       </menuContribution>
    </extension>
 

@@ -193,3 +193,19 @@ a {
 .bugs-image {
   width: 258px;
 }
+
+.hover-container {
+  position: relative;
+}
+
+.hover-container .img-hover {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+
+.hover-container:hover .img-hover {
+  display: inline;
+}
