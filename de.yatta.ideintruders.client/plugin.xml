@@ -63,7 +63,7 @@
    <extension point="org.eclipse.ui.preferencePages">
       <page class="de.yatta.ideintruders.client.ui.SoftwareVendorPreferencePage"
             id="de.yatta.ideintruders.client.ui.SoftwareVendorPreferencePage"
-            name="SoftwareVendor Demo">
+            name="IDE Intruders (demo)">
       </page>
       <page class="de.yatta.ideintruders.client.ui.licenses.SubscriptionLicenseDetailsPage"
             id="de.yatta.ideintruders.client.ui.licenses.SubscriptionLicenseDetailsPage"
@@ -98,7 +98,7 @@
       </startup>
    </extension>
    <extension
-         id="softwarevendor_demo_product"
+         id="ide-intruders_product"
          point="org.eclipse.core.runtime.products">
       <product
             application="org.eclipse.ui.ide.workbench"
