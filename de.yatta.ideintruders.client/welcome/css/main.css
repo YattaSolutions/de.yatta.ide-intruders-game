@@ -207,6 +207,11 @@ a {
   height: 18px;
 }
 
+.yatta-footer-logo span {
+  width: 64px;
+  text-align: end;
+}
+
 .yatta-footer a {
   padding-right: 12px;
 }
