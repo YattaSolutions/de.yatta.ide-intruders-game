@@ -86,7 +86,6 @@ canvas {
 
 .start-page-footer {
   background: #e6e6e6;
-  padding: 10px 0px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -96,7 +95,9 @@ canvas {
 }
 
 .start-page-footer p {
-  margin: 0px;
+  margin: 0 0;
+  padding: 10px 10px;
+  width: auto;
   font-size: 12px;
   line-height: 11px;
   color: #696969;
