@@ -159,6 +159,20 @@ jobs:
           --options=runtime
           --entitlements=de.yatta.ideintruders.product/entitlements.plist
 
+    - name: 'Notarizing application - Skip stapler'
+      if: ${{ !inputs.wait_for_notarization }}
+      run: |
+          zip -ry YattaCheckoutDemo-macos.zip YattaCheckoutDemo
+          xcrun notarytool submit YattaCheckoutDemo-macos.dmg --keychain-profile "SIGNING_CREDENTIALS"
+
+    - name: 'Notarizing application - With stapler for apple signatures'
+      if:  ${{ inputs.wait_for_notarization }}
+      run: |
+          zip -ry YattaCheckoutDemo-macos-signed.zip YattaCheckoutDemo
+          xcrun notarytool submit YattaCheckoutDemo-macos-signed.zip --keychain-profile "SIGNING_CREDENTIALS" --wait
+          xcrun stapler staple YattaCheckoutDemo/Yatta\ Checkout\ Demo.app
+          zip -ry YattaCheckoutDemo-macos.zip YattaCheckoutDemo
+
     - name: 'Creating disc image'
       run: >
           hdiutil create
@@ -167,17 +181,6 @@ jobs:
           -ov
           -format UDZO
           "YattaCheckoutDemo-macos.dmg"
-
-
-    - name: 'Notarizing application - Skip stapler'
-      if: ${{ !inputs.wait_for_notarization }}
-      run: |
-          xcrun notarytool submit YattaCheckoutDemo-macos.dmg --keychain-profile "SIGNING_CREDENTIALS"
-
-    - name: 'Notarizing application - With stapler for apple signatures'
-      if:  ${{ inputs.wait_for_notarization }}
-      run: |
-          xcrun notarytool submit YattaCheckoutDemo-macos.dmg --keychain-profile "SIGNING_CREDENTIALS" --wait && xcrun stapler staple YattaCheckoutDemo-macos.dmg
 
     - name: 'Reset Keychain'
       run: |
@@ -188,7 +191,9 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: YattaCheckoutDemo-binaries
-        path: YattaCheckoutDemo-macos.dmg
+        path: |
+          YattaCheckoutDemo-macos.dmg
+          YattaCheckoutDemo-macos.zip
         retention-days: 3
 
   upload-cdn:
