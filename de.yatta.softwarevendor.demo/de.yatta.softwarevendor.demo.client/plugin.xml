@@ -115,7 +115,21 @@
                name="aboutImage"
                value="icons/AppIcon-64.png">
          </property>
+         <property
+               name="appName"
+               value="IDE Intruders (demo)">
+         </property>
       </product>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="de.yatta.softwarevendor.demo.client.perspectives.IdeIntrudersPerspective"
+            icon="icons/AppIcon-64.png"
+            id="de.yatta.softwarevendor.demo.client.perspectives.IdeIntrudersPerspective"
+            name="IDE Intruders (demo)">
+      </perspective>
+   </extension>
+   
 
 </plugin>
