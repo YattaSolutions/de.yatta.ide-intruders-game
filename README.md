@@ -18,13 +18,13 @@ Set the IDE's active target platform to [de.yatta.ideintruders.client/IDE-Intrud
 ## Run the application
 
 Start the launch configuration [IDE-Intruders.launch](de.yatta.ideintruders.client/IDE-Intruders.launch) either in run or debug mode.
-More information on using the plugin can be found in its [README](de.yatta.ide-intruders.product/README.txt).
+More information on using the plugin can be found in its [README](de.yatta.ideintruders.product/README.txt).
 
 ## Build update site and Rich Client Platform (RCP)
 
-Build the [de.yatta.ide-intruders.releng](de.yatta.ide-intruders.releng) project:
+Build the [de.yatta.ideintruders.releng](de.yatta.ideintruders.releng) project:
 ```bash
-pushd de.yatta.ide-intruders.releng
+pushd de.yatta.ideintruders.releng
 mvn clean package
 popd
 ```
@@ -32,13 +32,13 @@ This will build the following artifacts:
 
 ### Eclipse Update Site
 ```
-de.yatta.ide-intruders.site/target/repository/
+de.yatta.ideintruders.site/target/repository/
 ```
 Copy the folder to an FTP server or use it locally and specify it as an update site inside an Eclipse installation.
 
 ### Eclipse RCP
 ```
-de.yatta.ide-intruders.product/target/products/
+de.yatta.ideintruders.product/target/products/
 ```
 The folder includes applications for Windows, MacOS and Linux. A Java Runtime Environment (JRE) is bundled with each application.
 
@@ -46,7 +46,7 @@ The folder includes applications for Windows, MacOS and Linux. A Java Runtime En
 
 Yatta Checkout for Eclipse is designed and built to help you monetize and sell digital products (plugins, frameworks, libraries, SaaS and more) to millions of Eclipse users—and provide developers access to better and more tooling.
 
-To customize the demo to use it for your own solution, create a demo solution [here](https://www.yatta.de/portal). Replace `SOLUTION_ID` in [`de.yatta.ide-intruders.VendorDemoPlugin`](de.yatta.ideintruders.client/src/de/yatta/ideintruders/VendorDemoPlugin.java) with the API Key of your newly created solution. Launch the application and use your new solution to demo-purchase the mini-game.
+To customize the demo to use it for your own solution, create a demo solution [here](https://www.yatta.de/portal). Replace `SOLUTION_ID` in [`de.yatta.ideintruders.VendorDemoPlugin`](de.yatta.ideintruders.client/src/de/yatta/ideintruders/VendorDemoPlugin.java) with the API Key of your newly created solution. Launch the application and use your new solution to demo-purchase the mini-game.
 
 For more info about integrating the Checkout for Eclipse, read our [docs](https://www.yatta.de/docs) or visit our [website](https://www.yatta.de/checkout-for-eclipse).
 
