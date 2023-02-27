@@ -13,18 +13,18 @@ You can use this demo plugin to prototype the integration of your own Eclipse so
 
 Import this repository's projects into an Eclipse IDE with the Plug-in Development Environment installed. For example, the "Eclipse IDE for Eclipse Committers": https://www.eclipse.org/downloads/packages/release/2022-12/r/eclipse-ide-eclipse-committers
 
-Set the IDE's active target platform to [de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.client/softwarevendor-target.target](de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.client/softwarevendor-target.target). The projects should then compile without errors.
+Set the IDE's active target platform to [de.yatta.ideintruders.client/IDE-Intruders.target](de.yatta.ideintruders.client/IDE-Intruders.target). The projects should then compile without errors.
 
 ## Run the application
 
-Start the launch configuration [SoftwareVendorTool.launch](de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.client/SoftwareVendorTool.launch) either in run or debug mode.
-More information on using the plugin can be found in its [README](de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/README.txt).
+Start the launch configuration [IDE-Intruders.launch](de.yatta.ideintruders.client/IDE-Intruders.launch) either in run or debug mode.
+More information on using the plugin can be found in its [README](de.yatta.ideintruders.product/README.txt).
 
 ## Build update site and Rich Client Platform (RCP)
 
-Build the [de.yatta.softwarevendor.demo.releng](de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.releng) project:
+Build the [de.yatta.ideintruders.releng](de.yatta.ideintruders.releng/) project:
 ```bash
-pushd de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.releng
+pushd de.yatta.ideintruders.releng/
 mvn clean package
 popd
 ```
@@ -32,13 +32,13 @@ This will build the following artifacts:
 
 ### Eclipse Update Site
 ```
-de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.site/target/repository/
+de.yatta.ideintruders.site/target/repository/
 ```
-Copy the folder to an FTP server or use it locally and specify it as an update site inside an Eclipse installation.
+Copy the folder to a server or use it locally and specify it as an update site inside an Eclipse installation.
 
 ### Eclipse RCP
 ```
-de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/target/products/
+de.yatta.ideintruders.product/target/products/
 ```
 The folder includes applications for Windows, MacOS and Linux. A Java Runtime Environment (JRE) is bundled with each application.
 
@@ -46,7 +46,7 @@ The folder includes applications for Windows, MacOS and Linux. A Java Runtime En
 
 Yatta Checkout for Eclipse is designed and built to help you monetize and sell digital products (plugins, frameworks, libraries, SaaS and more) to millions of Eclipse users—and provide developers access to better and more tooling.
 
-To customize the demo to use it for your own solution, create a demo solution [here](https://www.yatta.de/portal). Replace `SOLUTION_ID` in [`de.yatta.softwarevendor.demo.VendorDemoPlugin`](de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.client/src/de/yatta/softwarevendor/demo/VendorDemoPlugin.java) with the API Key of your newly created solution. Launch the application and use your new solution to demo-purchase the mini-game.
+To customize the demo to use it for your own solution, create a demo solution [here](https://www.yatta.de/portal). Replace `SOLUTION_ID` in [`de.yatta.ideintruders.VendorDemoPlugin`](de.yatta.ideintruders.client/src/de/yatta/ideintruders/VendorDemoPlugin.java) with the API Key of your newly created solution. Launch the application and use your new solution to demo-purchase the mini-game.
 
 For more info about integrating the Checkout for Eclipse, read our [docs](https://www.yatta.de/docs) or visit our [website](https://www.yatta.de/checkout-for-eclipse).
 
