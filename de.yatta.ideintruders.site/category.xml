@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="EPP Marketplace Client">
+      The Yatta Marketplace Client provides access to the Eclipse Marketplace solution catalog plus payment processing for commercial solutions.
+   </description>
+   <feature id="de.yatta.ideintruders.feature">
+      <category name="de.yatta.ideintruders"/>
+   </feature>
+   <category-def name="de.yatta.ideintruders" label="IDE Intruders (demo)"/>
+   <repository-reference location="https://cdn.yatta.de/update/marketplace" enabled="true" />
+</site>
