@@ -197,6 +197,9 @@ a {
 .hover-container {
   position: relative;
 }
+.start-btn img  {
+  width: auto;
+}
 
 .hover-container .img-hover {
   display: none;
