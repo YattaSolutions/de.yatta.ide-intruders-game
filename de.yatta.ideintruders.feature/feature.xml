@@ -295,7 +295,7 @@ version(s), and exceptions or additional permissions here}.&quot;
    </license>
 
    <url>
-      <update label="Yatta Checkout Demo - Artifact Repository" url="https://cdn.yatta.de/update/ide-intruders/"/>
+      <update label="Yatta Checkout Demo - Artifact Repository" url="https://cdn.yatta.de/update/checkout-eclipse-demo/"/>
    </url>
 
    <requires>
