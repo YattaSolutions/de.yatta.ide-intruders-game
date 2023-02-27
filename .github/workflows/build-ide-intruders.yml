@@ -68,25 +68,25 @@ jobs:
         JARSIGNING_JAVA_OPTS: ${{ secrets.JARSIGNING_JAVA_OPTS }}
       run: |
           export JAVA_OPTS="${JAVA_OPTS} ${JARSIGNING_JAVA_OPTS}"
-          cd de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.releng
+          cd de.yatta.ideintruders.releng
           mvn package -Dbuild.release=${build_release} -B -P 2022-12
 
     - name: 'Prepare archives'
       run: |
-          pushd de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/target/products/
-          mv vendor-demo-win32.win32.x86_64.zip YattaCheckoutDemo-x86_64.zip
-          mv vendor-demo-linux.gtk.x86_64.tar.gz YattaCheckoutDemo-linux.tar.gz
-          mv vendor-demo-macosx.cocoa.x86_64.zip YattaCheckoutDemo-macos.zip
+          pushd de.yatta.ideintruders.product/target/products/
+          mv ide-intruders-win32.win32.x86_64.zip YattaCheckoutDemo-x86_64.zip
+          mv ide-intruders-linux.gtk.x86_64.tar.gz YattaCheckoutDemo-linux.tar.gz
+          mv ide-intruders-macosx.cocoa.x86_64.zip YattaCheckoutDemo-macos.zip
           popd
-          zip -x .github/\* .git/\* \*\*/target/\* \*\*/.settings/\* -r de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.site/target/YattaCheckoutDemo-source.zip .
+          zip -x .github/\* .git/\* \*\*/target/\* \*\*/.settings/\* -r de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip .
 
     - name: 'Upload Update Site and sources'
       uses: actions/upload-artifact@v3
       with:
         name: YattaCheckoutDemo-site
         path: |
-          de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.site/target/repository/
-          de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.site/target/YattaCheckoutDemo-source.zip
+          de.yatta.ideintruders.site/target/repository/
+          de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip
 
         retention-days: 3
 
@@ -95,15 +95,15 @@ jobs:
       with:
         name: YattaCheckoutDemo-binaries
         path: |
-          de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/target/products/YattaCheckoutDemo-x86_64.zip
-          de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/target/products/YattaCheckoutDemo-linux.tar.gz
+          de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-x86_64.zip
+          de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-linux.tar.gz
         retention-days: 3
 
     - name: 'Upload RCP - Mac'
       uses: actions/upload-artifact@v3
       with:
         name: YattaCheckoutDemo-macos-unsigned
-        path: de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/target/products/YattaCheckoutDemo-macos.zip
+        path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-macos.zip
         retention-days: 1
 
   macos-signing:
@@ -145,7 +145,7 @@ jobs:
           rm -f certificates.p12
           security set-key-partition-list -S apple-tool:,apple: -s -k ${MACOS_SIGNING_CREDENTIALS_PASSWORD} build.keychain >/dev/null
           xcrun notarytool store-credentials "SIGNING_CREDENTIALS" --apple-id "${MACOS_SIGNING_CREDENTIALS_USER}" --team-id ${MACOS_SIGNING_CREDENTIALS_TEAM} --password ${MACOS_SIGNING_CREDENTIALS_PASSWORD}
-          plutil -convert xml1 de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/entitlements.plist
+          plutil -convert xml1 de.yatta.ideintruders.product/entitlements.plist
 
     - name: 'Signing application'
       env:
@@ -157,7 +157,7 @@ jobs:
           --force
           --timestamp
           --options=runtime
-          --entitlements=de.yatta.softwarevendor.demo/de.yatta.softwarevendor.demo.product/entitlements.plist
+          --entitlements=de.yatta.ideintruders.product/entitlements.plist
 
     - name: 'Creating disc image'
       run: >
@@ -219,7 +219,7 @@ jobs:
       run: |
         TMPPATH=tmp/vendor-plugin/$(date +'%Y-%m-%d')-${GITHUB_RUN_NUMBER}
         RESSOURCES_PATH=/resources/products/checkout-eclipse-demo
-        UPDATESITE_PATH=/update/softwarevendor/0.0.0
+        UPDATESITE_PATH=/update/checkout-eclipse-demo/0.0.0
 
         mkdir -p ${TMPPATH}
         mv YattaCheckoutDemo* ${TMPPATH}

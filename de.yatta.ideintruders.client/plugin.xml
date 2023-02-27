@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="de.yatta.ideintruders.commands.category"
+            name="Vendor Game">
+      </category>
+      <command
+            categoryId="de.yatta.ideintruders.commands.category"
+            name="Start demo"
+            id="de.yatta.ideintruders.commands.vendorGame">
+      </command>
+      <command
+            categoryId="org.eclipse.ui.category.help"
+            id="de.yatta.ideintruders.commands.welcome"
+            name="Getting started with Yatta Checkout">
+      </command>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.yatta.ideintruders.client.handlers.DemoHandler"
+            commandId="de.yatta.ideintruders.commands.vendorGame">
+      </handler>
+      <handler
+            class="de.yatta.ideintruders.client.handlers.WelcomeHandler"
+            commandId="de.yatta.ideintruders.commands.welcome">
+      </handler>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.yatta.ideintruders.commands.vendorGame"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6">
+      </key>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="de.yatta.ideintruders.toolbars.vendorGame">
+            <command
+                  commandId="de.yatta.ideintruders.commands.welcome"
+                  icon="welcome/img/yatta_16x16.png"
+                  id="de.yatta.ideintruders.toolbars.vendorGame"
+                  label="Start Checkout Demo"
+                  mode="FORCE_TEXT"
+                  tooltip="Start demo">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+
+   <extension point="org.eclipse.ui.preferencePages">
+      <page class="de.yatta.ideintruders.client.ui.SoftwareVendorPreferencePage"
+            id="de.yatta.ideintruders.client.ui.SoftwareVendorPreferencePage"
+            name="SoftwareVendor Demo">
+      </page>
+      <page class="de.yatta.ideintruders.client.ui.licenses.SubscriptionLicenseDetailsPage"
+            id="de.yatta.ideintruders.client.ui.licenses.SubscriptionLicenseDetailsPage"
+            category="de.yatta.ideintruders.client.ui.SoftwareVendorPreferencePage"
+            name="Subscription license">
+      </page>
+      <page class="de.yatta.ideintruders.client.ui.licenses.OneTimePurchaseLicenseDetailsPage"
+            id="de.yatta.ideintruders.client.ui.licenses.OneTimePurchaseLicenseDetailsPage"
+            category="de.yatta.ideintruders.client.ui.SoftwareVendorPreferencePage"
+            name="One-Time Purchase license">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="de.yatta.ideintruders.client.ui.GameEditor"
+            contributorClass="org.eclipse.ui.part.EditorActionBarContributor"
+            id="de.yatta.ideintruders.editors.gameEditor"
+            name="Game Editor">
+      </editor>
+      <editor
+            class="de.yatta.ideintruders.client.ui.WelcomeEditor"
+            contributorClass="org.eclipse.ui.part.EditorActionBarContributor"
+            id="de.yatta.ideintruders.editors.welcomeEditor"
+            name="Welcome Page">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="de.yatta.ideintruders.client.handlers.WelcomePageStartup">
+      </startup>
+   </extension>
+   <extension
+         id="softwarevendor_demo_product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.ui.ide.workbench"
+            name="IDE Intruders (demo)">
+         <property
+               name="windowImages"
+               value="icons/AppIcon-16.png,icons/AppIcon-32.png,icons/AppIcon-48.png,icons/AppIcon-64.png,icons/AppIcon-128.png,icons/AppIcon-256.png">
+         </property>
+         <property
+               name="aboutText"
+               value="%productText">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/AppIcon-64.png">
+         </property>
+         <property
+               name="appName"
+               value="IDE Intruders (demo)">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="de.yatta.ideintruders.client.perspectives.IdeIntrudersPerspective"
+            icon="icons/AppIcon-16.png"
+            id="de.yatta.ideintruders.client.perspectives.IdeIntrudersPerspective"
+            name="IDE Intruders (demo)">
+      </perspective>
+   </extension>
+   
+
+</plugin>
