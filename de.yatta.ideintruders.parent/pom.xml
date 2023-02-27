@@ -128,7 +128,7 @@
                </formats>
                <products>
                   <product>
-                     <id>vendor-demo</id>
+                     <id>ide-intruders</id>
                      <rootFolders>
                         <macosx>Yatta Checkout Demo.app</macosx>
                      </rootFolders>

@@ -16,7 +16,7 @@
    <properties>
       <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
       <productBuildId>${maven.build.timestamp}</productBuildId>
-      <productVersion>${version}</productVersion>
+      <productVersion>${project.version}</productVersion>
    </properties>
 
 	<build>
