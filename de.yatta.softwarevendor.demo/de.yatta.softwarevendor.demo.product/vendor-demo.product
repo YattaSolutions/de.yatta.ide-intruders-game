@@ -332,6 +332,7 @@ version(s), and exceptions or additional permissions here}.&quot;
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
       <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
+      <property name="perspective" value="de.yatta.softwarevendor.demo.client.perspectives.IdeIntrudersPerspective" />
       <property name="eclipse.p2.profile" value="VendorDemoProfile" />
    </configurations>
 
