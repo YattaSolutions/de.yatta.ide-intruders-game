@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.yatta.ideintruders.feature"
-      label="SoftwareVendor Tool"
+      label="IDE Intruders (demo)"
       version="1.1.1.qualifier"
       provider-name="Yatta Solutions GmbH">
 
@@ -295,7 +295,7 @@ version(s), and exceptions or additional permissions here}.&quot;
    </license>
 
    <url>
-      <update label="Yatta Checkout Demo - Artifact Repository" url="https://cdn.yatta.de/update/softwarevendor/"/>
+      <update label="Yatta Checkout Demo - Artifact Repository" url="https://cdn.yatta.de/update/ide-intruders/"/>
    </url>
 
    <requires>

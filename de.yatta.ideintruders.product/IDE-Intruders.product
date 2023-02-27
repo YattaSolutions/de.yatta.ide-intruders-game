@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="IDE Intruders (demo)" uid="vendor-demo" id="de.yatta.ideintruders.client.softwarevendor_demo_product" application="org.eclipse.ui.ide.workbench" version="1.1.1.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="IDE Intruders (demo)" uid="ide-intruders" id="de.yatta.ideintruders.client" application="org.eclipse.ui.ide.workbench" version="1.1.1.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -337,7 +337,7 @@ version(s), and exceptions or additional permissions here}.&quot;
    </configurations>
 
    <repositories>
-      <repository location="https://cdn.yatta.de/update/softwarevendor/" enabled="true" />
+      <repository location="https://cdn.yatta.de/update/checkout-eclipse-demo/" enabled="true" />
    </repositories>
 
    <preferencesInfo>
