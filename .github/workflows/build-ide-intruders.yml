@@ -65,11 +65,15 @@ jobs:
 
     - name: 'Maven Build'
       env:
-        JARSIGNING_JAVA_OPTS: ${{ secrets.JARSIGNING_JAVA_OPTS }}
-      run: |
-          export JAVA_OPTS="${JAVA_OPTS} ${JARSIGNING_JAVA_OPTS}"
-          cd de.yatta.ideintruders.releng
-          mvn package -Dbuild.release=${build_release} -B -P 2022-12
+        SSH_JARSIGNING_PORT: ${{ secrets.SSH_JARSIGNING_PORT }}
+        SSH_JARSIGNING_CONNECTION: ${{ secrets.SSH_JARSIGNING_CONNECTION }}
+      working-directory: de.yatta.ideintruders.releng
+      run: >
+          mvn package -B
+           -P 2022-12
+           -Dbuild.release=${build_release}
+           -Djarstreamsign.host=${SSH_JARSIGNING_CONNECTION}
+           -Djarstreamsign.port=${SSH_JARSIGNING_PORT}
 
     - name: 'Prepare archives'
       run: |
