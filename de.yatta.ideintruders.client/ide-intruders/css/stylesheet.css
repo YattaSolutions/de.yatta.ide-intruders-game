@@ -173,6 +173,10 @@ canvas {
   transform: rotate(180deg);
 }
 
+.vendor-panel.collapsed .vendor-panel-header {
+  font-weight: normal;
+}
+
 .toggle-button {
   cursor: pointer;
   position: absolute;
