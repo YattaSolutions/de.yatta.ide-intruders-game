@@ -53,8 +53,7 @@
                   icon="welcome/img/yatta_16x16.png"
                   id="de.yatta.ideintruders.toolbars.vendorGame"
                   label="Start Checkout Demo"
-                  mode="FORCE_TEXT"
-                  tooltip="Start demo">
+                  tooltip="Start Checkout Demo">
             </command>
          </toolbar>
       </menuContribution>
