@@ -165,8 +165,15 @@ canvas {
   padding-bottom: 17px;
 }
 
+.vendor-panel .hide-on-collapse {
+  max-height: 50px;
+  transition: max-height 2s;
+}
+
 .vendor-panel.collapsed .hide-on-collapse {
-  display: none;
+  overflow: hidden;
+  max-height: 0px;
+  transition: max-height 2s;
 }
 
 .vendor-panel .toggle-button img {
