@@ -165,24 +165,42 @@ canvas {
   padding-bottom: 17px;
 }
 
-.vendor-panel .hide-on-collapse {
-  max-height: 50px;
-  transition: max-height 2s;
+.vendor-panel .content {
+  height: 35px;
+  transition: height 0.3s;
 }
 
-.vendor-panel.collapsed .hide-on-collapse {
+.vendor-panel .hide-on-collapse .right-content {
+  height: 0px;
+  transition: height 0.3s;
+}
+
+.vendor-panel.collapsed .content {
   overflow: hidden;
-  max-height: 0px;
-  transition: max-height 2s;
+  height: 0px;
+  transition: height 0.3s;
+}
+
+.vendor-panel .right-content .hide-on-collapse {
+  height: 24px;
+  opacity: 1;
+  transition: all 0.3s;
+}
+
+.vendor-panel.collapsed .right-content .hide-on-collapse {
+  height: 0px;
+  padding: 0;
+  opacity: 0;
+  transition: all 0.3s;
 }
 
 .vendor-panel .toggle-button img {
-  transition: all 0.2s linear;
+  transition: all 0.3s linear;
 }
 
 .vendor-panel.collapsed .toggle-button img {
   transform: rotate(180deg);
-  transition: all 0.2s linear;
+  transition: all 0.3s linear;
 }
 
 .vendor-panel.collapsed .vendor-panel-header {
@@ -194,6 +212,7 @@ canvas {
   position: absolute;
   right: 34px;
   top: 20px;
+  z-index: 2;
 }
 
 .right-content .hide-on-collapse {
