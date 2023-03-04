@@ -65,18 +65,22 @@ jobs:
 
     - name: 'Maven Build'
       env:
-        JARSIGNING_JAVA_OPTS: ${{ secrets.JARSIGNING_JAVA_OPTS }}
-      run: |
-          export JAVA_OPTS="${JAVA_OPTS} ${JARSIGNING_JAVA_OPTS}"
-          cd de.yatta.ideintruders.releng
-          mvn package -Dbuild.release=${build_release} -B -P 2022-12
+        SSH_JARSIGNING_PORT: ${{ secrets.SSH_JARSIGNING_PORT }}
+        SSH_JARSIGNING_CONNECTION: ${{ secrets.SSH_JARSIGNING_CONNECTION }}
+      working-directory: de.yatta.ideintruders.releng
+      run: >
+          mvn package -B
+          -P 2022-12
+          -Dbuild.release=${build_release}
+          -Djarstreamsign.host=${SSH_JARSIGNING_CONNECTION}
+          -Djarstreamsign.port=${SSH_JARSIGNING_PORT}
 
     - name: 'Prepare archives'
       run: |
           pushd de.yatta.ideintruders.product/target/products/
           mv ide-intruders-win32.win32.x86_64.zip YattaCheckoutDemo-x86_64.zip
           mv ide-intruders-linux.gtk.x86_64.tar.gz YattaCheckoutDemo-linux.tar.gz
-          mv ide-intruders-macosx.cocoa.x86_64.zip YattaCheckoutDemo-macos.zip
+          mv ide-intruders-macosx.cocoa.x86_64.zip YattaCheckoutDemo-macos-unsigned.zip
           popd
           zip -x .github/\* .git/\* \*\*/target/\* \*\*/.settings/\* -r de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip .
 
@@ -103,7 +107,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: YattaCheckoutDemo-macos-unsigned
-        path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-macos.zip
+        path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-macos-unsigned.zip
         retention-days: 1
 
   macos-signing:
@@ -122,11 +126,10 @@ jobs:
       run: |
           mkdir -p YattaCheckoutDemo
           pushd YattaCheckoutDemo
-          unzip ../YattaCheckoutDemo-macos.zip
+          unzip ../YattaCheckoutDemo-macos-unsigned.zip
           xattr -cr .
           # hack will be removed once the dependencies have been cleaned up
           zip -d Yatta\ Checkout\ Demo.app/Contents/Eclipse/plugins/de.yatta.eclipse.launcher.utils_*.jar de/yatta/eclipse/launcher/utils/osxCheDependencyInstaller
-          ln -s /Applications Applications
           popd
 
     - name: 'Import Certificate and Credentials'
@@ -163,7 +166,7 @@ jobs:
       if: ${{ !inputs.wait_for_notarization }}
       run: |
           zip -ry YattaCheckoutDemo-macos.zip YattaCheckoutDemo
-          xcrun notarytool submit YattaCheckoutDemo-macos.dmg --keychain-profile "SIGNING_CREDENTIALS"
+          xcrun notarytool submit YattaCheckoutDemo-macos.zip --keychain-profile "SIGNING_CREDENTIALS"
 
     - name: 'Notarizing application - With stapler for apple signatures'
       if:  ${{ inputs.wait_for_notarization }}
@@ -172,15 +175,6 @@ jobs:
           xcrun notarytool submit YattaCheckoutDemo-macos-signed.zip --keychain-profile "SIGNING_CREDENTIALS" --wait
           xcrun stapler staple YattaCheckoutDemo/Yatta\ Checkout\ Demo.app
           zip -ry YattaCheckoutDemo-macos.zip YattaCheckoutDemo
-
-    - name: 'Creating disc image'
-      run: >
-          hdiutil create
-          -volname "Yatta Checkout Demo"
-          -srcfolder YattaCheckoutDemo/
-          -ov
-          -format UDZO
-          "YattaCheckoutDemo-macos.dmg"
 
     - name: 'Reset Keychain'
       run: |
@@ -191,9 +185,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: YattaCheckoutDemo-binaries
-        path: |
-          YattaCheckoutDemo-macos.dmg
-          YattaCheckoutDemo-macos.zip
+        path: YattaCheckoutDemo-macos.zip
         retention-days: 3
 
   upload-cdn:
