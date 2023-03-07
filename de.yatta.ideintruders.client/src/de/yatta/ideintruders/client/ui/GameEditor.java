@@ -1,27 +1,17 @@
 package de.yatta.ideintruders.client.ui;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.handlers.IHandlerService;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
 
 import com.yattasolutions.platform.marketplace.client.MarketplaceClient;
 import com.yattasolutions.platform.marketplace.client.MarketplaceClientPlugin;
-import com.yattasolutions.platform.marketplace.client.account.AccountManager;
 
 import de.yatta.ideintruders.VendorDemoPlugin;
-import de.yatta.ideintruders.client.handlers.Game;
 import de.yatta.platform.marketplace.licensing.client.LicenseRequest;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse;
 import de.yatta.platform.marketplace.licensing.client.LicenseResponse.Validity;
@@ -120,33 +110,7 @@ public class GameEditor extends BrowserWrapper
 			MarketplaceClient.get().showCancelDialog(parent.getDisplay(), VendorDemoPlugin.SOLUTION_ID, true);
 		}
 		licenseResponse = resetLicense();
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		IWorkbenchPage page = window.getActivePage();
-		// after license was reset, close active page
-		try {
-			IEditorPart editor = page.getActiveEditor();
-			if (editor != null) {
-				page.closeEditor(editor, true);
-			}
-
-			// Check if the editor is already open
-			IEditorReference[] editorRefs = page.getEditorReferences();
-			for (IEditorReference editorRef : editorRefs) {
-				if (editorRef.getId().equals(WelcomeEditor.EDITOR_ID)) {
-					// The editor is already open just activate it
-					page.activate(editorRef.getEditor(false));
-					break;
-				}
-			}
-
-			// Get the IHandlerService instance
-			IHandlerService handlerService = PlatformUI.getWorkbench().getService(IHandlerService.class);
-			handlerService.executeCommand("de.yatta.ideintruders.commands.welcome", null);
-
-		} catch (Exception e) {
-			MessageDialog.openError(window.getShell(), Game.IDE_INTRUDERS.toString(),
-					"Could not reset the demo.");
-		}
+		checkLicense();
 	}
 
    @Override
