@@ -85,6 +85,7 @@ public class GameEditor extends BrowserWrapper
          public Object function(Object[] arguments)
          {
             MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID);
+            checkLicense();
             return null;
          }
       };
@@ -94,6 +95,7 @@ public class GameEditor extends BrowserWrapper
          public Object function(Object[] arguments)
          {
             MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE);
+            checkLicense();
             return null;
          }
       };
@@ -103,6 +105,7 @@ public class GameEditor extends BrowserWrapper
          public Object function(Object[] arguments)
          {
             MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID);
+            checkLicense();
             return null;
          }
       };
