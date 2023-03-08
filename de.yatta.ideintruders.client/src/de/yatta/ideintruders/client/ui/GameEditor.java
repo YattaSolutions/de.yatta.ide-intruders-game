@@ -116,6 +116,7 @@ public class GameEditor extends BrowserWrapper
    @Override
    public void setFocus()
    {
+      checkLicense();
       getBrowser().setFocus();
    }
 
