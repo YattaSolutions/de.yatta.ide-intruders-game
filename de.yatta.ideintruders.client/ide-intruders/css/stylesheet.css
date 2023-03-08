@@ -57,6 +57,7 @@ canvas {
   margin: 0px 0px 32px 0px;
 }
 
+
 .start-page .trigger-subscribe:hover,
 .start-page .trigger-purchase:hover {
 color: var(--button-color-hover);
@@ -73,7 +74,7 @@ color: var(--button-color-hover);
   font-size: 12px;
   line-height: 12px;
   cursor: pointer;
-  width: 128px;
+  min-width:140px;
 }
 
 .start-page .trigger-subscribe {
