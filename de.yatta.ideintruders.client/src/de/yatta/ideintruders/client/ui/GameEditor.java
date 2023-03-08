@@ -10,7 +10,6 @@ import org.osgi.service.event.Event;
 
 import com.yattasolutions.platform.marketplace.client.MarketplaceClient;
 import com.yattasolutions.platform.marketplace.client.MarketplaceClientPlugin;
-import com.yattasolutions.platform.marketplace.client.account.AccountManager;
 
 import de.yatta.ideintruders.VendorDemoPlugin;
 import de.yatta.platform.marketplace.licensing.client.LicenseRequest;
@@ -27,7 +26,6 @@ public class GameEditor extends BrowserWrapper
    private boolean isLicensed = false;
    private boolean isNotLoggedIn = true;
    private ServiceRegistration<?> serviceRegistration;
-
    @Override
    public void createPartControl(Composite parent)
    {
@@ -66,17 +64,8 @@ public class GameEditor extends BrowserWrapper
       new BrowserFunction(getBrowser(), "resetDemo") {
          @Override
          public Object function(Object[] arguments)
-         {
-            LicenseResponse licenseResponse = fetchLicenseStatus(5000);
-            if (VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE.equals(licenseResponse.getLicenseTypeId()))
-            {
-               MarketplaceClient.get().showDeleteDemoOrderDialog(parent.getDisplay(), VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE, true);
-            }
-            else
-            {
-               MarketplaceClient.get().showCancelDialog(parent.getDisplay(), VendorDemoPlugin.SOLUTION_ID, true);
-            }
-            AccountManager.get().signOut();
+         { 
+        	resetDemo();
             return null;
          }
       };
@@ -111,10 +100,23 @@ public class GameEditor extends BrowserWrapper
       };
 
    }
+   
+	private void resetDemo() {
+		LicenseResponse licenseResponse = fetchLicenseStatus(5000);
+		if (VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE.equals(licenseResponse.getLicenseTypeId())) {
+			MarketplaceClient.get().showDeleteDemoOrderDialog(parent.getDisplay(),
+					VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE, true);
+		} else {
+			MarketplaceClient.get().showCancelDialog(parent.getDisplay(), VendorDemoPlugin.SOLUTION_ID, true);
+		}
+		licenseResponse = resetLicense();
+		checkLicense();
+	}
 
    @Override
    public void setFocus()
    {
+      checkLicense();
       getBrowser().setFocus();
    }
 
@@ -197,9 +199,15 @@ public class GameEditor extends BrowserWrapper
       }
       return licenseResponse;
    }
-
-   private LicenseResponse fetchLicense(String solutionId)
-   {
-      return LicensingClient.get().queryLicense(new LicenseRequest(solutionId, null, 1, VendorDemoPlugin.VENDOR_KEY));
+   
+   private LicenseResponse resetLicense() {
+	    LicenseRequest licenseRequest = new LicenseRequest(VendorDemoPlugin.SOLUTION_ID, null, 1, VendorDemoPlugin.VENDOR_KEY);
+	    licenseRequest.setForceRefresh(true);
+		return LicensingClient.get().queryLicense(licenseRequest);   
    }
+
+	private LicenseResponse fetchLicense(String solutionId) {
+		LicenseRequest licenseRequest = new LicenseRequest(solutionId, null, 1, VendorDemoPlugin.VENDOR_KEY);
+		return LicensingClient.get().queryLicense(licenseRequest);
+	}
 }
