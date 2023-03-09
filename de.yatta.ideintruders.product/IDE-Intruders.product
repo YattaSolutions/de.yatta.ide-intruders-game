@@ -18,12 +18,6 @@
    <windowImages i16="icons/AppIcon-16.png" i32="icons/AppIcon-32.png" i48="icons/AppIcon-48.png" i64="icons/AppIcon-64.png" i128="icons/AppIcon-128.png" i256="icons/AppIcon-256.png"/>
 
    <launcher name="YattaCheckoutDemo">
-      <linux icon="icons/AppIcon_256x256.xpm"/>
-      <macosx icon="icons/AppIcon-MacOS.icns"/>
-      <win useIco="true">
-         <ico path="icons/IDE_Intruders.ico"/>
-         <bmp/>
-      </win>
    </launcher>
 
    <vm>
