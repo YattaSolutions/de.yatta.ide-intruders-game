@@ -50,7 +50,7 @@
                id="de.yatta.ideintruders.toolbars.vendorGame">
             <command
                   commandId="de.yatta.ideintruders.commands.welcome"
-                  icon="welcome/img/yatta_16x16.png"
+                  icon="icons/IdeIntruders-16.png"
                   id="de.yatta.ideintruders.toolbars.vendorGame"
                   label="Start Checkout Demo"
                   tooltip="Start Checkout Demo">
@@ -102,17 +102,14 @@
       <product
             application="org.eclipse.ui.ide.workbench"
             name="IDE Intruders (demo)">
-         <property
-               name="windowImages"
-               value="icons/AppIcon-16.png,icons/AppIcon-32.png,icons/AppIcon-48.png,icons/AppIcon-64.png,icons/AppIcon-128.png,icons/AppIcon-256.png">
-         </property>
+		 <property name="windowImages" value="icons/eclipse16.png,icons/eclipse32.png,icons/eclipse48.png"/> 
          <property
                name="aboutText"
                value="%productText">
          </property>
          <property
                name="aboutImage"
-               value="icons/AppIcon-64.png">
+               value="icons/IdeIntruders-32.png">
          </property>
          <property
                name="appName"
@@ -124,11 +121,9 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="de.yatta.ideintruders.client.perspectives.IdeIntrudersPerspective"
-            icon="icons/AppIcon-16.png"
             id="de.yatta.ideintruders.client.perspectives.IdeIntrudersPerspective"
             name="IDE Intruders (demo)">
       </perspective>
    </extension>
-   
 
 </plugin>
