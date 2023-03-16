@@ -16,7 +16,7 @@
       </vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="icons/eclipse16.png" i32="icons/eclipse32.png" i48="icons/eclipse48.png"/>
+   <windowImages i16="icons/eclipse16.png" i32="icons/eclipse32.png" i48="icons/eclipse48.png" i64="icons/eclipse64.png" i128="icons/eclipse128.png" i256="icons/eclipse256.png"/>
 
    <launcher name="YattaCheckoutDemo">
       <win useIco="false">
@@ -331,8 +331,9 @@ version(s), and exceptions or additional permissions here}.&quot;
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
       <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
-      <property name="perspective" value="de.yatta.ideintruders.client.perspectives.IdeIntrudersPerspective" />
+      <property name="osgi.instance.area.default" value="~/.eclipse-workspace-demo" os="macosx" />
       <property name="eclipse.p2.profile" value="VendorDemoProfile" />
+      <property name="perspective" value="de.yatta.ideintruders.client.perspectives.IdeIntrudersPerspective" />
    </configurations>
 
    <repositories>
