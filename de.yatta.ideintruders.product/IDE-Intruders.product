@@ -3,7 +3,6 @@
 
 <product name="IDE Intruders (demo)" uid="ide-intruders" id="de.yatta.ideintruders.client.ide-intruders_product" application="org.eclipse.ui.ide.workbench" version="1.1.2.qualifier" useFeatures="true" includeLaunchers="true" autoIncludeRequirements="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -16,14 +15,12 @@
       </vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="icons/eclipse16.png" i32="icons/eclipse32.png" i48="icons/eclipse48.png" i64="icons/eclipse64.png" i128="icons/eclipse128.png" i256="icons/eclipse256.png"/>
-
    <launcher name="YattaCheckoutDemo">
+      <macosx icon="icons/Eclipse.icns"/>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -331,8 +328,8 @@ version(s), and exceptions or additional permissions here}.&quot;
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
       <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
-      <property name="osgi.instance.area.default" value="~/.eclipse-workspace-demo" os="macosx" />
       <property name="eclipse.p2.profile" value="VendorDemoProfile" />
+      <property name="osgi.instance.area.default" value="~/.eclipse-workspace-demo" os="macosx" />
       <property name="perspective" value="de.yatta.ideintruders.client.perspectives.IdeIntrudersPerspective" />
    </configurations>
 
