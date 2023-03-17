@@ -29,8 +29,8 @@ jobs:
       run: |
         if [ "${BRANCH_NAME}" == 'production' ]; then
          echo "build_release=true" >> $GITHUB_ENV
-        else
-         echo "build_release=false" >> $GITHUB_ENV
+        elif [ "${BRANCH_NAME}" == 'stage' ]; then
+         echo "build_stage=true" >> $GITHUB_ENV
         fi
 
     - name: 'Install SSH key'
@@ -50,10 +50,7 @@ jobs:
         distribution: 'temurin'
 
     - name: 'Setup Maven'
-      # explicitly use maven 3.6.3. At newer versions of Maven HTTP mirrors are blocken. We need to switch to HTTPS only mirrors first.
       uses: stCarolas/setup-maven@v4.5
-      with:
-        maven-version: 3.6.3
 
     - name: 'Cache local Maven repository'
       uses: actions/cache@v3
@@ -70,8 +67,8 @@ jobs:
       working-directory: de.yatta.ideintruders.releng
       run: >
           mvn package -B
-          -P 2022-12
           -Dbuild.release=${build_release}
+          -Dbuild.stage=${build_stage}
           -Djarstreamsign.host=${SSH_JARSIGNING_CONNECTION}
           -Djarstreamsign.port=${SSH_JARSIGNING_PORT}
 
