@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.yatta.ideintruders</groupId>
   <artifactId>de.yatta.ideintruders.parent</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -162,12 +162,12 @@
 
   <profiles>
     <profile>
-      <id>2022-12</id>
+      <id>2023-03</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <eclipse-repo.url>${repo-base.url}/staging/2022-12</eclipse-repo.url>
+        <eclipse-repo.url>${repo-base.url}/staging/2023-03</eclipse-repo.url>
         <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.26</eclipse-updates-repo.url>
         <orbit-repo.url>${repo-base.url}/tools/orbit/downloads/drops/R20221123021534/repository</orbit-repo.url>
         <ymp-repo.url>https://cdn.yatta.de/stage/update/marketplace</ymp-repo.url>

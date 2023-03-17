@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: IDE Intruders (demo)
 Bundle-SymbolicName: de.yatta.ideintruders.client;singleton:=true
-Bundle-Version: 1.1.1.qualifier
+Bundle-Version: 1.1.2.qualifier
 Require-Bundle: org.eclipse.ui,
- com.yattasolutions.platform.marketplace.client;bundle-version="2.0.8",
- de.yatta.platform.marketplace.licensing.client;bundle-version="2.0.8",
- de.yatta.platform.marketplace.licensing.client.ui;bundle-version="2.0.8",
+ com.yattasolutions.platform.marketplace.client;bundle-version="2.0.9",
+ de.yatta.platform.marketplace.licensing.client;bundle-version="2.0.9",
+ de.yatta.platform.marketplace.licensing.client.ui;bundle-version="2.0.9",
  org.eclipse.osgi.services,
  org.eclipse.core.runtime
 Automatic-Module-Name: de.yatta.ideintruders

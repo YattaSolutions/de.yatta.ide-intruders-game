@@ -47,7 +47,7 @@ public class WelcomeHandler extends AbstractHandler
                   IWorkbenchPage page = window.getActivePage();
 
                   BrowserWrapperInput input = new BrowserWrapperInput(BROWSER_TITLE, url,
-                        "/welcome/img/yatta_16x16.png");
+                        "/icons/IdeIntruders-16.png");
                   IEditorPart editor = page.findEditor(input);
                   if (editor != null)
                   {
