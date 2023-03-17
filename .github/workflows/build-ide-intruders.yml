@@ -67,6 +67,7 @@ jobs:
       working-directory: de.yatta.ideintruders.releng
       run: >
           mvn package -B
+          -P eclipse-base
           -Dbuild.release=${build_release}
           -Dbuild.stage=${build_stage}
           -Djarstreamsign.host=${SSH_JARSIGNING_CONNECTION}

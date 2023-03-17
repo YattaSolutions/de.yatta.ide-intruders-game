@@ -162,7 +162,7 @@
 
   <profiles>
     <profile>
-      <id>2023-03</id>
+      <id>eclipse-base</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
