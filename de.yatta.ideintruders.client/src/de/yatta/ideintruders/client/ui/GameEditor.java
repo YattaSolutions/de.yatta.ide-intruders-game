@@ -73,7 +73,7 @@ public class GameEditor extends BrowserWrapper
          @Override
          public Object function(Object[] arguments)
          {
-            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID);
+            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT);
             checkLicense();
             return null;
          }
@@ -83,7 +83,7 @@ public class GameEditor extends BrowserWrapper
          @Override
          public Object function(Object[] arguments)
          {
-            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE);
+            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE, VendorDemoPlugin.ENVIRONMENT);
             checkLicense();
             return null;
          }
@@ -93,7 +93,7 @@ public class GameEditor extends BrowserWrapper
          @Override
          public Object function(Object[] arguments)
          {
-            MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.SOLUTION_ID);
+            MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT);
             checkLicense();
             return null;
          }
@@ -103,11 +103,11 @@ public class GameEditor extends BrowserWrapper
    
 	private void resetDemo() {
 		LicenseResponse licenseResponse = fetchLicenseStatus(5000);
-		if (VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE.equals(licenseResponse.getLicenseTypeId())) {
+		if (licenseResponse.getLicenseTypeId().endsWith(VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE)) {
 			MarketplaceClient.get().showDeleteDemoOrderDialog(parent.getDisplay(),
-					VendorDemoPlugin.SOLUTION_ID_ONETIMEPURCHASE, true);
+					VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE, VendorDemoPlugin.ENVIRONMENT, true);
 		} else {
-			MarketplaceClient.get().showCancelDialog(parent.getDisplay(), VendorDemoPlugin.SOLUTION_ID, true);
+			MarketplaceClient.get().showCancelDialog(parent.getDisplay(), VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT, true);
 		}
 		licenseResponse = resetLicense();
 		checkLicense();
@@ -182,7 +182,7 @@ public class GameEditor extends BrowserWrapper
    private LicenseResponse fetchLicenseStatus(final long timeoutInMillis)
    {
       // check if the license is valid
-      LicenseResponse licenseResponse = fetchLicense(VendorDemoPlugin.SOLUTION_ID);
+      LicenseResponse licenseResponse = fetchLicense(VendorDemoPlugin.PRODUCT_ID);
       final long tryUntil = System.currentTimeMillis() + timeoutInMillis;
       // repeat the call for the specified interval while the validity is "WAIT"
       while (licenseResponse.getValidity() == Validity.WAIT && System.currentTimeMillis() <= tryUntil)
@@ -195,19 +195,19 @@ public class GameEditor extends BrowserWrapper
          {
             e.printStackTrace();
          }
-         licenseResponse = fetchLicense(VendorDemoPlugin.SOLUTION_ID);
+         licenseResponse = fetchLicense(VendorDemoPlugin.PRODUCT_ID);
       }
       return licenseResponse;
    }
    
    private LicenseResponse resetLicense() {
-	    LicenseRequest licenseRequest = new LicenseRequest(VendorDemoPlugin.SOLUTION_ID, null, 1, VendorDemoPlugin.VENDOR_KEY);
+	    LicenseRequest licenseRequest = new LicenseRequest(VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT, null, 1, VendorDemoPlugin.VENDOR_KEY);
 	    licenseRequest.setForceRefresh(true);
 		return LicensingClient.get().queryLicense(licenseRequest);   
    }
 
 	private LicenseResponse fetchLicense(String solutionId) {
-		LicenseRequest licenseRequest = new LicenseRequest(solutionId, null, 1, VendorDemoPlugin.VENDOR_KEY);
+		LicenseRequest licenseRequest = new LicenseRequest(solutionId, VendorDemoPlugin.ENVIRONMENT, null, 1, VendorDemoPlugin.VENDOR_KEY);
 		return LicensingClient.get().queryLicense(licenseRequest);
 	}
 }
