@@ -103,7 +103,7 @@ public class GameEditor extends BrowserWrapper
    
 	private void resetDemo() {
 		LicenseResponse licenseResponse = fetchLicenseStatus(5000);
-		if (VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE.equals(licenseResponse.getLicenseTypeId())) {
+		if (licenseResponse.getLicenseTypeId().endsWith(VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE)) {
 			MarketplaceClient.get().showDeleteDemoOrderDialog(parent.getDisplay(),
 					VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE, VendorDemoPlugin.ENVIRONMENT, true);
 		} else {
@@ -201,13 +201,13 @@ public class GameEditor extends BrowserWrapper
    }
    
    private LicenseResponse resetLicense() {
-	    LicenseRequest licenseRequest = new LicenseRequest(VendorDemoPlugin.PRODUCT_ID, null, 1, VendorDemoPlugin.VENDOR_KEY);
+	    LicenseRequest licenseRequest = new LicenseRequest(VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT, null, 1, VendorDemoPlugin.VENDOR_KEY);
 	    licenseRequest.setForceRefresh(true);
 		return LicensingClient.get().queryLicense(licenseRequest);   
    }
 
 	private LicenseResponse fetchLicense(String solutionId) {
-		LicenseRequest licenseRequest = new LicenseRequest(solutionId, null, 1, VendorDemoPlugin.VENDOR_KEY);
+		LicenseRequest licenseRequest = new LicenseRequest(solutionId, VendorDemoPlugin.ENVIRONMENT, null, 1, VendorDemoPlugin.VENDOR_KEY);
 		return LicensingClient.get().queryLicense(licenseRequest);
 	}
 }
