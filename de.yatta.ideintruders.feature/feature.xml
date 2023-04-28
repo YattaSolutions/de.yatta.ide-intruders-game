@@ -299,7 +299,7 @@ version(s), and exceptions or additional permissions here}.&quot;
    </url>
 
    <requires>
-      <import feature="com.yattasolutions.platform.marketplace.client.feature" version="2.0.9"/>
+      <import feature="com.yattasolutions.platform.marketplace.client.feature" version="3.0.1"/>
    </requires>
 
    <plugin
