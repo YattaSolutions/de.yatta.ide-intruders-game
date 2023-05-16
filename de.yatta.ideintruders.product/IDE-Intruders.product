@@ -329,7 +329,7 @@ version(s), and exceptions or additional permissions here}.&quot;
       <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
       <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
       <property name="eclipse.p2.profile" value="VendorDemoProfile" />
-      <property name="osgi.instance.area.default" value="~/.eclipse-workspace-demo" os="macosx" />
+      <property name="osgi.instance.area.default" value=".eclipse-workspace-demo" os="macosx" />
       <property name="perspective" value="de.yatta.ideintruders.client.perspectives.IdeIntrudersPerspective" />
    </configurations>
 
