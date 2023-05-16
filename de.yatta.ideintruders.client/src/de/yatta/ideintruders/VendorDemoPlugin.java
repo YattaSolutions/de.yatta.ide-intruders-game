@@ -7,7 +7,7 @@ import com.yattasolutions.platform.marketplace.client.CheckoutEnvironment;
 
 public class VendorDemoPlugin extends AbstractUIPlugin {
 
-  public static final CheckoutEnvironment ENVIRONMENT = CheckoutEnvironment.LIVE;
+  public static final CheckoutEnvironment ENVIRONMENT = CheckoutEnvironment.PREVIEW;
   public static final String PRODUCT_ID = "de.softwarevendor.product";
   public static final String PRODUCT_ID_ONETIMEPURCHASE = "de.softwarevendor.product.onetimepurchase";
   public static final String VENDOR_KEY = "DEMO";
