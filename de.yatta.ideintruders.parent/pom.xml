@@ -10,7 +10,7 @@
   <properties>
     <tycho.version>2.7.5</tycho.version>
     <bundle-ee>SYSTEM</bundle-ee>
-    <repo-base.url>http://download.eclipse.org</repo-base.url>
+    <repo-base.url>https://download.eclipse.org</repo-base.url>
   </properties>
 
   <repositories>
@@ -169,7 +169,7 @@
       <properties>
         <eclipse-repo.url>${repo-base.url}/staging/2023-06</eclipse-repo.url>
         <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.28</eclipse-updates-repo.url>
-        <orbit-repo.url>${repo-base.url}/tools/orbit/downloads/drops/R20230531010532/</orbit-repo.url>
+        <orbit-repo.url>${repo-base.url}/tools/orbit/downloads/drops/R20230531010532/repository</orbit-repo.url>
         <ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
       </properties>
     </profile>
