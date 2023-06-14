@@ -13,22 +13,7 @@
     <booleanAttribute key="clearwslog" value="false"/>
     <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/IDE-Intruders"/>
     <booleanAttribute key="default" value="false"/>
-    <setAttribute key="deselected_workspace_bundles">
-        <setEntry value="Test-RCP"/>
-        <setEntry value="TestProject"/>
-        <setEntry value="com.yattasolutions.platform.marketplace.api.docs"/>
-        <setEntry value="com.yattasolutions.platform.marketplace.client.test"/>
-        <setEntry value="com.yattasolutions.platform.marketplace.model"/>
-        <setEntry value="com.yattasolutions.platform.marketplace.rest.api"/>
-        <setEntry value="de.yatta.platform.browser.jxbrowser-linux64"/>
-        <setEntry value="de.yatta.platform.browser.jxbrowser-linux64-aarch64"/>
-        <setEntry value="de.yatta.platform.browser.jxbrowser-mac"/>
-        <setEntry value="de.yatta.platform.browser.jxbrowser-mac-aarch64"/>
-        <setEntry value="de.yatta.platform.eclipse.mpc"/>
-        <setEntry value="de.yatta.platform.eclipse.mpc.ui"/>
-        <setEntry value="de.yatta.platform.marketplace.licensing.client.test"/>
-        <setEntry value="de.yatta.platform.marketplace.web.test.utils"/>
-    </setAttribute>
+    <setAttribute key="deselected_workspace_bundles"/>
     <stringAttribute key="featureDefaultLocation" value="workspace"/>
     <stringAttribute key="featurePluginResolution" value="workspace"/>
     <booleanAttribute key="includeOptional" value="true"/>
@@ -57,9 +42,15 @@
         <setEntry value="com.ibm.icu@default:default"/>
         <setEntry value="com.sun.jna.platform@default:default"/>
         <setEntry value="com.sun.jna@default:default"/>
+        <setEntry value="com.yattasolutions.platform.marketplace.client@default:default"/>
         <setEntry value="de.yatta.eclipse.launcher.utils@default:default"/>
+        <setEntry value="de.yatta.eclipse.platform.core@default:default"/>
         <setEntry value="de.yatta.platform.analytics@default:default"/>
+        <setEntry value="de.yatta.platform.browser.jxbrowser-win64@default:false"/>
+        <setEntry value="de.yatta.platform.browser.jxbrowser@default:default"/>
         <setEntry value="de.yatta.platform.commons@default:default"/>
+        <setEntry value="de.yatta.platform.marketplace.licensing.client.ui@default:default"/>
+        <setEntry value="de.yatta.platform.marketplace.licensing.client@default:default"/>
         <setEntry value="jakarta.servlet-api@default:default"/>
         <setEntry value="javax.annotation@default:default"/>
         <setEntry value="javax.inject@default:default"/>
@@ -220,13 +211,7 @@
         <setEntry value="org.w3c.dom.svg@default:default"/>
     </setAttribute>
     <setAttribute key="selected_workspace_bundles">
-        <setEntry value="com.yattasolutions.platform.marketplace.client@default:default"/>
-        <setEntry value="de.yatta.eclipse.platform.core@default:default"/>
         <setEntry value="de.yatta.ideintruders.client@default:default"/>
-        <setEntry value="de.yatta.platform.browser.jxbrowser-win64@default:false"/>
-        <setEntry value="de.yatta.platform.browser.jxbrowser@default:default"/>
-        <setEntry value="de.yatta.platform.marketplace.licensing.client.ui@default:default"/>
-        <setEntry value="de.yatta.platform.marketplace.licensing.client@default:default"/>
     </setAttribute>
     <booleanAttribute key="show_selected_only" value="false"/>
     <stringAttribute key="templateConfig" value="${target_home}\configuration\config.ini"/>
