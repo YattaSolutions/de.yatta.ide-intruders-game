@@ -29,7 +29,7 @@ jobs:
       run: |
         if [ "${BRANCH_NAME}" == 'production' ]; then
          echo "build_release=true" >> $GITHUB_ENV
-        elif [ "${BRANCH_NAME}" == 'stage' ]; then
+        else
          echo "build_stage=true" >> $GITHUB_ENV
         fi
 

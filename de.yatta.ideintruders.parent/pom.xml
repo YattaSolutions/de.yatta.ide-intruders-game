@@ -4,13 +4,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.yatta.ideintruders</groupId>
   <artifactId>de.yatta.ideintruders.parent</artifactId>
-  <version>1.1.3-SNAPSHOT</version>
+  <version>1.1.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
     <tycho.version>2.7.5</tycho.version>
     <bundle-ee>SYSTEM</bundle-ee>
-    <repo-base.url>http://download.eclipse.org</repo-base.url>
+    <repo-base.url>https://download.eclipse.org</repo-base.url>
   </properties>
 
   <repositories>
@@ -36,7 +36,7 @@
     </repository>
     <repository>
       <id>justj</id>
-      <url>https://download.eclipse.org/justj/jres/11/updates/release/latest/</url>
+      <url>https://download.eclipse.org/justj/jres/17/updates/release/latest/</url>
       <layout>p2</layout>
     </repository>
   </repositories>
@@ -103,7 +103,7 @@
                 <arch>x86_64</arch>
               </environment>
             </environments>
-            <executionEnvironment>org.eclipse.justj.openjdk.hotspot.jre.full-11</executionEnvironment>
+            <executionEnvironment>org.eclipse.justj.openjdk.hotspot.jre.full-17</executionEnvironment>
           </configuration>
         </plugin>
         <plugin>
@@ -167,9 +167,9 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <eclipse-repo.url>${repo-base.url}/staging/2023-03</eclipse-repo.url>
-        <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.26</eclipse-updates-repo.url>
-        <orbit-repo.url>${repo-base.url}/tools/orbit/downloads/drops/R20221123021534/repository</orbit-repo.url>
+        <eclipse-repo.url>${repo-base.url}/staging/2023-06</eclipse-repo.url>
+        <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.28</eclipse-updates-repo.url>
+        <orbit-repo.url>${repo-base.url}/tools/orbit/downloads/drops/R20230531010532/repository</orbit-repo.url>
         <ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
       </properties>
     </profile>
