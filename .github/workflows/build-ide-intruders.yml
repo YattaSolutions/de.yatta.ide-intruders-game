@@ -27,9 +27,7 @@ jobs:
         
     - name: 'Set environment variables'
       run: |
-        if [ "${BRANCH_NAME}" == 'production' ]; then
-         echo "build_release=true" >> $GITHUB_ENV
-        else
+        if [ "${BRANCH_NAME}" == 'stage' ]; then
          echo "build_stage=true" >> $GITHUB_ENV
         fi
 
@@ -69,7 +67,7 @@ jobs:
       run: >
           mvn package -B
           -P eclipse-base
-          -Dbuild.release=${build_release}
+          -Dbuild.release=true
           -Dbuild.stage=${build_stage}
 
     - name: 'Prepare archives'
