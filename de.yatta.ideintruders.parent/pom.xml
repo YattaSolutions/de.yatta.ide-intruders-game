@@ -168,8 +168,8 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <eclipse-repo.url>${repo-base.url}/staging/2023-06</eclipse-repo.url>
-        <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.28</eclipse-updates-repo.url>
+        <eclipse-repo.url>${repo-base.url}/releases/2023-09</eclipse-repo.url>
+        <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.29</eclipse-updates-repo.url>
         <orbit-repo.url>${repo-base.url}/tools/orbit/downloads/drops/R20230531010532/repository</orbit-repo.url>
         <ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
       </properties>
