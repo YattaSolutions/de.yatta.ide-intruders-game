@@ -1,9 +1,14 @@
 package de.yatta.ideintruders.client.ui;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
@@ -26,6 +31,7 @@ public class GameEditor extends BrowserWrapper
    private boolean isLicensed = false;
    private boolean isNotLoggedIn = true;
    private ServiceRegistration<?> serviceRegistration;
+
    @Override
    public void createPartControl(Composite parent)
    {
@@ -64,8 +70,8 @@ public class GameEditor extends BrowserWrapper
       new BrowserFunction(getBrowser(), "resetDemo") {
          @Override
          public Object function(Object[] arguments)
-         { 
-        	resetDemo();
+         {
+            resetDemo();
             return null;
          }
       };
@@ -100,18 +106,22 @@ public class GameEditor extends BrowserWrapper
       };
 
    }
-   
-	private void resetDemo() {
-		LicenseResponse licenseResponse = fetchLicenseStatus(5000);
-		if (licenseResponse.getLicenseTypeId().endsWith(VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE)) {
-			MarketplaceClient.get().showDeleteDemoOrderDialog(parent.getDisplay(),
-					VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE, VendorDemoPlugin.ENVIRONMENT, true);
-		} else {
-			MarketplaceClient.get().showCancelDialog(parent.getDisplay(), VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT, true);
-		}
-		licenseResponse = resetLicense();
-		checkLicense();
-	}
+
+   private void resetDemo()
+   {
+      LicenseResponse licenseResponse = fetchLicenseStatus(5000);
+      if (licenseResponse.getLicenseTypeId().endsWith(VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE))
+      {
+         MarketplaceClient.get().showDeleteDemoOrderDialog(parent.getDisplay(),
+               VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE, VendorDemoPlugin.ENVIRONMENT, true);
+      }
+      else
+      {
+         MarketplaceClient.get().showCancelDialog(parent.getDisplay(), VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT, true);
+      }
+      licenseResponse = resetLicense();
+      checkLicense();
+   }
 
    @Override
    public void setFocus()
@@ -124,6 +134,10 @@ public class GameEditor extends BrowserWrapper
    public void dispose()
    {
       super.dispose();
+      if (getTitleImage() != null)
+      {
+         getTitleImage().dispose();
+      }
       if (serviceRegistration != null)
       {
          serviceRegistration.unregister();
@@ -132,34 +146,52 @@ public class GameEditor extends BrowserWrapper
 
    private void checkLicense()
    {
-      isNotLoggedIn = !MarketplaceClient.get().isAccountLoggedIn();
-      if (isNotLoggedIn)
-      {
-         isLicensed = false;
-      }
-      else
-      {
 
-         final LicenseResponse licenseResponse = fetchLicenseStatus(5000);
-
-         if (licenseResponse.getValidity() == Validity.LICENSED)
+      Job updateJob = new Job(String.format("Query product license")) {
+         @Override
+         protected IStatus run(IProgressMonitor monitor)
          {
-            isLicensed = true;
-         }
-         else
-         {
-            isLicensed = false;
-         }
-      }
 
-      if (isLicensed)
-      {
-         hideOverlay();
-      }
-      else
-      {
-         showOverlay(isNotLoggedIn);
-      }
+            isNotLoggedIn = !MarketplaceClient.get().isAccountLoggedIn();
+            if (isNotLoggedIn)
+            {
+               isLicensed = false;
+            }
+            else
+            {
+
+               final LicenseResponse licenseResponse = fetchLicenseStatus(5000);
+
+               if (licenseResponse.getValidity() == Validity.LICENSED)
+               {
+                  isLicensed = true;
+               }
+               else
+               {
+                  isLicensed = false;
+               }
+            }
+
+            Display.getDefault().asyncExec(new Runnable() {
+               public void run()
+               {
+                  if (isLicensed)
+                  {
+                     hideOverlay();
+                  }
+                  else
+                  {
+                     showOverlay(isNotLoggedIn);
+                  }
+               }
+            });
+
+            return Status.OK_STATUS;
+         }
+      };
+      updateJob.setSystem(true);
+      updateJob.schedule();
+
    }
 
    private void showOverlay(boolean showSignInLink)
@@ -185,6 +217,7 @@ public class GameEditor extends BrowserWrapper
       LicenseResponse licenseResponse = fetchLicense(VendorDemoPlugin.PRODUCT_ID);
       final long tryUntil = System.currentTimeMillis() + timeoutInMillis;
       // repeat the call for the specified interval while the validity is "WAIT"
+
       while (licenseResponse.getValidity() == Validity.WAIT && System.currentTimeMillis() <= tryUntil)
       {
          try
@@ -199,15 +232,17 @@ public class GameEditor extends BrowserWrapper
       }
       return licenseResponse;
    }
-   
-   private LicenseResponse resetLicense() {
-	    LicenseRequest licenseRequest = new LicenseRequest(VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT, null, 1, VendorDemoPlugin.VENDOR_KEY);
-	    licenseRequest.setForceRefresh(true);
-		return LicensingClient.get().queryLicense(licenseRequest);   
+
+   private LicenseResponse resetLicense()
+   {
+      LicenseRequest licenseRequest = new LicenseRequest(VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT, null, 1, VendorDemoPlugin.VENDOR_KEY);
+      licenseRequest.setForceRefresh(true);
+      return LicensingClient.get().queryLicense(licenseRequest);
    }
 
-	private LicenseResponse fetchLicense(String solutionId) {
-		LicenseRequest licenseRequest = new LicenseRequest(solutionId, VendorDemoPlugin.ENVIRONMENT, null, 1, VendorDemoPlugin.VENDOR_KEY);
-		return LicensingClient.get().queryLicense(licenseRequest);
-	}
+   private LicenseResponse fetchLicense(String solutionId)
+   {
+      LicenseRequest licenseRequest = new LicenseRequest(solutionId, VendorDemoPlugin.ENVIRONMENT, null, 1, VendorDemoPlugin.VENDOR_KEY);
+      return LicensingClient.get().queryLicense(licenseRequest);
+   }
 }
