@@ -2,7 +2,7 @@
 <feature
       id="de.yatta.ideintruders.feature"
       label="IDE Intruders (demo)"
-      version="1.1.4.qualifier"
+      version="1.1.5.qualifier"
       provider-name="Yatta Solutions GmbH">
 
    <description url="https://www.yatta.de/checkout-for-eclipse">
@@ -299,7 +299,7 @@ version(s), and exceptions or additional permissions here}.&quot;
    </url>
 
    <requires>
-      <import feature="com.yattasolutions.platform.marketplace.client.feature" version="3.0.2"/>
+      <import feature="com.yattasolutions.platform.marketplace.client.feature" version="3.0.3"/>
    </requires>
 
    <plugin
