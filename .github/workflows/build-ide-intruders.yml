@@ -126,8 +126,6 @@ jobs:
           pushd YattaCheckoutDemo
           unzip ../YattaCheckoutDemo-macos-unsigned.zip
           xattr -cr .
-          # hack will be removed once the dependencies have been cleaned up
-          zip -d Yatta\ Checkout\ Demo.app/Contents/Eclipse/plugins/de.yatta.eclipse.launcher.utils_*.jar de/yatta/eclipse/launcher/utils/osxCheDependencyInstaller
           popd
 
     - name: 'Import Certificate and Credentials'
