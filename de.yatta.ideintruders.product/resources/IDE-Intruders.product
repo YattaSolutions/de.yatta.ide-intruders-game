@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="de.yatta.ideintruders.feature"
-      label="IDE Intruders Feature (demo)"
-      version="1.1.5.qualifier"
-      provider-name="Yatta Solutions GmbH">
+<?pde version="3.5"?>
 
-   <description url="https://www.yatta.de/checkout-for-eclipse">
-      Demo for the integration of Yatta Checkout in an eclipse plugin.
-   </description>
+<product name="IDE Intruders (demo)" uid="ide-intruders" id="de.yatta.ideintruders.client.ide-intruders_product" application="org.eclipse.ui.ide.workbench" version="1.1.5.qualifier" useFeatures="true" includeLaunchers="true" autoIncludeRequirements="true">
 
-   <copyright url="https://www.yatta.de/legal">
-      (c) Copyright 2023, Yatta Solutions GmbH. All rights reserved.\n\
-Visit https://www.yatta.de/legal
-   </copyright>
+   <configIni use="default">
+   </configIni>
 
-   <license url="https://www.eclipse.org/legal/epl-2.0/">
-      Eclipse Public License - v 2.0
+   <launcherArgs>
+      <programArgs>-clearPersistedState
+      </programArgs>
+      <vmArgs>-Dorg.eclipse.swt.graphics.Resource.reportNonDisposed=true
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
+   </launcherArgs>
+
+   <launcher name="YattaCheckoutDemo">
+      <macosx icon="icons/Eclipse.icns"/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <license>
+        <url>https://www.eclipse.org/legal/epl-2.0/</url>
+        <text>
+   Eclipse Public License - v 2.0
 
     THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS ECLIPSE
     PUBLIC LICENSE (&quot;AGREEMENT&quot;). ANY USE, REPRODUCTION OR DISTRIBUTION
@@ -292,17 +305,43 @@ version(s), and exceptions or additional permissions here}.&quot;
   look for such a notice.
 
   You may add additional accurate notices of copyright ownership.
+         </text>
    </license>
 
-   <requires>
-      <import feature="com.yattasolutions.platform.marketplace.client.feature" version="3.0.3"/>
-   </requires>
+   <plugins>
+   </plugins>
 
-   <plugin
-         id="de.yatta.ideintruders.client"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <features>
+      <feature id="org.eclipse.sdk"/>
+      <feature id="org.eclipse.rcp"/>
+      <feature id="org.eclipse.equinox.p2.user.ui"/>
+      <feature id="org.eclipse.epp.mpc"/>
+      <feature id="de.yatta.ideintruders.feature" installMode="root"/>
+      <feature id="org.eclipse.justj.openjdk.hotspot.jre.full" installMode="root"/>
+   </features>
 
-</feature>
+   <configurations>
+      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
+      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
+      <property name="eclipse.p2.profile" value="VendorDemoProfile" />
+      <property name="osgi.instance.area.default" value=".eclipse-workspace-demo" os="macosx" />
+      <property name="perspective" value="de.yatta.ideintruders.client.perspectives.IdeIntrudersPerspective" />
+   </configurations>
+
+   <repositories>
+      <repository location="${ide-intruders-repo.url}" enabled="true" />
+   </repositories>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
+
+</product>

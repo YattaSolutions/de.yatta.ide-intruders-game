@@ -1,3 +1,0 @@
-instructions.configure=\
-  addRepository(type:0,location:https${#58}//cdn.yatta.de/update/checkout-eclipse-demo);\
-  addRepository(type:1,location:https${#58}//cdn.yatta.de/update/checkout-eclipse-demo);
