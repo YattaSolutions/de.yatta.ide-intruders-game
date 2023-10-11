@@ -71,6 +71,14 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
 
+    - name: 'Check top-level product manifest for changes'
+      working-directory: de.yatta.ideintruders.product
+      run: |
+          changed_lines=$(diff -y --suppress-common-lines IDE-Intruders.product resources/IDE-Intruders.product | wc -l)
+          if [[ changed_lines -ne 1 ]]; then
+            exit 1
+          fi
+
     - name: 'Maven Build'
       working-directory: de.yatta.ideintruders.releng
       run: >
