@@ -73,7 +73,7 @@ jobs:
 
     - name: 'Check top-level product manifest for changes'
       working-directory: de.yatta.ideintruders.product
-      run: >
+      run: |
           changed_lines=$(diff -y --suppress-common-lines IDE-Intruders.product resources/IDE-Intruders.product | wc -l)
           exit $changed_lines
 
