@@ -10,7 +10,7 @@ public class VendorDemoPlugin extends AbstractUIPlugin {
   public static final CheckoutEnvironment ENVIRONMENT = CheckoutEnvironment.PREVIEW;
   public static final String PRODUCT_ID = "de.softwarevendor.product";
   public static final String PRODUCT_ID_ONETIMEPURCHASE = "de.softwarevendor.product.onetimepurchase";
-  public static final String VENDOR_KEY = "DEMO";
+  public static final String VENDOR_KEY = "<insert your Vendor API Key here>";
 
   public static final String PLUGIN_ID = "de.yatta.ideintruders.client";
 
