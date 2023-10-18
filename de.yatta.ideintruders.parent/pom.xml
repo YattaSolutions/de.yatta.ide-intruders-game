@@ -172,6 +172,7 @@
         <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.29</eclipse-updates-repo.url>
         <orbit-repo.url>${repo-base.url}/tools/orbit/downloads/drops/R20230531010532/repository</orbit-repo.url>
         <ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
+        <ide-intruders-repo.url>https://cdn.yatta.de/update/checkout-eclipse-demo/</ide-intruders-repo.url>
       </properties>
     </profile>
     <profile>
@@ -184,6 +185,7 @@
       </activation>
       <properties>
         <ymp-repo.url>https://cdn.yatta.de/stage/update/marketplace</ymp-repo.url>
+        <ide-intruders-repo.url>https://cdn.yatta.de/stage/update/checkout-eclipse-demo/</ide-intruders-repo.url>
       </properties>
     </profile>
     <profile>
@@ -196,6 +198,7 @@
       </activation>
       <properties>
         <ymp-repo.url>https://cdn.yatta.de/preview/update/marketplace</ymp-repo.url>
+        <ide-intruders-repo.url>https://cdn.yatta.de/preview/update/checkout-eclipse-demo/</ide-intruders-repo.url>
       </properties>
     </profile>
     <profile>
