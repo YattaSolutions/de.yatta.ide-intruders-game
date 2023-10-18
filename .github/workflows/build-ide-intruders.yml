@@ -15,6 +15,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    outputs:
+      build_environment: ${{ steps.environment-setup.outputs.build_environment }}
 
     steps:
     - uses: actions/checkout@v3
@@ -26,13 +28,17 @@ jobs:
         echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         
     - name: 'Set environment variables'
+      id: 'environment-setup'
       run: |
-        if [ "${BRANCH_NAME}" == 'stage' ]; then
-         echo "build_environment=stage" >> $GITHUB_ENV
+        build_environment=stage
+        if [ "${BRANCH_NAME}" == 'production' ]; then
+         build_environment=production
         fi
         if [ "${BRANCH_NAME}" == 'preview' ]; then
-         echo "build_environment=preview" >> $GITHUB_ENV
+         build_environment=preview
         fi
+        echo "build_environment=$build_environment" >> $GITHUB_ENV
+        echo "build_environment=$build_environment" >> "$GITHUB_OUTPUT"
 
     - name: 'Install SSH key'
       uses: shimataro/ssh-key-action@v2
@@ -64,6 +70,14 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
+
+    - name: 'Check top-level product manifest for changes'
+      working-directory: de.yatta.ideintruders.product
+      run: |
+          changed_lines=$(diff -y --suppress-common-lines IDE-Intruders.product resources/IDE-Intruders.product | wc -l)
+          if [[ changed_lines -ne 1 ]]; then
+            exit 1
+          fi
 
     - name: 'Maven Build'
       working-directory: de.yatta.ideintruders.releng
@@ -186,7 +200,7 @@ jobs:
 
   upload-cdn:
     runs-on: ubuntu-22.04
-    needs: macos-signing
+    needs: [build, macos-signing]
     if: ${{ inputs.cdn_upload }}
     steps:
       
@@ -208,17 +222,68 @@ jobs:
       with:
         name: YattaCheckoutDemo-site
 
+    - name: 'Set environment variables for the deployment'
+      env:
+        build_environment: ${{ needs.build.outputs.build_environment }}
+      run: |
+        case "$build_environment" in
+        "preview")
+          echo "CDN_PATH_SITE=/www/preview/update/checkout-eclipse-demo" >> $GITHUB_ENV
+          echo "CDN_PATH_RESOURCE=/www/resources/products/checkout-eclipse-demo/preview" >> $GITHUB_ENV
+          ;;
+        "production")
+          echo "CDN_PATH_SITE=/www/update/checkout-eclipse-demo" >> $GITHUB_ENV
+          echo "CDN_PATH_RESOURCE=/www/resources/products/checkout-eclipse-demo" >> $GITHUB_ENV
+          ;;
+        *)
+          echo "CDN_PATH_SITE=/www/stage/update/checkout-eclipse-demo" >> $GITHUB_ENV
+          echo "CDN_PATH_RESOURCE=/www/resources/products/checkout-eclipse-demo/stage" >> $GITHUB_ENV
+          ;;
+        esac
+        VERSION=$(find repository/plugins/ -name '*.jar' | head -n 1 | sed -nE 's/[^_]*_([0-9\.]*)\.jar$/\1/p')
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "CDN_PATH=${CDN_PATH_SITE#/www}/v/$VERSION/" >> $GITHUB_ENV
+
     - name: 'Upload files to CDN'
       run: |
-        TMPPATH=tmp/vendor-plugin/$(date +'%Y-%m-%d')-${GITHUB_RUN_NUMBER}
-        RESSOURCES_PATH=/resources/products/checkout-eclipse-demo
-        UPDATESITE_PATH=/update/checkout-eclipse-demo/0.0.0
+        rsync -va repository/ cdn:$CDN_PATH_SITE/v/$VERSION/
+        rsync -va YattaCheckoutDemo* cdn:$CDN_PATH_RESOURCE/v/$VERSION/
+        rsync -va YattaCheckoutDemo* cdn:$CDN_PATH_RESOURCE/
 
-        mkdir -p ${TMPPATH}
-        mv YattaCheckoutDemo* ${TMPPATH}
-        find ${TMPPATH}/ -type f -printf "${RESSOURCES_PATH}/%P\n" | tee -a ${TMPPATH}/uploaded-files.txt
+    - name: 'Create composite update-site'
+      run: |
+        TIMESTAMP=$(date +%s)000
+        XML_CONTENT_ARTIFACT=$(cat << EOF
+        <?xml version='1.0' encoding='UTF-8'?>
+        <?compositeArtifactRepository version='1.0.0'?>
+        <repository name='Yatta Marketplace and Licensing' type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1.0.0'>
+          <properties size='1'>
+            <property name='p2.timestamp' value='$TIMESTAMP'/>
+          </properties>
+          <children size='1'>
+            <child location='v/$VERSION'/>
+          </children>
+        </repository>
+        EOF
+        )
+        echo $XML_CONTENT_ARTIFACT >> compositeArtifacts.xml
 
-        mv repository/ ${TMPPATH}/site/
-        find ${TMPPATH}/site/ -type f -printf "${UPDATESITE_PATH}/%P\n" | tee -a ${TMPPATH}/uploaded-files.txt
+        XML_CONTENT_METADATA=$(cat << EOF
+        <?xml version='1.0' encoding='UTF-8'?>
+        <?compositeMetadataRepository version='1.0.0'?>
+        <repository name='Yatta Marketplace and Licensing' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
+          <properties size='1'>
+            <property name='p2.timestamp' value='$TIMESTAMP'/>
+          </properties>
+          <children size='1'>
+            <child location='v/$VERSION'/>
+          </children>
+        </repository>
+        EOF
+        )
+        echo $XML_CONTENT_METADATA >> compositeContent.xml
 
-        rsync -va ${TMPPATH}/ cdn:/www/${TMPPATH}/
+    - name: 'Update Composite Updatesite'
+      run: |
+        rsync -va composite*.xml cdn:$CDN_PATH_SITE/ \
+        && curl --request POST --url https://api.cdn77.com/v3/cdn/1041707535/job/purge --header 'authorization: Bearer ${{ secrets.CDN77_PURGE_TOKEN }}' --data '{"paths": ["${{ env.CDN_PATH }}/compositeContent.xml", "${{ env.CDN_PATH }}/compositeArtifacts.xml"]}'
