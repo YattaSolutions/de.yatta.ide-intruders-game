@@ -228,27 +228,22 @@ jobs:
       run: |
         case "$build_environment" in
         "preview")
-          echo "CDN_PATH_SITE=/www/preview/update/checkout-eclipse-demo" >> $GITHUB_ENV
-          echo "CDN_PATH_RESOURCE=/www/resources/products/checkout-eclipse-demo/preview" >> $GITHUB_ENV
+          CDN_PATH_SITE=/preview/update/checkout-eclipse-demo
+          CDN_PATH_RESOURCE=/resources/products/checkout-eclipse-demo/preview
           ;;
         "production")
-          echo "CDN_PATH_SITE=/www/update/checkout-eclipse-demo" >> $GITHUB_ENV
-          echo "CDN_PATH_RESOURCE=/www/resources/products/checkout-eclipse-demo" >> $GITHUB_ENV
+          CDN_PATH_SITE=/update/checkout-eclipse-demo
+          CDN_PATH_RESOURCE=/resources/products/checkout-eclipse-demo
           ;;
         *)
-          echo "CDN_PATH_SITE=/www/stage/update/checkout-eclipse-demo" >> $GITHUB_ENV
-          echo "CDN_PATH_RESOURCE=/www/resources/products/checkout-eclipse-demo/stage" >> $GITHUB_ENV
+          CDN_PATH_SITE=/stage/update/checkout-eclipse-demo
+          CDN_PATH_RESOURCE=/resources/products/checkout-eclipse-demo/stage
           ;;
         esac
         VERSION=$(find repository/plugins/ -name '*.jar' | head -n 1 | sed -nE 's/[^_]*_([0-9\.]*)\.jar$/\1/p')
+        echo "CDN_PATH_SITE=$CDN_PATH_SITE" >> $GITHUB_ENV
+        echo "CDN_PATH_RESOURCE=$CDN_PATH_RESOURCE" >> $GITHUB_ENV
         echo "VERSION=$VERSION" >> $GITHUB_ENV
-        echo "CDN_PATH=${CDN_PATH_SITE#/www}/v/$VERSION/" >> $GITHUB_ENV
-
-    - name: 'Upload files to CDN'
-      run: |
-        rsync -va repository/ cdn:$CDN_PATH_SITE/v/$VERSION/
-        rsync -va YattaCheckoutDemo* cdn:$CDN_PATH_RESOURCE/v/$VERSION/
-        rsync -va YattaCheckoutDemo* cdn:$CDN_PATH_RESOURCE/
 
     - name: 'Create composite update-site'
       run: |
@@ -283,7 +278,20 @@ jobs:
         )
         echo $XML_CONTENT_METADATA >> compositeContent.xml
 
-    - name: 'Update Composite Updatesite'
-      run: |
-        rsync -va composite*.xml cdn:$CDN_PATH_SITE/ \
-        && curl --request POST --url https://api.cdn77.com/v3/cdn/1041707535/job/purge --header 'authorization: Bearer ${{ secrets.CDN77_PURGE_TOKEN }}' --data '{"paths": ["${{ env.CDN_PATH }}/compositeContent.xml", "${{ env.CDN_PATH }}/compositeArtifacts.xml"]}'
+    - name: 'Upload files to CDN'
+      run: >
+        rsync -va repository/ cdn:/www$CDN_PATH_SITE/v/$VERSION/
+        &&
+        rsync -va YattaCheckoutDemo* cdn:/www$CDN_PATH_RESOURCE/v/$VERSION/
+        &&
+        rsync -va YattaCheckoutDemo* cdn:/www$CDN_PATH_RESOURCE/
+        &&
+        rsync -va composite*.xml cdn:/www$CDN_PATH_SITE/
+
+    - name: 'Purge CDN paths'
+      run: >
+        curl
+        --request POST
+        --url https://api.cdn77.com/v3/cdn/1041707535/job/purge
+        --header 'authorization: Bearer ${{ secrets.CDN77_PURGE_TOKEN }}'
+        --data '{"paths": ["${{ env.CDN_PATH_SITE }}/*", "${{ env.CDN_PATH_RESOURCE }}/*"]}'
