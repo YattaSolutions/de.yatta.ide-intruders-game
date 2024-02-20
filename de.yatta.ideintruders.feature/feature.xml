@@ -5,13 +5,13 @@
       version="1.1.6.qualifier"
       provider-name="Yatta Solutions GmbH">
 
-   <description url="https://www.yatta.de/checkout-for-eclipse">
+   <description url="https://yatta.de/checkout-for-eclipse">
       Demo for the integration of Yatta Checkout in an eclipse plugin.
    </description>
 
-   <copyright url="https://www.yatta.de/legal">
+   <copyright url="https://yatta.de/legal-notice">
       (c) Copyright 2023, Yatta Solutions GmbH. All rights reserved.\n\
-Visit https://www.yatta.de/legal
+Visit https://yatta.de/legal-notice
    </copyright>
 
    <license url="https://www.eclipse.org/legal/epl-2.0/">
