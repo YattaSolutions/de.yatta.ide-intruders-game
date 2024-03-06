@@ -168,8 +168,8 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <eclipse-repo.url>${repo-base.url}/releases/2023-12</eclipse-repo.url>
-        <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.30</eclipse-updates-repo.url>
+        <eclipse-repo.url>${repo-base.url}/releases/2024-03</eclipse-repo.url>
+        <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.31</eclipse-updates-repo.url>
         <orbit-repo.url>${repo-base.url}/tools/orbit/simrel/orbit-aggregation/release/latest</orbit-repo.url>
         <ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
         <ide-intruders-repo.url>https://cdn.yatta.de/update/checkout-eclipse-demo/</ide-intruders-repo.url>
