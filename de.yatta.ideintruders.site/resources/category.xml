@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description url="https://www.yatta.de/checkout-for-eclipse">
+   <description url="https://yatta.de/checkout-for-eclipse">
       Test the Yatta Checkout for Eclipse with this demo solution. Yatta Checkout makes it simple to sell to developers by offering your products right at their fingertips—inside the Eclipse IDE.
    </description>
    <feature id="de.yatta.ideintruders.feature">
