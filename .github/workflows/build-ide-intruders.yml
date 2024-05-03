@@ -19,7 +19,7 @@ jobs:
       build_environment: ${{ steps.environment-setup.outputs.build_environment }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: 'Extract branch name'
       shell: bash
@@ -55,16 +55,16 @@ jobs:
         digicert-apikey: ${{ secrets.DIGICERT_APIKEY }}
 
     - name: Set up Java 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
 
     - name: 'Setup Maven'
-      uses: stCarolas/setup-maven@v4.5
+      uses: stCarolas/setup-maven@v5
 
     - name: 'Cache local Maven repository'
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -97,7 +97,7 @@ jobs:
           zip -x .github/\* .git/\* \*\*/target/\* \*\*/.settings/\* -r de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip .
 
     - name: 'Upload Update Site and sources'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: YattaCheckoutDemo-site
         path: |
@@ -107,7 +107,7 @@ jobs:
         retention-days: 3
 
     - name: 'Upload RCP - Windows+Linux'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: YattaCheckoutDemo-binaries
         path: |
@@ -116,7 +116,7 @@ jobs:
         retention-days: 3
 
     - name: 'Upload RCP - Mac'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: YattaCheckoutDemo-macos-unsigned
         path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-macos-unsigned.zip
@@ -127,10 +127,10 @@ jobs:
     runs-on: 'macos-12'
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: 'Download RCP'
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: YattaCheckoutDemo-macos-unsigned
 
@@ -192,7 +192,7 @@ jobs:
           security delete-keychain build.keychain
 
     - name: 'Upload RCP - Mac'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: YattaCheckoutDemo-binaries
         path: YattaCheckoutDemo-macos.zip
@@ -213,12 +213,12 @@ jobs:
         config: ${{ secrets.SSH_CONFIG_CDN }}
 
     - name: 'Download RCP - binaries'
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: YattaCheckoutDemo-binaries
 
     - name: 'Download RCP - update-site and sources'
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: YattaCheckoutDemo-site
 
