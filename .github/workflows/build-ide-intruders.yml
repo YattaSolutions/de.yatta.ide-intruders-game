@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       cdn_upload:
-        description: 'Upload to CDN (/tmp)'
+        description: 'Upload to CDN'
         required: true
         type: boolean
       wait_for_notarization:
@@ -96,24 +96,35 @@ jobs:
           popd
           zip -x .github/\* .git/\* \*\*/target/\* \*\*/.settings/\* -r de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip .
 
-    - name: 'Upload Update Site'
+    - name: 'Upload - Update Site'
       uses: actions/upload-artifact@v4
       with:
         name: YattaCheckoutDemo-site
-        path: |
-          de.yatta.ideintruders.site/target/repository/
-
-    - name: 'Upload sources and RCP - Windows+Linux'
-      uses: actions/upload-artifact@v4
-      with:
-        name: YattaCheckoutDemo-binaries
-        path: |
-          de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-x86_64.zip
-          de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-linux.tar.gz
-          de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip
+        path: de.yatta.ideintruders.site/target/repository/
         retention-days: 3
 
-    - name: 'Upload RCP - Mac'
+    - name: 'Upload - Windows'
+      uses: actions/upload-artifact@v4
+      with:
+        name: YattaCheckoutDemo-windows
+        path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-x86_64.zip
+        retention-days: 3
+
+    - name: 'Upload - Linux'
+      uses: actions/upload-artifact@v4
+      with:
+        name: YattaCheckoutDemo-linux
+        path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-linux.tar.gz
+        retention-days: 3
+
+    - name: 'Upload - Sources'
+      uses: actions/upload-artifact@v4
+      with:
+        name: YattaCheckoutDemo-source
+        path: de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip
+        retention-days: 3
+
+    - name: 'Upload - Mac (temporary)'
       uses: actions/upload-artifact@v4
       with:
         name: YattaCheckoutDemo-macos-unsigned
@@ -189,10 +200,10 @@ jobs:
           security default-keychain -s login.keychain
           security delete-keychain build.keychain
 
-    - name: 'Upload RCP - Mac'
+    - name: 'Upload - Mac'
       uses: actions/upload-artifact@v4
       with:
-        name: YattaCheckoutDemo-binaries
+        name: YattaCheckoutDemo-macos
         path: YattaCheckoutDemo-macos.zip
         retention-days: 3
 
@@ -210,16 +221,35 @@ jobs:
         known_hosts: ${{ secrets.SSH_KNOWN_HOST_CDN }}
         config: ${{ secrets.SSH_CONFIG_CDN }}
 
-    - name: 'Download RCP - binaries'
-      uses: actions/download-artifact@v4
-      with:
-        path: resources
-        name: YattaCheckoutDemo-binaries
-
-    - name: 'Download RCP - update-site'
+    - name: 'Download - Update Site'
       uses: actions/download-artifact@v4
       with:
         name: YattaCheckoutDemo-site
+        path: repository
+
+    - name: 'Download - Windows'
+      uses: actions/download-artifact@v4
+      with:
+        path: resources
+        name: YattaCheckoutDemo-windows
+
+    - name: 'Download - Linux'
+      uses: actions/download-artifact@v4
+      with:
+        path: resources
+        name: YattaCheckoutDemo-linux
+
+    - name: 'Download - Mac'
+      uses: actions/download-artifact@v4
+      with:
+        path: resources
+        name: YattaCheckoutDemo-macos
+
+    - name: 'Download - Sources'
+      uses: actions/download-artifact@v4
+      with:
+        path: resources
+        name: YattaCheckoutDemo-source
 
     - name: 'Set environment variables for the deployment'
       env:
@@ -245,8 +275,8 @@ jobs:
         echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: 'Create composite update-site'
-      working-directory: repository_top_level/
       run: |
+        mkdir -p repository_top_level/
         TIMESTAMP=$(date +%s)000
         XML_CONTENT_ARTIFACT=$(cat << EOF
         <?xml version='1.0' encoding='UTF-8'?>
@@ -261,7 +291,7 @@ jobs:
         </repository>
         EOF
         )
-        echo $XML_CONTENT_ARTIFACT >> compositeArtifacts.xml
+        echo $XML_CONTENT_ARTIFACT >> repository_top_level/compositeArtifacts.xml
 
         XML_CONTENT_METADATA=$(cat << EOF
         <?xml version='1.0' encoding='UTF-8'?>
@@ -276,10 +306,9 @@ jobs:
         </repository>
         EOF
         )
-        echo $XML_CONTENT_METADATA >> compositeContent.xml
+        echo $XML_CONTENT_METADATA >> repository_top_level/compositeContent.xml
 
     - name: "CDN77 Access key"
-      if: env.ISRELEASE == 'true'
       run: |
         aws configure --profile s3-sync <<-EOF > /dev/null 2>&1
         ${{ secrets.CDN77_PLATFORM_CI_KEY_ID }}
