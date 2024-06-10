@@ -295,7 +295,7 @@ version(s), and exceptions or additional permissions here}.&quot;
    </license>
 
    <requires>
-      <import feature="com.yattasolutions.platform.marketplace.client.feature" version="3.0.6"/>
+      <import feature="com.yattasolutions.platform.marketplace.client.feature" version="3.1.0"/>
    </requires>
 
    <plugin

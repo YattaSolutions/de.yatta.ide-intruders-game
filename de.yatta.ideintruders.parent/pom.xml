@@ -168,7 +168,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <eclipse-repo.url>${repo-base.url}/releases/2024-06/202406121000/</eclipse-repo.url> <!-- TODO remove snapshot dir -->
+        <eclipse-repo.url>${repo-base.url}/releases/2024-06/202406121000/</eclipse-repo.url>
         <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.32</eclipse-updates-repo.url>
         <orbit-repo.url>${repo-base.url}/tools/orbit/simrel/orbit-aggregation/release/latest</orbit-repo.url>
         <ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
