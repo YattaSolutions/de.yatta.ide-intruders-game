@@ -335,6 +335,7 @@ version(s), and exceptions or additional permissions here}.&quot;
 
    <repositories>
       <repository location="${ide-intruders-repo.url}" enabled="true" />
+      <repository location="${eclipse-repo.url}" enabled="true" />
    </repositories>
 
    <preferencesInfo>
