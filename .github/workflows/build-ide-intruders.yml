@@ -75,7 +75,7 @@ jobs:
       working-directory: de.yatta.ideintruders.product
       run: |
           changed_lines=$(diff -y --suppress-common-lines IDE-Intruders.product resources/IDE-Intruders.product | wc -l)
-          if [[ changed_lines -ne 1 ]]; then
+          if [[ changed_lines -ne 2 ]]; then
             exit 1
           fi
 
