@@ -46,7 +46,7 @@ The folder includes applications for Windows, MacOS and Linux. A Java Runtime En
 
 Yatta Checkout for Eclipse is designed and built to help you monetize and sell digital products (plugins, frameworks, libraries, SaaS and more) to millions of Eclipse users—and provide developers access to better and more tooling.
 
-To customize the demo to use it for your own solution, create a demo solution [here](https://yatta.de/portal). Replace `SOLUTION_ID` in [`de.yatta.ideintruders.VendorDemoPlugin`](de.yatta.ideintruders.client/src/de/yatta/ideintruders/VendorDemoPlugin.java) with the API Key of your newly created solution. Launch the application and use your new solution to demo-purchase the mini-game.
+To customize the demo to use it for your own product, create a demo product [here](https://yatta.de/portal). Replace `PRODUCT_ID` in [`de.yatta.ideintruders.VendorDemoPlugin`](de.yatta.ideintruders.client/src/de/yatta/ideintruders/VendorDemoPlugin.java) with the API Key of your newly created product. Launch the application and use your new product to demo-purchase the mini-game.
 
 For more info about integrating the Checkout for Eclipse, read our [docs](https://yatta.de/docs) or visit our [website](https://yatta.de/checkout-for-eclipse).
 
