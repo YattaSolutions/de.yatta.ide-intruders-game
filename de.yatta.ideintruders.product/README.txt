@@ -22,7 +22,7 @@ No real payments or purchases are made in the demo.
 
 Simply follow the instructions in the demo—the Checkout should be self-explanatory.
 
-- Purchase solution: You can test one-time purchases as well as monthly and annual subscriptions
+- Purchase product: You can test one-time purchases as well as monthly and annual subscriptions
 - Test payment options: The Checkout provides various payment options; test credit card, direct debit, SEPA and PayPal payments with the provided demo user data; the demo’s currency depends on your location
 - Check the invoice: Automated invoicing is included, take a look at the sample invoice after purchasing
 - Access management: After purchasing a valid license, the Checkout provides you with access to the game IDE Intruders
@@ -57,4 +57,4 @@ For now, enjoy the demo! \o/
 
 — Your Yatta developers
 
-Copyright, Yatta Solutions GmbH, Germany, 2023
+Copyright, Yatta Solutions GmbH, Germany, 2024

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       cdn_upload:
-        description: 'Upload to CDN (/tmp)'
+        description: 'Upload to CDN'
         required: true
         type: boolean
       wait_for_notarization:
@@ -96,26 +96,35 @@ jobs:
           popd
           zip -x .github/\* .git/\* \*\*/target/\* \*\*/.settings/\* -r de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip .
 
-    - name: 'Upload Update Site and sources'
+    - name: 'Upload - Update Site'
       uses: actions/upload-artifact@v4
       with:
         name: YattaCheckoutDemo-site
-        path: |
-          de.yatta.ideintruders.site/target/repository/
-          de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip
-
+        path: de.yatta.ideintruders.site/target/repository/
         retention-days: 3
 
-    - name: 'Upload RCP - Windows+Linux'
+    - name: 'Upload - Windows'
       uses: actions/upload-artifact@v4
       with:
-        name: YattaCheckoutDemo-binaries
-        path: |
-          de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-x86_64.zip
-          de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-linux.tar.gz
+        name: YattaCheckoutDemo-windows
+        path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-x86_64.zip
         retention-days: 3
 
-    - name: 'Upload RCP - Mac'
+    - name: 'Upload - Linux'
+      uses: actions/upload-artifact@v4
+      with:
+        name: YattaCheckoutDemo-linux
+        path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-linux.tar.gz
+        retention-days: 3
+
+    - name: 'Upload - Sources'
+      uses: actions/upload-artifact@v4
+      with:
+        name: YattaCheckoutDemo-source
+        path: de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip
+        retention-days: 3
+
+    - name: 'Upload - Mac (temporary)'
       uses: actions/upload-artifact@v4
       with:
         name: YattaCheckoutDemo-macos-unsigned
@@ -191,10 +200,10 @@ jobs:
           security default-keychain -s login.keychain
           security delete-keychain build.keychain
 
-    - name: 'Upload RCP - Mac'
+    - name: 'Upload - Mac'
       uses: actions/upload-artifact@v4
       with:
-        name: YattaCheckoutDemo-binaries
+        name: YattaCheckoutDemo-macos
         path: YattaCheckoutDemo-macos.zip
         retention-days: 3
 
@@ -212,15 +221,35 @@ jobs:
         known_hosts: ${{ secrets.SSH_KNOWN_HOST_CDN }}
         config: ${{ secrets.SSH_CONFIG_CDN }}
 
-    - name: 'Download RCP - binaries'
-      uses: actions/download-artifact@v4
-      with:
-        name: YattaCheckoutDemo-binaries
-
-    - name: 'Download RCP - update-site and sources'
+    - name: 'Download - Update Site'
       uses: actions/download-artifact@v4
       with:
         name: YattaCheckoutDemo-site
+        path: repository
+
+    - name: 'Download - Windows'
+      uses: actions/download-artifact@v4
+      with:
+        path: resources
+        name: YattaCheckoutDemo-windows
+
+    - name: 'Download - Linux'
+      uses: actions/download-artifact@v4
+      with:
+        path: resources
+        name: YattaCheckoutDemo-linux
+
+    - name: 'Download - Mac'
+      uses: actions/download-artifact@v4
+      with:
+        path: resources
+        name: YattaCheckoutDemo-macos
+
+    - name: 'Download - Sources'
+      uses: actions/download-artifact@v4
+      with:
+        path: resources
+        name: YattaCheckoutDemo-source
 
     - name: 'Set environment variables for the deployment'
       env:
@@ -228,16 +257,16 @@ jobs:
       run: |
         case "$build_environment" in
         "preview")
-          CDN_PATH_SITE=/preview/update/checkout-eclipse-demo
-          CDN_PATH_RESOURCE=/resources/products/checkout-eclipse-demo/preview
+          CDN_PATH_SITE=preview/update/checkout-eclipse-demo
+          CDN_PATH_RESOURCE=resources/products/checkout-eclipse-demo/preview
           ;;
         "production")
-          CDN_PATH_SITE=/update/checkout-eclipse-demo
-          CDN_PATH_RESOURCE=/resources/products/checkout-eclipse-demo
+          CDN_PATH_SITE=update/checkout-eclipse-demo
+          CDN_PATH_RESOURCE=resources/products/checkout-eclipse-demo
           ;;
         *)
-          CDN_PATH_SITE=/stage/update/checkout-eclipse-demo
-          CDN_PATH_RESOURCE=/resources/products/checkout-eclipse-demo/stage
+          CDN_PATH_SITE=stage/update/checkout-eclipse-demo
+          CDN_PATH_RESOURCE=resources/products/checkout-eclipse-demo/stage
           ;;
         esac
         VERSION=$(find repository/plugins/ -name '*.jar' | head -n 1 | sed -nE 's/[^_]*_([0-9\.]*)\.jar$/\1/p')
@@ -247,6 +276,7 @@ jobs:
 
     - name: 'Create composite update-site'
       run: |
+        mkdir -p repository_top_level/
         TIMESTAMP=$(date +%s)000
         XML_CONTENT_ARTIFACT=$(cat << EOF
         <?xml version='1.0' encoding='UTF-8'?>
@@ -261,7 +291,7 @@ jobs:
         </repository>
         EOF
         )
-        echo $XML_CONTENT_ARTIFACT >> compositeArtifacts.xml
+        echo $XML_CONTENT_ARTIFACT >> repository_top_level/compositeArtifacts.xml
 
         XML_CONTENT_METADATA=$(cat << EOF
         <?xml version='1.0' encoding='UTF-8'?>
@@ -276,17 +306,30 @@ jobs:
         </repository>
         EOF
         )
-        echo $XML_CONTENT_METADATA >> compositeContent.xml
+        echo $XML_CONTENT_METADATA >> repository_top_level/compositeContent.xml
+
+    - name: "CDN77 Access key"
+      run: |
+        aws configure --profile s3-sync <<-EOF > /dev/null 2>&1
+        ${{ secrets.CDN77_PLATFORM_CI_KEY_ID }}
+        ${{ secrets.CDN_PLATFORM_CI_KEY_SECRET }}
+        eu-central-1
+        text
+        EOF
 
     - name: 'Upload files to CDN'
       run: >
-        rsync -va repository/ cdn:/www$CDN_PATH_SITE/v/$VERSION/
+        aws s3 sync --profile s3-sync --endpoint-url https://eu-1.cdn77-storage.com --no-progress
+        repository/ s3://platform-production-cdn/$CDN_PATH_SITE/v/$VERSION/
         &&
-        rsync -va YattaCheckoutDemo* cdn:/www$CDN_PATH_RESOURCE/v/$VERSION/
+        aws s3 sync --profile s3-sync --endpoint-url https://eu-1.cdn77-storage.com --no-progress
+        repository_top_level/ s3://platform-production-cdn/$CDN_PATH_SITE/
         &&
-        rsync -va YattaCheckoutDemo* cdn:/www$CDN_PATH_RESOURCE/
+        aws s3 sync --profile s3-sync --endpoint-url https://eu-1.cdn77-storage.com --no-progress
+        resources/ s3://platform-production-cdn/$CDN_PATH_RESOURCE/v/$VERSION/
         &&
-        rsync -va composite*.xml cdn:/www$CDN_PATH_SITE/
+        aws s3 sync --profile s3-sync --endpoint-url https://eu-1.cdn77-storage.com --no-progress
+        resources/ s3://platform-production-cdn/$CDN_PATH_RESOURCE/
 
     - name: 'Purge CDN paths'
       run: >
@@ -294,4 +337,4 @@ jobs:
         --request POST
         --url https://api.cdn77.com/v3/cdn/1041707535/job/purge
         --header 'authorization: Bearer ${{ secrets.CDN77_PURGE_TOKEN }}'
-        --data '{"paths": ["${{ env.CDN_PATH_SITE }}/*", "${{ env.CDN_PATH_RESOURCE }}/*"]}'
+        --data '{"paths": ["/${{ env.CDN_PATH_SITE }}/*", "/${{ env.CDN_PATH_RESOURCE }}/*"]}'
