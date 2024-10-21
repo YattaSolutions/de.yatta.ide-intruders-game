@@ -39,6 +39,7 @@ jobs:
         fi
         echo "build_environment=$build_environment" >> $GITHUB_ENV
         echo "build_environment=$build_environment" >> "$GITHUB_OUTPUT"
+        echo Selected $build_environment
 
     - name: 'Install SSH key'
       uses: shimataro/ssh-key-action@v2

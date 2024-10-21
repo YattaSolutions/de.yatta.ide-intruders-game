@@ -202,6 +202,19 @@
       </properties>
     </profile>
     <profile>
+      <id>showcase</id>
+      <activation>
+        <property>
+          <name>build.environment</name>
+          <value>showcase</value>
+        </property>
+      </activation>
+      <properties>
+        <ymp-repo.url>https://cdn.yatta.de/showcase/update/marketplace</ymp-repo.url>
+        <ide-intruders-repo.url>https://cdn.yatta.de/showcase/update/checkout-eclipse-demo/</ide-intruders-repo.url>
+      </properties>
+    </profile>
+    <profile>
       <id>release</id>
       <activation>
         <property>
