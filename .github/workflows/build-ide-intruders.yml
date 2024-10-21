@@ -261,6 +261,10 @@ jobs:
           CDN_PATH_SITE=preview/update/checkout-eclipse-demo
           CDN_PATH_RESOURCE=resources/products/checkout-eclipse-demo/preview
           ;;
+        "showcase")
+          CDN_PATH_SITE=showcase/update/checkout-eclipse-demo
+          CDN_PATH_RESOURCE=resources/products/checkout-eclipse-demo/showcase
+          ;;
         "production")
           CDN_PATH_SITE=update/checkout-eclipse-demo
           CDN_PATH_RESOURCE=resources/products/checkout-eclipse-demo
