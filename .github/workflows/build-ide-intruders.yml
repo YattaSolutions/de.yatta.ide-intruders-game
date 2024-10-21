@@ -37,6 +37,9 @@ jobs:
         if [ "${BRANCH_NAME}" == 'preview' ]; then
          build_environment=preview
         fi
+        if [ "${BRANCH_NAME}" == 'showcase' ]; then
+         build_environment=showcase
+        fi
         echo "build_environment=$build_environment" >> $GITHUB_ENV
         echo "build_environment=$build_environment" >> "$GITHUB_OUTPUT"
         echo Selected $build_environment
