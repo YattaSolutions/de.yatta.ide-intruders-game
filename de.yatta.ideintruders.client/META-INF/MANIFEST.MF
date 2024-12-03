@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
 Automatic-Module-Name: de.yatta.ideintruders
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.yatta.ideintruders.VendorDemoPlugin
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Import-Package: org.eclipse.e4.ui.css.swt.theme
 Bundle-Vendor: Yatta Solutions GmbH
 Bundle-Localization: plugin
