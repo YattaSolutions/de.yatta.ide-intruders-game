@@ -9,7 +9,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tycho.version>2.7.5</tycho.version>
+    <tycho.version>4.0.10</tycho.version>
     <bundle-ee>SYSTEM</bundle-ee>
     <repo-base.url>https://download.eclipse.org</repo-base.url>
   </properties>
@@ -76,7 +76,6 @@
           <artifactId>target-platform-configuration</artifactId>
           <version>${tycho.version}</version>
           <configuration>
-            <resolver>p2</resolver>
             <filters>
               <filter>
                 <type>p2-installable-unit</type>
@@ -143,7 +142,6 @@
           <version>${tycho.version}</version>
           <configuration>
             <format>${qualifier-format}</format>
-            <archiveSite>true</archiveSite>
           </configuration>
         </plugin>
       </plugins>
