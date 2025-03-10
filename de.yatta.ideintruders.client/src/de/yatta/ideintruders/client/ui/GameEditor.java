@@ -65,45 +65,46 @@ public class GameEditor extends BrowserWrapper
       getBrowser().addProgressListener(ProgressListener.completedAdapter(e -> {
          openExternalSitesInExternalBrowser(true);
          checkLicense();
+
+         new BrowserFunction(getBrowser(), "resetDemo") {
+            @Override
+            public Object function(Object[] arguments)
+            {
+               resetDemo();
+               return null;
+            }
+         };
+         new BrowserFunction(getBrowser(), "subscribeGame") {
+            @Override
+            public Object function(Object[] arguments)
+            {
+               MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT);
+               checkLicense();
+               return null;
+            }
+         };
+
+         new BrowserFunction(getBrowser(), "purchaseGame") {
+            @Override
+            public Object function(Object[] arguments)
+            {
+               MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE, VendorDemoPlugin.ENVIRONMENT);
+               checkLicense();
+               return null;
+            }
+         };
+
+         new BrowserFunction(getBrowser(), "signIn") {
+            @Override
+            public Object function(Object[] arguments)
+            {
+               MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT);
+               checkLicense();
+               return null;
+            }
+         };
+
       }));
-
-      new BrowserFunction(getBrowser(), "resetDemo") {
-         @Override
-         public Object function(Object[] arguments)
-         {
-            resetDemo();
-            return null;
-         }
-      };
-      new BrowserFunction(getBrowser(), "subscribeGame") {
-         @Override
-         public Object function(Object[] arguments)
-         {
-            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT);
-            checkLicense();
-            return null;
-         }
-      };
-
-      new BrowserFunction(getBrowser(), "purchaseGame") {
-         @Override
-         public Object function(Object[] arguments)
-         {
-            MarketplaceClient.get().openCheckout(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.PRODUCT_ID_ONETIMEPURCHASE, VendorDemoPlugin.ENVIRONMENT);
-            checkLicense();
-            return null;
-         }
-      };
-
-      new BrowserFunction(getBrowser(), "signIn") {
-         @Override
-         public Object function(Object[] arguments)
-         {
-            MarketplaceClient.get().showSignInPage(MarketplaceClientPlugin.getDisplay(), VendorDemoPlugin.PRODUCT_ID, VendorDemoPlugin.ENVIRONMENT);
-            checkLicense();
-            return null;
-         }
-      };
 
    }
 
