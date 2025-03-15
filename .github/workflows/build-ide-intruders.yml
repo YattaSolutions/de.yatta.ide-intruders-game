@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     outputs:
       build_environment: ${{ steps.environment-setup.outputs.build_environment }}
 
@@ -44,20 +44,6 @@ jobs:
         echo "build_environment=$build_environment" >> "$GITHUB_OUTPUT"
         echo Selected $build_environment
 
-    - name: 'Install SSH key'
-      uses: shimataro/ssh-key-action@v2
-      with:
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-        if_key_exists: ignore
-
-    - name: Setup digicert signing
-      uses: YattaSolutions/setup-jarsigner-action@v1
-      with:
-        auth-certificate: ${{ secrets.DIGICERT_AUTH_CERTIFICATE }}
-        auth-password: ${{ secrets.DIGICERT_AUTH_PASSWORD }}
-        digicert-apikey: ${{ secrets.DIGICERT_APIKEY }}
-
     - name: Set up Java 21
       uses: actions/setup-java@v4
       with:
@@ -69,6 +55,16 @@ jobs:
       with:
         maven-version: 3.9.2
 
+    - name: "Import GPG Key"
+      env:
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+      run: |
+        echo "$GPG_PRIVATE_KEY" | base64 --decode | gpg --batch --import
+        KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | awk '/sec/{print $2}' | cut -d'/' -f2)
+        echo "Extracted GPG Key: $KEY_ID"
+        echo "MAVEN_GPG_KEY=$KEY_ID" >> "$GITHUB_ENV"
+        echo "MAVEN_GPG_PASSPHRASE=$GPG_PASSPHRASE" >> "$GITHUB_ENV"
 
     - name: 'Cache local Maven repository'
       uses: actions/cache@v4
@@ -215,18 +211,10 @@ jobs:
         retention-days: 3
 
   upload-cdn:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: [build, macos-signing]
     if: ${{ inputs.cdn_upload }}
     steps:
-      
-    - name: Install SSH key for CDN
-      uses: shimataro/ssh-key-action@v2
-      with:
-        name: id_platform_ci_cdn
-        key: ${{ secrets.SSH_KEY_PLATFORM_CI_CDN }}
-        known_hosts: ${{ secrets.SSH_KNOWN_HOST_CDN }}
-        config: ${{ secrets.SSH_CONFIG_CDN }}
 
     - name: 'Download - Update Site'
       uses: actions/download-artifact@v4
@@ -330,6 +318,10 @@ jobs:
 
     - name: 'Upload files to CDN'
       run: >
+        # Currently AWS S3 is incompatible with cdn77 backend headers, disable checksums:
+          
+        export AWS_REQUEST_CHECKSUM_CALCULATION='WHEN_REQUIRED'
+
         aws s3 sync --profile s3-sync --endpoint-url https://eu-1.cdn77-storage.com --no-progress
         repository/ s3://platform-production-cdn/$CDN_PATH_SITE/v/$VERSION/
         &&

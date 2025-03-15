@@ -57,4 +57,4 @@ For now, enjoy the demo! \o/
 
 — Your Yatta developers
 
-Copyright, Yatta Solutions GmbH, Germany, 2024
+Copyright, Yatta Solutions GmbH, Germany, 2025
