@@ -192,7 +192,6 @@ public class GameEditor extends BrowserWrapper
       };
       updateJob.setSystem(true);
       updateJob.schedule();
-
    }
 
    private void showOverlay(boolean showSignInLink)
