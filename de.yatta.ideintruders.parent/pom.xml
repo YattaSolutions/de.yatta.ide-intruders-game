@@ -32,7 +32,7 @@
     </repository>
     <repository>
       <id>ymp</id>
-      <url>${ymp-repo.url}</url>
+      <url>${build-ymp-repo.url}</url>
       <layout>p2</layout>
     </repository>
     <repository>
@@ -170,6 +170,7 @@
         <eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.37</eclipse-updates-repo.url>
         <orbit-repo.url>${repo-base.url}/tools/orbit/simrel/orbit-aggregation/release/latest</orbit-repo.url>
         <ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
+        <build-ymp-repo.url>${ymp-repo.url}</build-ymp-repo.url>
         <ide-intruders-repo.url>https://cdn.yatta.de/update/checkout-eclipse-demo/</ide-intruders-repo.url>
       </properties>
     </profile>
@@ -241,6 +242,17 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>custom-ymp-repo</id>
+      <activation>
+        <property>
+          <name>custom-ymp-repo</name>
+        </property>
+      </activation>
+      <properties>
+      	<build-ymp-repo.url>${custom-ymp-repo}</build-ymp-repo.url>
+      </properties>
     </profile>
   </profiles>
 </project>
