@@ -4,6 +4,8 @@
 	<locations>
 		<!-- all your existing entries should stay here -->
 
+		<location path="${eclipse_home}" type="Profile" />
+		
 		<!-- add the following new entries -->
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="https://cdn.yatta.de/update/marketplace" />
