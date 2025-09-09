@@ -2,28 +2,19 @@
 <?pde version="3.8"?>
 <target name="Running Platform">
 	<locations>
-		<location path="${eclipse_home}" type="Profile" />
 		<!-- all your existing entries should stay here -->
 
 		<!-- add the following new entries -->
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<!-- for production -->
 			<repository location="https://cdn.yatta.de/update/marketplace" />
-
-			<!-- for stage -->
-			<!-- <repository location="https://cdn.yatta.de/stage/update/marketplace" /> -->
-
-			<!-- for local -->
-			<!-- <repository location="file:/C:/.../platform-server/marketplace/com.yattasolutions.platform.marketplace.client.site/target/repository" /> -->
-
 			<unit id="com.yattasolutions.platform.marketplace.client.feature.feature.group" version="0.0.0" />
-			<unit id="de.yatta.platform.browser.feature.feature.group" version="0.0.0" />
 			<unit id="de.yatta.platform.marketplace.licensing.client.feature.feature.group" version="0.0.0" />
+			<unit id="de.yatta.platform.browser.feature.feature.group" version="0.0.0" />
 			<unit id="com.yattasolutions.platform.marketplace.api.docs" version="0.0.0" />
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<unit id="org.eclipse.osgi.services" version="0.0.0"/>
-			<repository location="https://download.eclipse.org/releases/2025-03/202503121000/"/>
+			<unit id="org.osgi.service.event" version="0.0.0"/>
+			<repository location="https://download.eclipse.org/releases/2025-09/202509101000/"/>
 		</location>
 	</locations>
 </target>
