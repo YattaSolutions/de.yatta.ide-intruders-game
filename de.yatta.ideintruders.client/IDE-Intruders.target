@@ -16,7 +16,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<unit id="org.osgi.service.event" version="0.0.0"/>
-			<repository location="https://download.eclipse.org/releases/2025-09/202509101000/"/>
+			<repository location="https://download.eclipse.org/releases/2025-12/202512101000/"/>
 		</location>
 	</locations>
 </target>
