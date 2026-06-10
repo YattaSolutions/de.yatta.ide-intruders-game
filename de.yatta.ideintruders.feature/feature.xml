@@ -2,7 +2,7 @@
 <feature
       id="de.yatta.ideintruders.feature"
       label="IDE Intruders Feature (demo)"
-      version="1.1.15.qualifier"
+      version="1.1.16.qualifier"
       provider-name="Yatta Solutions GmbH">
 
    <description url="https://yatta.de/checkout-for-eclipse">
