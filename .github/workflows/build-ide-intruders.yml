@@ -23,7 +23,7 @@ jobs:
       build_environment: ${{ steps.environment-setup.outputs.build_environment }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: 'Extract branch name'
       shell: bash
@@ -55,13 +55,13 @@ jobs:
         fi
 
     - name: Set up Java 21
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         java-version: '21'
         distribution: 'temurin'
 
     - name: 'Setup Maven'
-      uses: stCarolas/setup-maven@v5
+      uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0 # v5.1
       with:
         maven-version: 3.9.2
 
@@ -77,7 +77,7 @@ jobs:
         echo "MAVEN_GPG_PASSPHRASE=$GPG_PASSPHRASE" >> "$GITHUB_ENV"
 
     - name: 'Cache local Maven repository'
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -110,35 +110,35 @@ jobs:
           zip -x .github/\* .git/\* \*\*/target/\* \*\*/.settings/\* -r de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip .
 
     - name: 'Upload - Update Site'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: YattaCheckoutDemo-site
         path: de.yatta.ideintruders.site/target/repository/
         retention-days: 3
 
     - name: 'Upload - Windows'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: YattaCheckoutDemo-windows
         path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-x86_64.zip
         retention-days: 3
 
     - name: 'Upload - Linux'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: YattaCheckoutDemo-linux
         path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-linux.tar.gz
         retention-days: 3
 
     - name: 'Upload - Sources'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: YattaCheckoutDemo-source
         path: de.yatta.ideintruders.site/target/YattaCheckoutDemo-source.zip
         retention-days: 3
 
     - name: 'Upload - Mac (temporary)'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: YattaCheckoutDemo-macos-unsigned
         path: de.yatta.ideintruders.product/target/products/YattaCheckoutDemo-macos-unsigned.zip
@@ -149,10 +149,10 @@ jobs:
     runs-on: 'macos-15'
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: 'Download RCP'
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: YattaCheckoutDemo-macos-unsigned
 
@@ -214,7 +214,7 @@ jobs:
           security delete-keychain build.keychain
 
     - name: 'Upload - Mac'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: YattaCheckoutDemo-macos
         path: YattaCheckoutDemo-macos.zip
@@ -227,31 +227,31 @@ jobs:
     steps:
 
     - name: 'Download - Update Site'
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: YattaCheckoutDemo-site
         path: repository
 
     - name: 'Download - Windows'
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         path: resources
         name: YattaCheckoutDemo-windows
 
     - name: 'Download - Linux'
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         path: resources
         name: YattaCheckoutDemo-linux
 
     - name: 'Download - Mac'
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         path: resources
         name: YattaCheckoutDemo-macos
 
     - name: 'Download - Sources'
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         path: resources
         name: YattaCheckoutDemo-source
