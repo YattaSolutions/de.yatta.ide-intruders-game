@@ -171,14 +171,13 @@
 			</activation>
 			<properties>
 				<eclipse-repo.url>
-					${repo-base.url}/releases/2026-03/202603111000/</eclipse-repo.url>
-				<eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.39</eclipse-updates-repo.url>
+					${repo-base.url}/releases/2026-06/202606101000/</eclipse-repo.url>
+				<eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.40</eclipse-updates-repo.url>
 				<orbit-repo.url>
 					${repo-base.url}/tools/orbit/simrel/orbit-aggregation/release/latest</orbit-repo.url>
 				<ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
 				<build-ymp-repo.url>${ymp-repo.url}</build-ymp-repo.url>
-				<ide-intruders-repo.url>
-					https://cdn.yatta.de/update/checkout-eclipse-demo/</ide-intruders-repo.url>
+				<ide-intruders-repo.url>https://cdn.yatta.de/update/checkout-eclipse-demo/</ide-intruders-repo.url>
 			</properties>
 		</profile>
 		<profile>
