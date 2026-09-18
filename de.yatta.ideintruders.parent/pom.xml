@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.yatta.ideintruders</groupId>
 	<artifactId>de.yatta.ideintruders.parent</artifactId>
-	<version>1.1.16-SNAPSHOT</version>
+	<version>1.1.17-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -171,8 +171,8 @@
 			</activation>
 			<properties>
 				<eclipse-repo.url>
-					${repo-base.url}/releases/2026-06/202606101000/</eclipse-repo.url>
-				<eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.40</eclipse-updates-repo.url>
+					${repo-base.url}/releases/2026-09/</eclipse-repo.url>
+				<eclipse-updates-repo.url>${repo-base.url}/eclipse/updates/4.41</eclipse-updates-repo.url>
 				<orbit-repo.url>
 					${repo-base.url}/tools/orbit/simrel/orbit-aggregation/release/latest</orbit-repo.url>
 				<ymp-repo.url>https://cdn.yatta.de/update/marketplace</ymp-repo.url>
