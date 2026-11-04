@@ -16,6 +16,10 @@ on:
         required: false
         type: string
 
+permissions:
+  id-token: write # This is required for requesting the JWT which is used to assume the AWS role that uploads to the CDN bucket
+  contents: read  # This is required for actions/checkout
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -317,37 +321,36 @@ jobs:
         )
         echo $XML_CONTENT_METADATA >> repository_top_level/compositeContent.xml
 
-    - name: "CDN77 Access key"
+    # OIDC only -- no access key/secret. The role's trust policy restricts
+    # sts:AssumeRoleWithWebIdentity to this repository (repository_id claim).
+    - name: 'Assume AWS Role'
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        aws-region: 'eu-central-1'
+        role-to-assume: ${{ vars.CDN_DEPLOYMENT_ROLE }}
+        role-session-name: IdeIntrudersCdnUpload
+
+    # Versioned paths are written once and never rewritten, so everything under
+    # v/$VERSION/ is immutable. Uploaded BEFORE the no-cache step below, which
+    # publishes the composite update-site pointing at this version.
+    - name: 'Upload versioned artifacts to CDN'
+      env:
+        CDN_BUCKET: ${{ vars.CDN_BUCKET }}
       run: |
-        aws configure --profile s3-sync <<-EOF > /dev/null 2>&1
-        ${{ secrets.CDN77_PLATFORM_CI_KEY_ID }}
-        ${{ secrets.CDN_PLATFORM_CI_KEY_SECRET }}
-        eu-central-1
-        text
-        EOF
+        aws s3 sync --no-progress --cache-control 'public, max-age=31536000, immutable' \
+          repository/ s3://$CDN_BUCKET/$CDN_PATH_SITE/v/$VERSION/
+        aws s3 sync --no-progress --cache-control 'public, max-age=31536000, immutable' \
+          resources/ s3://$CDN_BUCKET/$CDN_PATH_RESOURCE/v/$VERSION/
 
-    - name: 'Upload files to CDN'
-      run: >
-        # Currently AWS S3 is incompatible with cdn77 backend headers, disable checksums:
-          
-        export AWS_REQUEST_CHECKSUM_CALCULATION='WHEN_REQUIRED'
-
-        aws s3 sync --profile s3-sync --endpoint-url https://eu-1.cdn77-storage.com --no-progress
-        repository/ s3://platform-production-cdn/$CDN_PATH_SITE/v/$VERSION/
-        &&
-        aws s3 sync --profile s3-sync --endpoint-url https://eu-1.cdn77-storage.com --no-progress
-        repository_top_level/ s3://platform-production-cdn/$CDN_PATH_SITE/
-        &&
-        aws s3 sync --profile s3-sync --endpoint-url https://eu-1.cdn77-storage.com --no-progress
-        resources/ s3://platform-production-cdn/$CDN_PATH_RESOURCE/v/$VERSION/
-        &&
-        aws s3 sync --profile s3-sync --endpoint-url https://eu-1.cdn77-storage.com --no-progress
-        resources/ s3://platform-production-cdn/$CDN_PATH_RESOURCE/
-
-    - name: 'Purge CDN paths'
-      run: >
-        curl
-        --request POST
-        --url https://api.cdn77.com/v3/cdn/1041707535/job/purge
-        --header 'authorization: Bearer ${{ secrets.CDN77_PURGE_TOKEN }}'
-        --data '{"paths": ["/${{ env.CDN_PATH_SITE }}/*", "/${{ env.CDN_PATH_RESOURCE }}/*"]}'
+    # Both of these live at stable URLs whose content changes with every
+    # release -- the composite update-site index that points Eclipse at the
+    # newest version, and the unversioned "latest download" copy of the
+    # products. They must never be served from cache.
+    - name: 'Upload update-site index and latest downloads to CDN'
+      env:
+        CDN_BUCKET: ${{ vars.CDN_BUCKET }}
+      run: |
+        aws s3 sync --no-progress --cache-control 'no-cache' \
+          repository_top_level/ s3://$CDN_BUCKET/$CDN_PATH_SITE/
+        aws s3 sync --no-progress --cache-control 'no-cache' \
+          resources/ s3://$CDN_BUCKET/$CDN_PATH_RESOURCE/
